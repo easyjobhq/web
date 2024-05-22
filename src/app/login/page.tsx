@@ -14,11 +14,10 @@ function Login() {
         alert("Please enter information");
       } else {
 
-        console.log("AYUDA")
         login(email, password)
           //.then(() => router.push("/profile"))
-          //.catch((e: Error) => alert(e));
-          .then(() => console.log("Hello bb"));
+          .then(() => console.log("Hello bb"))
+          .catch((e: Error) => alert(e));
       }
     };
   

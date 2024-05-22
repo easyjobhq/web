@@ -8,18 +8,16 @@ export class AuthService {
       baseURL: url,
       timeout: 30000,
       timeoutErrorMessage: "Time out!",
+      headers: {
+        'Access-Control-Allow-Origin': '*', // Allow all origins
+      },
+      
     });
   }
 
   login = async (email: string, password: string) => {
 
-    try {
-      fetch("http://easy-job-eyze.onrender.com").then(response =>  {
-        console.log(response);
-      })
-    } catch(error) {
-      console.log(error);
-    }
+
 
     const res = await this.instance
       .post("/auth/client/login", {
