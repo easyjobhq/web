@@ -15,8 +15,7 @@ function Login() {
       } else {
 
         login(email, password)
-          //.then(() => router.push("/profile"))
-          .then(() => console.log("Hello bb"))
+          .then(() => router.push("/home"))
           .catch((e: Error) => alert(e));
       }
     };
