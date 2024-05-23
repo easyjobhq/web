@@ -64,13 +64,13 @@ export class AuthService {
 
   }
 
-  getMe = (userId: string) => {
-    return this.instance
-
+  getMe = async (userId: string) => {
+    const res = await this.instance
       .get(`/users/${userId}`, {
         headers: getAuthorizationHeader(),
       });
-    return res.data;
+    
+      return res.data;
   };
 
   getProfessinals = async () => {
