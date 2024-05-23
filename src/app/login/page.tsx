@@ -15,7 +15,7 @@ function Login() {
       } else {
 
         login(email, password)
-          .then(() => router.push("/home"))
+          .then(() => router.push("/"))
           .catch((e: Error) => alert(e));
       }
     };
