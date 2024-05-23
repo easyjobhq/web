@@ -3,11 +3,12 @@ import Cookies from "js-cookie";
 
 export const useLogin = () => {
   const login = async (username: string, password: string) => {
-    const user = await authService.login(username, password);
-    if (user) {
-      Cookies.set("currentUser", JSON.stringify(user));
+    const res = await authService.login(username, password);
+    // console.log(res.data);
+    if (res) {
+      Cookies.set("currentUser", JSON.stringify(res.data));
     }
-    return user;
+    return res.data;
   };
 
   return { login };

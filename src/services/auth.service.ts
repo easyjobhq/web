@@ -17,23 +17,15 @@ export class AuthService {
 
   login = async (email: string, password: string) => {
 
-
-
     const res = await this.instance
       .post("/auth/client/login", {
         email,
         password,
       });
-    console.log("PLEASE HELPPP");
-    console.log(res);
     
-    return {
-        username: "test",
-        id: "test",
-        accessToken: "test",
-        expiredAt:  Date.now() + 60 * 60 * 24 * 7,
-    }  
+    return res;
   };
+
 
   register = async (name:string, last_name:string, email:string, phone_number:string, password:string, selectedOption: string) =>{
     if(selectedOption == 'Prof'){
@@ -74,13 +66,21 @@ export class AuthService {
 
   getMe = (userId: string) => {
     return this.instance
+
       .get(`/users/${userId}`, {
         headers: getAuthorizationHeader(),
-      })
-      .then((res) => {
-        return res.data;
       });
+    return res.data;
   };
+
+  getProfessinals = async () => {
+    console.log(getAuthorizationHeader())
+    const res = await this.instance
+    .get('professionals/', {
+      headers: getAuthorizationHeader(),
+    })
+    return res.data
+  }
 
   /*uploadAvatar = (userId: string, newAvatar: File) => {
     const formData = new FormData();
