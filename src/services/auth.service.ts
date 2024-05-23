@@ -17,33 +17,31 @@ export class AuthService {
 
   login = async (email: string, password: string) => {
 
-
-
     const res = await this.instance
       .post("/auth/client/login", {
         email,
         password,
       });
-    console.log("PLEASE HELPPP");
-    console.log(res);
     
-    return {
-        username: "test",
-        id: "test",
-        accessToken: "test",
-        expiredAt:  Date.now() + 60 * 60 * 24 * 7,
-    }  
+    return res;
   };
 
-  getMe = (userId: string) => {
-    return this.instance
+  getMe = async (userId: string) => {
+    const res = await this.instance
       .get(`/users/${userId}`, {
         headers: getAuthorizationHeader(),
-      })
-      .then((res) => {
-        return res.data;
       });
+    return res.data;
   };
+
+  getProfessinals = async () => {
+    console.log(getAuthorizationHeader())
+    const res = await this.instance
+    .get('professionals/', {
+      headers: getAuthorizationHeader(),
+    })
+    return res.data
+  }
 
   /*uploadAvatar = (userId: string, newAvatar: File) => {
     const formData = new FormData();
