@@ -35,6 +35,43 @@ export class AuthService {
     }  
   };
 
+  register = async (name:string, last_name:string, email:string, phone_number:string, password:string, selectedOption: string) =>{
+    if(selectedOption == 'Prof'){
+      console.log(name + "\n" + last_name + "\n" + email + "\n" + phone_number + "\n" + password + "\n" + selectedOption);
+      const res = await this.instance
+      .post("/auth/professional/register",{
+        name,
+        last_name,
+        email,
+        phone_number,
+        password,
+      });
+
+      console.log(res)
+
+    }else{
+      const res = await this.instance
+      .post("/auth/client/register",{
+        name,
+        last_name,
+        email,
+        phone_number,
+        password
+      });
+
+      console.log(res)
+
+      return {
+        username: "test",
+        id: "test",
+        accessToken: "test",
+        expiredAt:  Date.now() + 60 * 60 * 24 * 7,
+    }  
+    }
+      
+
+  }
+
   getMe = (userId: string) => {
     return this.instance
       .get(`/users/${userId}`, {
