@@ -92,6 +92,15 @@ export class AuthService {
     return res.data
   }
 
+  getCitiesOfProfessional = async (id: string) => {
+    //console.log(getAuthorizationHeader())
+    const res = await this.instance
+    .get(`/professionals/cities/${id}`, {
+      headers: getAuthorizationHeader(),
+    })
+    return res.data
+  }
+
   /*uploadAvatar = (userId: string, newAvatar: File) => {
     const formData = new FormData();
     formData.append("file", newAvatar);

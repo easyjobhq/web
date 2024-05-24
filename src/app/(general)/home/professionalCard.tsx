@@ -7,6 +7,7 @@ import { FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
 import { authService } from '@/services';
 import { Service } from '@/interfaces/service';
 import { BiDollar } from "react-icons/bi";
+import { City } from '@/interfaces/city';
 
 interface ProfessionalProps {
   professional: Professional;
@@ -17,26 +18,31 @@ function ProfessionalCard(props: ProfessionalProps) {
   const starPercentage = (props.professional.score /5) * 100;
   const starRating = `${Math.round(starPercentage/10) *10}%`; 
   const [services, setServices] = useState<Service[]>([]);
+  const [cities, setCities] = useState<City[]>([]);
 
 
   useEffect( () => {
     const fetchData = async () => {
-      const response = await authService.getServicesOfProfessional(props.professional.id);
-      setServices(response);
-      console.log(response)
+      const responseServices = await authService.getServicesOfProfessional(props.professional.id);
+      setServices(responseServices);
+      
+      const responseCities = await authService.getCitiesOfProfessional(props.professional.id);
+      setCities(responseCities);
+
+      console.log(responseCities);
+       
     }  
 
     fetchData();
   }, [])
   
-  console.log(starRating + "%")
 
   return (
     <div className=" bg-white mb-3 rounded-lg px-8 py-5 shadow-md flex">
-      <div className="left-section-card w-3/5 pr-5">
+      <div className="left-section-card w-5/12 pr-5">
         <div className="upper-section flex mb-2">
           <Image
-          src={kanye}
+          src={props.professional.photo_url}
           alt=""  
           width={110}
           height={110}
@@ -45,7 +51,7 @@ function ProfessionalCard(props: ProfessionalProps) {
           <div className='p-5'>
             <h2 className="font-semibold text-xl">{props.professional.name} {props.professional.last_name}</h2>
             <p className='text-sm font-light'>Poner la profesion</p>
-            <div className='flex justify-center items-center'>
+            <div className='flex justify-left items-center'>
               <div className='stars-outer'>
                 <div className='stars-inner' style={{width: `${starRating}`}}>
                 ★ ★ ★ ★ ★
@@ -62,28 +68,40 @@ function ProfessionalCard(props: ProfessionalProps) {
         </div>
         <div className="medium-section pl-3 flex items-center">
           <FaMapMarkerAlt className='mr-2 h-3'/>
-          <p className='text-sm font-light'  > Cali, Valle del Cauca</p>
+          <p className='text-sm font-light'  >
+            {
+              cities.map((city, index) => (
+                index < cities.length-1? (`${city.city_name}, `): (`${city.city_name}`)
+              ))
+            }
+          </p>
         </div>
       </div>
 
       {/* Right section */}
-      <div className="w-2/5 flex">
+      <div className="w-5/12 flex">
         <div className='bg-gray-300 h-full' style={{width: "0.25px"}}></div>
         <div className='pl-7 pt-2'>
           <div>
             {
-                services.slice(0,2).map((service) => 
-                  <div className='mb-3'>
-                    <h4 className='mb-0.5 font-semibold'>{service.title}</h4>
-                    <p className='text-sm font-light'>{service.description}</p>
-                    <p className='text-sm font-light flex items-center' > <BiDollar className='h-6' /> {Math.round(service.price).toLocaleString('es-ES')}</p>
-                  </div>
+                services.length === 0 ? (
+                  <p>Este profesional no tiene servicios</p>
+                ): (
+                  services.slice(0,2).map((service) => 
+                    <div className='mb-3'>
+                      <h4 className='mb-0.5 font-semibold'>{service.title}</h4>
+                      <p className='text-sm font-light'>{service.description}</p>
+                      <p className='text-sm font-normal flex items-center' > <BiDollar className='h-6' /> {Math.round(service.price).toLocaleString('es-ES')}</p>
+                    </div>
+                  )
                 )
-              }
+            }
           </div>
         </div>
-        
       </div>
+      <div className="w-2/12 flex items-center">
+          Icono para la siguiente pagina
+         </div>
     </div>
   )
 }
