@@ -25,31 +25,21 @@ const MenuProps = {
 };
 
 
-function getStyles(name: string, personName: readonly string[], theme: Theme) {
-
-  return {
-    fontWeight:
-      personName.indexOf(name) === -1
-        ? theme.typography.fontWeightRegular
-        : theme.typography.fontWeightMedium,
-  };
-}
-
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   const [personName, setPersonName] = useState<string[]>([]);
+
 
 
   return (
     <>
         <nav className="flex bg-blue-500 px-80 py-3 items-center justify-between">
           <Link href={"/home"} className="flex">
-                <BsTools color="white" size="25" className="mr-5"/>
-                <h2 className="text-white text-xl font-bold">EasyJob</h2>
+                <BsTools color="white" size="30" className="mr-5"/>
+                <h2 className="text-white text-2xl font-bold">EasyJob</h2>
           </Link>
           <div className="flex">
             <FormControl sx={{ 

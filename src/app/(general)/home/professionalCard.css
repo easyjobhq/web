@@ -1,0 +1,28 @@
+.stars-outer {
+    position: relative; 
+    display: inline-block;
+    font-size: large;
+}
+
+.stars-inner {
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    white-space: nowrap; 
+    overflow: hidden;
+    width: 0;
+    font-size: large;
+}
+
+.stars-outer::before { 
+    content: "★ ★ ★ ★ ★";
+    color: #ccc;
+    font-size: large;
+}
+
+.stars-inner::before { 
+    content: "★ ★ ★ ★ ★";
+    color: #3B82F6;
+    font-size: large;
+}
+

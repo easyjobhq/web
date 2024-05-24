@@ -3,12 +3,8 @@
 import { Professional } from '@/interfaces/professional';
 import { authService } from '@/services'
 import { AuthService } from '@/services/auth.service'
-
 import React, { useEffect, useState } from 'react'
-
 import ProfessionalCard from './professionalCard';
-
-
 
 function HomePage() {
 
@@ -25,16 +21,25 @@ function HomePage() {
 
   return (
     <div>
-      <h1 className="text-xl font-semibold w-full mb-5">Resultados de la busqueda</h1>
+      <div className="mb-3">
+        <h1 className="text-xl font-semibold w-full mb-2">Resultados de la búsqueda</h1>
+        <p className='font-light'>Reserva por internet, nunca pagarás de mas :)</p>
+      </div>
       <div className="flex">
       <section className=" mr-3 w-4/5 ">
-          <ProfessionalCard/>
-          <ProfessionalCard/>
+          {
+            professionals.map((professional: Professional ) =>
+               <>
+                <ProfessionalCard professional = {professional}/>
+               </>
+            )
+          }
+          
       </section>
-      <section className='flex w-1/5 bg-slate-700 rounded-lg'>
-        AYUDA
+      <section className='flex w-1/5 bg-blue-400 rounded-lg'>
+        {/* TODO -- Maps API */}
       </section>
-            {
+            {/* {
             professionals.map((professional) => 
                 <>
                   <li>{professional.id}</li>
@@ -55,7 +60,7 @@ function HomePage() {
                 </>
 
             )
-          }
+          } */}
       </div>
         
     </div>

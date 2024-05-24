@@ -74,9 +74,18 @@ export class AuthService {
   };
 
   getProfessinals = async () => {
-    console.log(getAuthorizationHeader())
+    //console.log(getAuthorizationHeader())
     const res = await this.instance
     .get('professionals/', {
+      headers: getAuthorizationHeader(),
+    })
+    return res.data
+  }
+
+  getServicesOfProfessional = async (id: string) => {
+    //console.log(getAuthorizationHeader())
+    const res = await this.instance
+    .get(`/professionals/services/${id}`, {
       headers: getAuthorizationHeader(),
     })
     return res.data
