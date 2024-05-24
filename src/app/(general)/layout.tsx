@@ -46,7 +46,7 @@ export default function RootLayout({
 
   return (
     <>
-        <nav className="flex bg-blue-500 px-10 py-3 items-center justify-between">
+        <nav className="flex bg-blue-500 px-80 py-3 items-center justify-between">
           <Link href={"/home"} className="flex">
                 <BsTools color="white" size="25" className="mr-5"/>
                 <h2 className="text-white text-xl font-bold">EasyJob</h2>
@@ -127,12 +127,12 @@ export default function RootLayout({
               </Select>
             </FormControl>
             <button className="flex justify-center items-center">
-              <IoSearchSharp color="white" size="40" style={{backgroundColor: 'rgba(255, 255, 255, 0.1)'}} className="border p-1.5 rounded-md"/>
+              <IoSearchSharp color="white" size="40" style={{backgroundColor: 'rgba(255, 255, 255, 0.1)'}} className="border p-1.5 rounded-full"/>
             </button>
           </div>
           <Link href={"/login"} className="flex px-2 py-1 border text-sm rounded-md border-white text-white font-normal">Log out</Link>
         </nav>
-        <div className="px-60 pt-10 w-full">
+        <div className="px-80 pt-10 w-full">
           {children}
         </div>
     </>
