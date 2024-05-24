@@ -27,7 +27,7 @@ export class AuthService {
   };
 
 
-  register = async (name:string, last_name:string, email:string, phone_number:string, password:string, selectedOption: string) =>{
+  register = async (name:string, last_name:string, email:string, phone_number:string, password:string, photo_url:string, selectedOption: string) =>{
     if(selectedOption == 'Prof'){
       console.log(name + "\n" + last_name + "\n" + email + "\n" + phone_number + "\n" + password + "\n" + selectedOption);
       const res = await this.instance
@@ -36,6 +36,7 @@ export class AuthService {
         last_name,
         email,
         phone_number,
+        photo_url,
         password,
       });
 

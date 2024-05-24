@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation'
 import React, { ChangeEvent, useState } from 'react'
 import { useRegister } from '@/hooks/auth/useRegister'
+import { uploadFile } from '@/firebase/config'
 
 function Register() {
 
@@ -11,26 +12,38 @@ function Register() {
     const [email, setEmail] = useState("")
     const [phone_number, setPhone] = useState("")
     const [photo, setPhoto] = useState<File | null>(null)
+    const [photo_url,setPhotoUrl]= useState("")
     const [password, setPassword] = useState("")
     const [selectedOption, setSelectedOption] = useState('')
     const router = useRouter();
     const { register } = useRegister()
 
-    const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    
+
+    const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
             setPhoto(event.target.files[0]);
+            const url = await uploadFile(event.target.files[0]).then((url)=>setPhotoUrl(url))
+            //console.log(photo_url)
         }
     };
 
-    const onSubmit = (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const onSubmit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
         if (!name || !last_name || !email || !phone_number || !password || !selectedOption) {
             alert("All fields are required");
         } else {
-            
-            register(name, last_name, email, phone_number, password, selectedOption)
+            if(photo!== null){
+              console.log(photo_url)
+              await register(name, last_name, email, phone_number, password, photo_url, selectedOption)
                 .then(() => router.push("/"))
                 .catch((e: Error) => alert(e));
+            }else{
+              await register(name, last_name, email, phone_number, password, "", selectedOption)
+                .then(() => router.push("/"))
+                .catch((e: Error) => alert(e));
+            }
+            
         }
     }
 
