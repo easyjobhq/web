@@ -1,6 +1,7 @@
 "use client"
 
 import type { Metadata } from "next";
+import { styled } from '@mui/material/styles';
 import { Theme, useTheme } from '@mui/material/styles';
 import Link from "next/link";
 import { BsTools } from "react-icons/bs";
@@ -9,6 +10,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useState } from "react";
+import InputBase from '@mui/material/InputBase';
 
 
 const ITEM_HEIGHT = 80;
@@ -22,6 +24,7 @@ const MenuProps = {
   },
 };
 
+
 function getStyles(name: string, personName: readonly string[], theme: Theme) {
 
   return {
@@ -31,21 +34,6 @@ function getStyles(name: string, personName: readonly string[], theme: Theme) {
         : theme.typography.fontWeightMedium,
   };
 }
-
-const names = [
-  'Oliver Hansen',
-  'Van Henry',
-  'April Tucker',
-  'Ralph Hubbard',
-  'Omar Alexander',
-  'Carlos Abbott',
-  'Miriam Wagner',
-  'Bradley Wilkerson',
-  'Virginia Andrews',
-  'Kelly Snyder',
-];
-
-
 
 export default function RootLayout({
   children,
@@ -58,17 +46,12 @@ export default function RootLayout({
 
   return (
     <>
-        <nav className="flex bg-blue-500 px-10 py-2 items-center justify-between">
+        <nav className="flex bg-blue-500 px-80 py-3 items-center justify-between">
           <Link href={"/home"} className="flex">
                 <BsTools color="white" size="25" className="mr-5"/>
                 <h2 className="text-white text-xl font-bold">EasyJob</h2>
           </Link>
           <div className="flex">
-            {/* <select name="" id="">
-              <option value="">Plomero</option>
-              <option value="">Fontanero</option>
-            </select> */}
-
             <FormControl sx={{ 
               m: "auto", 
               width: 250, 
@@ -79,9 +62,9 @@ export default function RootLayout({
                     height: 40,
                     bgcolor: "rgba(255, 255, 255, 0.2)",
                     color: "white", 
-                    mr: "10px"
+                    mr: "15px", 
+                    border: '0.25px solid rgba(255, 255, 255, 0.5)'
                   }}
-                  labelId="demo-customized-select-label"
                   multiple
                   value={personName}
                   displayEmpty
@@ -90,7 +73,6 @@ export default function RootLayout({
                     if (selected.length === 0) {
                       return <em>Profesion</em>;
                     }
-        
                     return selected.join(', ');
                   }}
                   inputProps={{ 'aria-label': 'Without label' }}
@@ -118,8 +100,8 @@ export default function RootLayout({
                     height: 40,
                     bgcolor: "rgba(255, 255, 255, 0.2)",
                     mr: "10px", 
-                    color: "white"
-                    
+                    color: "white",
+                    border: '0.25px solid rgba(255, 255, 255, 0.5)',
                   }}
                   multiple
                   value={personName}
@@ -144,14 +126,13 @@ export default function RootLayout({
                 
               </Select>
             </FormControl>
-
             <button className="flex justify-center items-center">
-              <IoSearchSharp color="white" size="30" className="border p-1 rounded-md"/>
+              <IoSearchSharp color="white" size="40" style={{backgroundColor: 'rgba(255, 255, 255, 0.1)'}} className="border p-1.5 rounded-full"/>
             </button>
           </div>
           <Link href={"/login"} className="flex px-2 py-1 border text-sm rounded-md border-white text-white font-normal">Log out</Link>
         </nav>
-        <div className="flex px-60 pt-10">
+        <div className="px-80 pt-10 w-full">
           {children}
         </div>
     </>
