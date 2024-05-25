@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
-import kanye from "@/../public/kanye.jpg";
 import { Professional } from '@/interfaces/professional';
 import "./professionalCard.css";
 import { FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
@@ -8,6 +7,8 @@ import { authService } from '@/services';
 import { Service } from '@/interfaces/service';
 import { BiDollar } from "react-icons/bi";
 import { City } from '@/interfaces/city';
+import Link from "next/link";
+import { SlArrowRight } from "react-icons/sl";
 
 interface ProfessionalProps {
   professional: Professional;
@@ -39,7 +40,7 @@ function ProfessionalCard(props: ProfessionalProps) {
 
   return (
     <div className=" bg-white mb-3 rounded-lg px-8 py-5 shadow-md flex">
-      <div className="left-section-card w-5/12 pr-5">
+      <div className="left-section-card w-6/12 pr-5">
         <div className="upper-section flex mb-2">
           <Image
           src={props.professional.photo_url}
@@ -79,13 +80,13 @@ function ProfessionalCard(props: ProfessionalProps) {
       </div>
 
       {/* Right section */}
-      <div className="w-5/12 flex">
+      <div className="w-6/12 flex">
         <div className='bg-gray-300 h-full' style={{width: "0.25px"}}></div>
         <div className='pl-7 pt-2'>
           <div>
             {
                 services.length === 0 ? (
-                  <p>Este profesional no tiene servicios</p>
+                  <p className='text-sm font-light'>Este profesional no tiene servicios :(</p>
                 ): (
                   services.slice(0,2).map((service) => 
                     <div className='mb-3'>
@@ -99,9 +100,12 @@ function ProfessionalCard(props: ProfessionalProps) {
           </div>
         </div>
       </div>
-      <div className="w-2/12 flex items-center">
-          Icono para la siguiente pagina
-         </div>
+      <div className="w-5 flex items-center">
+        <Link
+          href={`/professional/${props.professional.id}`}>
+          <SlArrowRight className='w-5' />
+        </Link>
+      </div>
     </div>
   )
 }
