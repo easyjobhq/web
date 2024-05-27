@@ -101,6 +101,23 @@ export class AuthService {
     return res.data
   }
 
+  getProfessional = async (id: string) => {
+    const res = await this.instance
+    .get(`/professionals/${id}`, {
+      headers: getAuthorizationHeader(),
+    })
+    return res.data
+  }
+
+  getSpecialitiesOfProfessional = async (id: string) => {
+    const res = await this.instance
+    .get(`/professionals/specialities/${id}`, {
+      headers: getAuthorizationHeader(),
+    })
+    return res.data
+  }
+
+
   /*uploadAvatar = (userId: string, newAvatar: File) => {
     const formData = new FormData();
     formData.append("file", newAvatar);
