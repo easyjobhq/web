@@ -108,7 +108,7 @@ function ProfessionalPage( {params}: Props) {
                       <div className='flex items-center'>
                         <IoIosArrowForward className='text-xs mr-2' /> {service.title}
                       </div>
-                      <p className=' font-medium flex'><BiDollar className='h-6' /> {Math.round(service.price).toLocaleString('es-ES')}</p> 
+                      <p className=' font-light flex'><BiDollar className='h-6' /> {Math.round(service.price).toLocaleString('es-ES')}</p> 
                     </div>
                   </li>
                   <p className='text-gray-700 text-sm font-light mb-3' style={{ textIndent: "1rem"}}>{service.description}</p>
@@ -120,7 +120,7 @@ function ProfessionalPage( {params}: Props) {
         </div>
         <div className="main-professional-card bg-white mb-3 rounded-lg px-8 py-5 shadow-md flex w-full">
           <h3 className='font-semibold text-xl' >13 Opiniones de este profesional</h3>
-          AAAAAAAAAAAAAAAA  
+
         </div>
       </div>
       
@@ -128,17 +128,19 @@ function ProfessionalPage( {params}: Props) {
         <div className="bg-blue-500 text-white  rounded-tr-md rounded-tl-md px-3 py-3 text-lg  font-semibold">
           <h3>Agendar Servicio</h3>
         </div>
-        
-        {JSON.stringify(professional)}
-        <br />
-        <br />
-        {JSON.stringify(services)}
-        <br />
-        <br />
-        {JSON.stringify(specialities)}
-        <br />
-        <br />
-        {JSON.stringify(cities)}
+        <div className="flex  px-8 py-5">
+
+          {JSON.stringify(professional)}
+          <br />
+          <br />
+          {JSON.stringify(services)}
+          <br />
+          <br />
+          {JSON.stringify(specialities)}
+          <br />
+          <br />
+          {JSON.stringify(cities)}
+          </div>
       </div>
     </div>
   )

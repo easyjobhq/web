@@ -45,7 +45,7 @@ function ProfessionalCard(props: ProfessionalProps) {
           alt=""  
           width={110}
           height={110}
-          className='rounded-full m-1'
+          className='object-cover rounded-full m-1 w-30 h-30'
           />
           <div className='p-5'>
             <h2 className="font-semibold text-xl hover:underline"> 
