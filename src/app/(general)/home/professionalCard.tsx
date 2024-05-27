@@ -29,8 +29,6 @@ function ProfessionalCard(props: ProfessionalProps) {
       
       const responseCities = await authService.getCitiesOfProfessional(props.professional.id);
       setCities(responseCities);
-
-      console.log(responseCities);
        
     }  
 
@@ -47,10 +45,15 @@ function ProfessionalCard(props: ProfessionalProps) {
           alt=""  
           width={110}
           height={110}
-          className='rounded-full m-1'
+          className='object-cover rounded-full m-1 w-30 h-30'
           />
           <div className='p-5'>
-            <h2 className="font-semibold text-xl">{props.professional.name} {props.professional.last_name}</h2>
+            <h2 className="font-semibold text-xl hover:underline"> 
+              <Link
+                href={`/professional/${props.professional.id}`}> 
+                {props.professional.name} {props.professional.last_name}
+              </Link>
+            </h2>
             <p className='text-sm font-light'>Poner la profesion</p>
             <div className='flex justify-left items-center'>
               <div className='stars-outer'>

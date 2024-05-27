@@ -11,6 +11,7 @@ import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { useState } from "react";
 import InputBase from '@mui/material/InputBase';
+import Footer from "./Footer";
 
 
 const ITEM_HEIGHT = 80;
@@ -125,6 +126,9 @@ export default function RootLayout({
         <div className="px-80 pt-10 w-full">
           {children}
         </div>
+        <Footer/>
+        
+
     </>
   );
 }
