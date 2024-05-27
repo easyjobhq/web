@@ -4,11 +4,18 @@ import { useLogin } from '@/hooks/auth/useLogin';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 
+
 function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { login } = useLogin();
     const router = useRouter();
+
+    const handleOauth = async (event: any) => {
+      event.preventDefault();
+      const token = window.location.href = `http://localhost:3001/auth/google/callback`;
+      //console.log("token de la pagina " + token)
+    };
     const onSubmit = () => {
       if (!email || !password) {
         alert("Please enter information");
@@ -44,6 +51,12 @@ function Login() {
             className="h-10 w-80 mt-8 bg-black rounded text-white"
           >
             Login
+          </button>
+          <button
+            onClick={handleOauth}
+            className="h-10 w-80 mt-8 bg-black rounded text-white"
+          >
+            sing in with google
           </button>
         </div>
       </div>

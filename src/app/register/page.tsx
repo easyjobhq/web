@@ -1,9 +1,14 @@
 "use client"
 
 import { useRouter } from 'next/navigation'
-import React, { ChangeEvent, useState } from 'react'
+import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useRegister } from '@/hooks/auth/useRegister'
 import { uploadFile } from '@/firebase/config'
+import { City } from '@/interfaces/city'
+import { Service } from '@/interfaces/service'
+import { Language } from '@/interfaces/language'
+import { Speciality } from '@/interfaces/speciality'
+import { authService } from '@/services'
 
 function Register() {
 
@@ -15,10 +20,39 @@ function Register() {
     const [photo_url,setPhotoUrl]= useState("")
     const [password, setPassword] = useState("")
     const [selectedOption, setSelectedOption] = useState('')
+    const [serviceId, setServiceId] = useState('')
+    const [cityId, setCityId] = useState('')
+    const [languageId, setLanguageId] = useState('')
+    const [specialityId, SetSpecialityId] = useState('')
+    const [services, setServices] = useState<Service[]>([]);
+    const [cities, setCities] = useState<City[]>([]);
+    const [language, setLanguage] = useState<Language[]>([]);
+    const [speciality,SetSpeciality] = useState<Speciality[]>([])
     const router = useRouter();
     const { register } = useRegister()
 
-    
+    useEffect(()=>{
+        const fetchData = async () =>{
+            const services = await authService.getServices();
+            setServices(services);
+      
+            const language = await authService.getLanguage();
+            setLanguage(language)
+
+            const city = await authService.getCity();
+            setCities(city)
+
+            const speciality = await authService.getSpeciality();
+            SetSpeciality(speciality);
+            console.log(language)
+            console.log(services)
+            console.log(city)
+            console.log(speciality)
+        }
+        
+        fetchData();
+        
+    },[])
 
     const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
@@ -34,14 +68,34 @@ function Register() {
             alert("All fields are required");
         } else {
             if(photo!== null){
-              console.log(photo_url)
-              await register(name, last_name, email, phone_number, password, photo_url, selectedOption)
-                .then(() => router.push("/"))
-                .catch((e: Error) => alert(e));
+                if(selectedOption == 'Prof' && (!serviceId || !cityId || !languageId || !specialityId)){
+                    alert("all fields are required")
+                }else if(selectedOption == 'Cli'){
+                    await register(name, last_name, email, phone_number, password, photo_url, "", "", "", "",  selectedOption)
+                    .then(() => router.push("/"))
+                    .catch((e: Error) => alert(e));
+                }
+                else{
+                    console.log("Estos son los ids" + serviceId +'\n'+ languageId + '\n' + cityId + '\n' + specialityId)
+                    await register(name, last_name, email, phone_number, password, photo_url, serviceId, languageId, cityId, specialityId,  selectedOption)
+                    .then(() => router.push("/"))
+                    .catch((e: Error) => alert(e));
+                }
+              
             }else{
-              await register(name, last_name, email, phone_number, password, "", selectedOption)
+                if(selectedOption == 'Prof' && (!serviceId || !cityId || !languageId || !specialityId)){
+                    alert("all fields are required")
+                }else if(selectedOption == 'Cli'){
+                    await register(name, last_name, email, phone_number, password, photo_url, "", "", "", "",  selectedOption)
+                    .then(() => router.push("/"))
+                    .catch((e: Error) => alert(e));
+                }
+                else{
+                    await register(name, last_name, email, phone_number, password, "", serviceId, languageId, cityId, specialityId,  selectedOption)
                 .then(() => router.push("/"))
                 .catch((e: Error) => alert(e));
+                }
+              
             }
             
         }
@@ -90,13 +144,81 @@ function Register() {
                                     <input value={password} onChange={(e) => setPassword(e.target.value)} className="w-full shadow-inner p-4 border-0" type="password" name="pass" placeholder="****"></input>
                                 </div>
                                 <div className="md:flex mb-4">
-                                    <label htmlFor="countries" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Select an option</label>
+                                    <label htmlFor="user" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Select an option</label>
                                     <select id="countries" className="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" value={selectedOption} onChange={(e) => setSelectedOption(e.target.value)}>
                                         <option value="">Choose your purpose</option>
                                         <option value="Prof">Professional</option>
                                         <option value="Cli">Client</option>
                                     </select>
                                 </div>
+                                {selectedOption === "Prof" && (
+                                        <>
+                                            <div className="md:flex mb-4">
+                                                <label htmlFor="service" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Select a service</label>
+                                                <select
+                                                    id="services"
+                                                    className="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                                    value={serviceId}
+                                                    onChange={(e) => setServiceId(e.target.value)}
+                                                >
+                                                    <option value="">Choose your service</option>
+                                                    {services.map(service => (
+                                                        <option key={service.id} value={service.id}>
+                                                            {service.title}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div className="md:flex mb-4">
+                                                <label htmlFor="language" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Select a language</label>
+                                                <select
+                                                    id="languages"
+                                                    className="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                                    value={languageId}
+                                                    onChange={(e) => setLanguageId(e.target.value)}
+                                                >
+                                                    <option value="">Choose your language</option>
+                                                    {language.map(language => (
+                                                        <option key={language.id} value={language.id}>
+                                                            {language.language_name}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div className="md:flex mb-4">
+                                                <label htmlFor="city" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Select a city</label>
+                                                <select
+                                                    id="cities"
+                                                    className="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                                    value={cityId}
+                                                    onChange={(e) => setCityId(e.target.value)}
+                                                >
+                                                    <option value="">Choose your city</option>
+                                                    {cities.map(city => (
+                                                        <option key={city.id} value={city.id}>
+                                                            {city.city_name}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                            <div className="md:flex mb-4">
+                                                <label htmlFor="speciality" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Select a speciality</label>
+                                                <select
+                                                    id="specialities"
+                                                    className="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                                    value={specialityId}
+                                                    onChange={(e) => SetSpecialityId(e.target.value)}
+                                                >
+                                                    <option value="">Choose your speciality</option>
+                                                    {speciality.map(speciality => (
+                                                        <option key={speciality.id} value={speciality.id}>
+                                                            {speciality.speciality_name}
+                                                        </option>
+                                                    ))}
+                                                </select>
+                                            </div>
+                                        </>
+                                    )}
                                 <button type="submit" className="text-cream-lighter bg-brick hover:bg-brick-dark" onClick={onSubmit}>
                                     Create profile
                                 </button>
