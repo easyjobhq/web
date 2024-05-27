@@ -74,12 +74,12 @@ function ProfessionalPage( {params}: Props) {
 
               <div className="flex items-center mb-2">
                 <div className='stars-outer'>
-                    <div className='stars-inner' style={{width: `${starRating}`}}>
-                    ★ ★ ★ ★ ★
-                    </div>
+                  <div className='stars-inner' style={{width: `${starRating}`}}>
+                  ★ ★ ★ ★ ★
                   </div>
+                </div>
 
-                  <div className="ml-2 text-sm font-light">{`(${professional?.score})`}</div>
+                <div className="ml-2 text-sm font-light">{`(${professional?.score})`}</div>
               </div>
               <div className="font-light text-sm mb-6">
                 {
@@ -118,8 +118,19 @@ function ProfessionalPage( {params}: Props) {
             }
           </div>
         </div>
-        <div className="main-professional-card bg-white mb-3 rounded-lg px-8 py-5 shadow-md flex w-full">
-          <h3 className='font-semibold text-xl' >13 Opiniones de este profesional</h3>
+        <div className="main-professional-card bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
+          <h3 className='font-semibold text-xl mb-2' >13 Opiniones de este profesional</h3>
+
+          <div className="items-center mb-5">
+            <div className='stars-outer-opinions text-lg'  >
+              <div className='stars-inner-opinions text-lg' style={{width: `${starRating}`}} >
+                ★ ★ ★ ★ ★
+              </div>
+            </div>
+            <p className='text-sm font-light'>Valoracion global</p>
+          </div>
+
+          <h3 className='font-semibold text-lg'>Opiniones de clientes</h3>
 
         </div>
       </div>

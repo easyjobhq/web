@@ -4,12 +4,12 @@ import { BsTools } from "react-icons/bs";
 function Footer() {
   return (
     <footer className=' bg-white mt-10 '>
-        <div className='bg-blue-400 h-2'></div>
+        <div className='bg-blue-400 h-1.5'></div>
         <div className="px-80 py-10 justify-center">
             <div className='mb-10 flex justify-around font-light'>
                 
                 <div className="">
-                    <p className='font-semibold text-medium mb-3'>Creado y Desarrollado por:</p> 
+                    <p className='font-semibold text-medium mb-2'>Creado y Desarrollado por:</p> 
                     <div style={{textIndent: "1rem"}}>
                         <li>Juan Jose Diaz</li>
                         <li>Mateo Silva</li>

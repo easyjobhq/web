@@ -26,3 +26,30 @@
     font-size: large;
 }
 
+.stars-outer-opinions {
+    position: relative; 
+    display: inline-block;
+    font-size: x-large;
+}
+
+.stars-inner-opinions {
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    white-space: nowrap; 
+    overflow: hidden;
+    width: 0;
+    font-size: x-large;
+}
+
+.stars-outer-opinions::before { 
+    content: "★ ★ ★ ★ ★";
+    color: #ccc;
+    font-size: x-large;
+}
+
+.stars-inner-opinions::before { 
+    content: "★ ★ ★ ★ ★";
+    color: #3B82F6;
+    font-size: x-large;
+}
