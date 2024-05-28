@@ -13,7 +13,7 @@ function Login() {
 
     const handleOauth = async (event: any) => {
       event.preventDefault();
-      const token = window.location.href = `http://localhost:3001/auth/google/callback`;
+      const token = window.location.href = `https://easy-job-eyze.onrender.com/auth/google/callback`;
       //console.log("token de la pagina " + token)
     };
     const onSubmit = () => {
