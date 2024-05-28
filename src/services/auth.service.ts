@@ -130,9 +130,25 @@ export class AuthService {
     .get('/city',{
       headers:getAuthorizationHeader(),
     })
+  }
+
+  getProfessional = async (id: string) => {
+    const res = await this.instance
+    .get(`/professionals/${id}`, {
+      headers: getAuthorizationHeader(),
+    })
+    return res.data
+  }
+
+  getSpecialitiesOfProfessional = async (id: string) => {
+    const res = await this.instance
+    .get(`/professionals/specialities/${id}`, {
+      headers: getAuthorizationHeader(),
+    })
 
     return res.data
   }
+
 
 
   getLanguage = async () =>{
@@ -143,6 +159,7 @@ export class AuthService {
 
     return res.data
   }
+
 
   /*uploadAvatar = (userId: string, newAvatar: File) => {
     const formData = new FormData();

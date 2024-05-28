@@ -26,41 +26,19 @@ function HomePage() {
         <p className='font-light'>Reserva por internet, nunca pagarás de mas :)</p>
       </div>
       <div className="flex">
-      <section className=" mr-3 w-4/5 ">
-          {
-            professionals.map((professional: Professional ) =>
-               <>
-                <ProfessionalCard professional = {professional}/>
-               </>
-            )
-          }
-          
-      </section>
-      <section className='flex w-1/5 bg-blue-400 rounded-lg'>
-        {/* TODO -- Maps API */}
-      </section>
-            {/* {
-            professionals.map((professional) => 
+        <section className=" mr-3 w-4/5 ">
+            {
+              professionals.map((professional: Professional ) =>
                 <>
-                  <li>{professional.id}</li>
-                  <li>{professional.name}</li>
-                  <li>{professional.last_name}</li>
-
-                  <li>{professional.email}</li>
-
-                  <li>{professional.phone_number}</li>
-
-                  <li>{professional.photo_url}</li>
-
-                  <li>{professional.roles.toString()}</li>
-
-                  <li>{professional.score}</li>
-
-                  <li>{professional.description}</li>
+                  <ProfessionalCard professional = {professional}/>
                 </>
-
-            )
-          } */}
+              )
+            }
+            
+        </section>
+        <section className='flex w-1/5 bg-blue-400 rounded-lg'>
+          {/* TODO -- Maps API */}
+        </section>
       </div>
         
     </div>
