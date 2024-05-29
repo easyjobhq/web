@@ -1,6 +1,7 @@
 "use client"
 
 import { useLogin } from '@/hooks/auth/useLogin';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { BsTools } from "react-icons/bs";
@@ -33,17 +34,16 @@ function Login() {
       <div className="w-screen h-screen flex items-center justify-center">
         <div className="h-fit w-2/5">
           <div className=" flex items-center w-auto justify-center">
-            <div className="flex flex-col">
-              <div className="font-bold flex mb-8 text-center justify-center items-center" style={{fontSize: "1.8rem"}}><p>Iniciar Sesión</p> <BsTools className='ml-3'/></div>
-              <div className="flex flex-col border p-10 rounded-md shadow-md bg-white">
-                <label className=' text-left mb-2 font-semibold'>Email</label>
+          <div className="flex flex-col border px-10 pb-10 pt-7 rounded-md shadow-md bg-white">
+              <div className="font-bold flex mb-5 text-center justify-center items-center" style={{fontSize: "1.8rem"}}><p>Iniciar Sesión</p> <BsTools className='ml-3'/></div>
+                <label className=' text-left mb-2 font-medium'>Email</label>
                 <input
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="w-80 h-9 px-3 border border-solid border-black rounded"
                   placeholder="Email"
                 />
-                <label className="mt-4 text-left mb-2 font-semibold">Constraseña</label>
+                <label className="mt-4 text-left mb-2 font-medium">Constraseña</label>
                 <input
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -63,8 +63,8 @@ function Login() {
                 >
                   <FaGoogle className='mr-2' /><p>Conectate con Google</p> 
                 </button>
+                <Link href={"/register"} className='text-sm font-normal mt-4 text-center text-blue-700 hover:underline'>¿No tienes cuenta? Registrate</Link>
               </div>
-            </div>
           </div>
         </div>
         <div className='w-3/5 bg-blue-500 h-full'>

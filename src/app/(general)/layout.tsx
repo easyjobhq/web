@@ -69,6 +69,7 @@ export default function RootLayout({
   */
 
   const cookieStore = cookies()
+
   let id
   if(cookieStore.get('currentUser') === undefined){
     id = undefined
@@ -82,6 +83,7 @@ export default function RootLayout({
   return (
     <>
         <Navbar id={id} />
+
         <div className="px-80 pt-10 w-full">
           {children}
         </div>
