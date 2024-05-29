@@ -16,14 +16,23 @@ export class AuthService {
   }
 
   login = async (email: string, password: string) => {
-
-    const res = await this.instance
+    try{
+      const res = await this.instance
       .post("/auth/client/login", {
         email,
         password,
       });
-    
-    return res;
+
+      return res
+    }catch(error){
+      const res = await this.instance
+        .post("/auth/professional/login",{
+          email,
+          password
+        });
+
+        return res;
+    }
   };
 
 
@@ -130,6 +139,8 @@ export class AuthService {
     .get('/city',{
       headers:getAuthorizationHeader(),
     })
+
+    return res.data
   }
 
   getProfessional = async (id: string) => {

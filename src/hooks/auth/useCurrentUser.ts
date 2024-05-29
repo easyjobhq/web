@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { authService } from "@/services";
 
+
 export const useCurrentUser = () => {
   const [user, setUser] = useState<any | null>(null);
 
@@ -10,11 +11,14 @@ export const useCurrentUser = () => {
     if (currentUser) {
       setUser(JSON.parse(currentUser));
     }
+    
+    console.log("this is the current user "+ currentUser)
   }, []);
 
   const refetchUser = async (userId: string) => {
     const userInfo = await authService.getMe(userId);
     const currentUser = Cookies.get("currentUser");
+    
 
     if (userInfo && currentUser) {
       const newUser = {
@@ -29,3 +33,4 @@ export const useCurrentUser = () => {
 
   return { user, refetchUser };
 };
+

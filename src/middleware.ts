@@ -1,13 +1,32 @@
 import { NextRequest, NextResponse } from "next/server";
 import cookie from "cookie";
 import jwt from 'jsonwebtoken';
+import { TbBookmarkQuestion } from "react-icons/tb";
+
+interface current {
+  name: string,
+  value: string
+}
+
+interface user{
+  id:string,
+  email: string,
+  password:string,
+  token: string
+}
+
+export function Pid(req: NextRequest){
+  const currentUser =  JSON.parse(JSON.stringify( req.cookies.get('currentUser'))) as current
+  const tokenn =JSON.parse(currentUser.value) as user
+  return tokenn.id
+}
 
 export function middleware(req: NextRequest) {
   const cookies = cookie.parse(req.headers.get("Cookie") || "");
   const token = cookies.token;
   const tokenFromOauth = req.cookies.get("token");
 
-  let tokenData;
+ 
 
   if (req.nextUrl.pathname.startsWith("/oauth")) {
     const oAuthToken = req.nextUrl.searchParams.get("token") || "";
