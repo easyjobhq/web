@@ -23,7 +23,7 @@ const MenuProps = {
 };
 
 interface Props {
-    id: string
+    id: string | undefined
 }
 
 export default function Navbar(props: Props) {
@@ -33,8 +33,12 @@ export default function Navbar(props: Props) {
     useEffect(()=>{
 
         const fetchData = async () =>{
-            const response  = await checkService.checkIsProfessional(props.id);
-            setIsProfessional(response)
+            if(props.id === undefined){
+                setIsProfessional(null)
+            }else{
+                const response  = await checkService.checkIsProfessional(props.id);
+                setIsProfessional(response)
+            }
         }
 
         fetchData();

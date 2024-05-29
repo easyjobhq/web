@@ -69,12 +69,19 @@ export default function RootLayout({
   */
 
   const cookieStore = cookies()
-  const theme = JSON.parse(JSON.stringify(cookieStore.get('currentUser'))) as current;
-  const tokenn = JSON.parse(theme.value) as user;
+  let id
+  if(cookieStore.get('currentUser') === undefined){
+    id = undefined
+  }else{
+    const theme = JSON.parse(JSON.stringify(cookieStore.get('currentUser'))) as current;
+    const tokenn = JSON.parse(theme.value) as user;
+    id = tokenn.id
+  }
+  
 
   return (
     <>
-        <Navbar id={tokenn.id} />
+        <Navbar id={id} />
         <div className="px-80 pt-10 w-full">
           {children}
         </div>

@@ -141,18 +141,10 @@ function ProfilePage( {params}: Props) {
           <h3>Agendar Servicio</h3>
         </div>
         <div className="flex  px-8 py-5">
-
-          {JSON.stringify(professional)}
-          <br />
-          <br />
-          {JSON.stringify(services)}
-          <br />
-          <br />
-          {JSON.stringify(specialities)}
-          <br />
-          <br />
-          {JSON.stringify(cities)}
-          </div>
+            <p> email: {professional?.email}</p>
+            <br/>
+            <p> Número de telefono : {professional?.phone_number}</p>
+        </div>
       </div>
     </div>
   )
