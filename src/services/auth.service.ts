@@ -160,6 +160,23 @@ export class AuthService {
     return res.data
   }
 
+  getReviewsOfProfessional = async (id: string) =>{
+    const res = await this.instance
+    .get(`/reviews/professional/${id}`,{
+      headers:getAuthorizationHeader(),
+    })
+
+    return res.data
+  }
+
+  getQuestionsOfProfessional = async (id: string) =>{
+    const res = await this.instance
+    .get(`/questions/professional/${id}`,{
+      headers:getAuthorizationHeader(),
+    })
+
+    return res.data
+  }
 
   /*uploadAvatar = (userId: string, newAvatar: File) => {
     const formData = new FormData();

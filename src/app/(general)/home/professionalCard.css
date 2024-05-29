@@ -53,3 +53,34 @@
     color: #3B82F6;
     font-size: x-large;
 }
+
+
+/* For the more smaller stars */
+
+.stars-outer-review {
+    position: relative; 
+    display: inline-block;
+    font-size:small;
+}
+
+.stars-inner-review {
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    white-space: nowrap; 
+    overflow: hidden;
+    width: 0;
+    font-size: small;
+}
+
+.stars-outer-review::before { 
+    content: "★ ★ ★ ★ ★";
+    color: #ccc;
+    font-size: small;
+}
+
+.stars-inner-review::before { 
+    content: "★ ★ ★ ★ ★";
+    color: #3B82F6;
+    font-size: small;
+}
