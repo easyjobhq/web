@@ -8,5 +8,4 @@ export interface Professional {
     roles: string[];
     score: number;
     description: string;
-    
 };
