@@ -1,17 +1,13 @@
-"use client"
+
 
 import type { Metadata } from "next";
 import { styled } from '@mui/material/styles';
 import { Theme, useTheme } from '@mui/material/styles';
 import Link from "next/link";
-import { BsTools } from "react-icons/bs";
-import { IoSearchSharp } from "react-icons/io5";
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select, { SelectChangeEvent } from '@mui/material/Select';
-import { useState } from "react";
-import InputBase from '@mui/material/InputBase';
 import Footer from "./Footer";
+import jwt from 'jsonwebtoken';
+import { cookies } from 'next/headers'
+import Navbar from "./navbar";
 
 
 const ITEM_HEIGHT = 80;
@@ -25,104 +21,60 @@ const MenuProps = {
   },
 };
 
+interface current {
+  name: string;
+  value: string;
+}
+
+interface user {
+  id: string;
+  email: string;
+  password: string;
+  token: string;
+}
+
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [personName, setPersonName] = useState<string[]>([]);
+  
+  
 
+  /*
+    const fetchUserId = async () => {
+      try {
+        const response = await fetch('api/get-user-id', {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include', // Para enviar cookies con la solicitud
+        });
 
+        if (!response.ok) {
+          throw new Error(`Error: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log(data)
+        return data.userId
+      } catch (err) {
+        throw err;
+      }
+    };
+
+  fetchUserId();
+  */
+
+  const cookieStore = cookies()
+  const theme = JSON.parse(JSON.stringify(cookieStore.get('currentUser'))) as current;
+  const tokenn = JSON.parse(theme.value) as user;
 
   return (
     <>
-        <nav className="flex bg-blue-500 px-80 py-3 items-center justify-between">
-          <Link href={"/home"} className="flex">
-                <BsTools color="white" size="30" className="mr-5"/>
-                <h2 className="text-white text-2xl font-bold">EasyJob</h2>
-          </Link>
-          <div className="flex">
-            <FormControl sx={{ 
-              m: "auto", 
-              width: 250, 
-            
-              }}>
-              <Select 
-                  sx={{
-                    height: 40,
-                    bgcolor: "rgba(255, 255, 255, 0.2)",
-                    color: "white", 
-                    mr: "15px", 
-                    border: '0.25px solid rgba(255, 255, 255, 0.5)'
-                  }}
-                  multiple
-                  value={personName}
-                  displayEmpty
-                  //MenuProps={MenuProps}
-                  renderValue={(selected) => {
-                    if (selected.length === 0) {
-                      return <em>Profesion</em>;
-                    }
-                    return selected.join(', ');
-                  }}
-                  inputProps={{ 'aria-label': 'Without label' }}
-                >
-                <MenuItem disabled value="">
-                  <em>Profesion</em>
-                </MenuItem>
-                <MenuItem
-                    key="1"
-                    value="Plomero"    
-                  >
-                  Plomero
-                </MenuItem>
-                
-              </Select>
-            </FormControl>
-
-            <FormControl sx={{ 
-              m: "auto", 
-              width: 250, 
-            
-              }}>
-              <Select 
-                  sx={{
-                    height: 40,
-                    bgcolor: "rgba(255, 255, 255, 0.2)",
-                    mr: "10px", 
-                    color: "white",
-                    border: '0.25px solid rgba(255, 255, 255, 0.5)',
-                  }}
-                  multiple
-                  value={personName}
-                  displayEmpty
-                  //MenuProps={MenuProps}
-                  renderValue={(selected) => {
-                    if (selected.length === 0) {
-                      return <em>Ciudad</em>;
-                    }
-        
-                    return selected.join(', ');
-                  }}
-                  inputProps={{ 'aria-label': 'Without label' }}
-                >
-                <MenuItem 
-                  disabled
-                  value=""
-                  sx= {{bgcolor: "#eeeeee"}}>
-                  <em>Ciudad</em>
-                </MenuItem>
-                
-                
-              </Select>
-            </FormControl>
-            <button className="flex justify-center items-center">
-              <IoSearchSharp color="white" size="40" style={{backgroundColor: 'rgba(255, 255, 255, 0.1)'}} className="border p-1.5 rounded-full"/>
-            </button>
-          </div>
-          <Link href={"/login"} className="flex px-2 py-1 border text-sm rounded-md border-white text-white font-normal">Log out</Link>
-        </nav>
+        <Navbar id={tokenn.id} />
         <div className="px-80 pt-10 w-full">
           {children}
         </div>
