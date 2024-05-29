@@ -4,6 +4,7 @@ import { useLogin } from '@/hooks/auth/useLogin';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { BsTools } from "react-icons/bs";
+import { FaGoogle } from "react-icons/fa";
 
 
 function Login() {
@@ -58,9 +59,9 @@ function Login() {
                 </button>
                 <button
                   onClick={handleOauth}
-                  className="h-10 w-80 mt-5 bg-blue-500 rounded text-white font-medium border-blue-600 border text-lg"
+                  className="h-10 w-80 mt-5 bg-blue-500 rounded flex items-center justify-center text-white font-medium border-blue-600 border text-lg"
                 >
-                  Conectate con Google
+                  <FaGoogle className='mr-2' /><p>Conectate con Google</p> 
                 </button>
               </div>
             </div>
