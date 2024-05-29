@@ -13,6 +13,9 @@ import { FaRegCalendarAlt } from "react-icons/fa";
 import { MdOutlineMessage } from "react-icons/md";
 import { IoIosArrowForward } from "react-icons/io";
 import { BiDollar } from "react-icons/bi";
+import { Review } from '@/interfaces/review'
+import ReviewCard from './ReviewCard'
+import { Question } from '@/interfaces/question'
 
 interface Props {
   params: {id: string}
@@ -26,19 +29,30 @@ function ProfessionalPage( {params}: Props) {
   const [services, setServices] = useState<Service[]>([]);
   const [cities, setCities] = useState<City[]>([]);
   const [specialities, setSpecialities] = useState<Speciality[]>([]);
+  const [reviews, setReviews] = useState<Review[]>([]);
   const [starRating, setStarRating] = useState(""); 
+  const [questions, setQuestions] = useState<Question[]>([]);
   
   
  useEffect(() => {
   const fetchData = async () => {
+    
     const responseProfessional = await authService.getProfessional(params.id);
     setProfessional(responseProfessional);
+    console.log(responseProfessional);
 
     const responseServices = await authService.getServicesOfProfessional(params.id);
     setServices(responseServices);
       
     const responseCities = await authService.getCitiesOfProfessional(params.id);
     setCities(responseCities);
+
+    const responseReviews = await authService.getReviewsOfProfessional(params.id);
+    setReviews(responseReviews);
+
+    const responseQuestions = await authService.getQuestionsOfProfessional(params.id);
+    console.log(responseQuestions)
+    setQuestions(responseQuestions);
 
     const responseSpeciality = await authService.getSpecialitiesOfProfessional(params.id);
     setSpecialities(responseSpeciality);
@@ -103,10 +117,10 @@ function ProfessionalPage( {params}: Props) {
             {
               services.map((service: Service) => (
                 <>
-                  <li className='flex items-center text-gray-700 mt-2 font-light mb-2'>
+                  <li className='flex items-center text-gray-700 mt-2  mb-2'>
                     <div className="flex justify-between w-full">
                       <div className='flex items-center'>
-                        <IoIosArrowForward className='text-xs mr-2' /> {service.title}
+                        <IoIosArrowForward className='text-xs mr-2 font-medium' /> {service.title}
                       </div>
                       <p className=' font-light flex'><BiDollar className='h-6' /> {Math.round(service.price).toLocaleString('es-ES')}</p> 
                     </div>
@@ -118,8 +132,22 @@ function ProfessionalPage( {params}: Props) {
             }
           </div>
         </div>
+        <div className='main-professional-card bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full'>
+          <h3 className='font-semibold text-xl mb-2' > Preguntas del profesional</h3>
+          {
+            questions.map((question: Question) => (
+              <div>
+                <p className='text-sm font-light mb-2'>{question.client.name} {question.client.last_name}</p>
+                <div className='p-2 border-gray-200 border rounded-md'>
+                  <p className='text-sm font-light'>{question.question_description}</p>
+                  
+                </div>
+              </div>
+            ))
+          }
+        </div>
         <div className="main-professional-card bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
-          <h3 className='font-semibold text-xl mb-2' >13 Opiniones de este profesional</h3>
+          <h3 className='font-semibold text-xl mb-2' >{reviews.length} Opiniones de este profesional</h3>
 
           <div className="items-center mb-5">
             <div className='stars-outer-opinions text-lg'  >
@@ -130,7 +158,14 @@ function ProfessionalPage( {params}: Props) {
             <p className='text-sm font-light'>Valoracion global</p>
           </div>
 
-          <h3 className='font-semibold text-lg'>Opiniones de clientes</h3>
+          <h3 className='font-semibold text-lg mb-2'>Opiniones de clientes</h3>
+          {
+            reviews.map((review: Review) => (
+              <>
+                <ReviewCard review={review}/>
+              </>
+            ))
+          }
 
         </div>
       </div>
@@ -141,7 +176,7 @@ function ProfessionalPage( {params}: Props) {
         </div>
         <div className="flex  px-8 py-5">
 
-          {JSON.stringify(professional)}
+          {/* {JSON.stringify(professional)}
           <br />
           <br />
           {JSON.stringify(services)}
@@ -150,7 +185,7 @@ function ProfessionalPage( {params}: Props) {
           {JSON.stringify(specialities)}
           <br />
           <br />
-          {JSON.stringify(cities)}
+          {JSON.stringify(cities)} */}
           </div>
       </div>
     </div>
