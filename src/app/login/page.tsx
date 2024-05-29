@@ -3,6 +3,8 @@
 import { useLogin } from '@/hooks/auth/useLogin';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
+import { BsTools } from "react-icons/bs";
+import { FaGoogle } from "react-icons/fa";
 
 
 function Login() {
@@ -29,35 +31,44 @@ function Login() {
   
     return (
       <div className="w-screen h-screen flex items-center justify-center">
-        <div className="h-fit flex flex-col gap-2">
-          <p className="text-2xl font-bold">Login Form</p>
-          <label>Email</label>
-          <input
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-80 h-8 px-2 border border-solid border-black rounded"
-            placeholder="email"
-          />
-          <label className="mt-4">Password</label>
-          <input
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-80 h-8 px-2 border border-solid border-black rounded"
-            placeholder="password"
-            type="password"
-          />
-          <button
-            onClick={onSubmit}
-            className="h-10 w-80 mt-8 bg-black rounded text-white"
-          >
-            Login
-          </button>
-          <button
-            onClick={handleOauth}
-            className="h-10 w-80 mt-8 bg-black rounded text-white"
-          >
-            sing in with google
-          </button>
+        <div className="h-fit w-2/5">
+          <div className=" flex items-center w-auto justify-center">
+            <div className="flex flex-col">
+              <div className="font-bold flex mb-8 text-center justify-center items-center" style={{fontSize: "1.8rem"}}><p>Iniciar Sesión</p> <BsTools className='ml-3'/></div>
+              <div className="flex flex-col border p-10 rounded-md shadow-md bg-white">
+                <label className=' text-left mb-2 font-semibold'>Email</label>
+                <input
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-80 h-9 px-3 border border-solid border-black rounded"
+                  placeholder="Email"
+                />
+                <label className="mt-4 text-left mb-2 font-semibold">Constraseña</label>
+                <input
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="w-80 h-9 px-2 border border-solid border-black rounded"
+                  placeholder="Constraseña"
+                  type="password"
+                />
+                <button
+                  onClick={onSubmit}
+                  className="h-10 w-80 mt-8 bg-blue-500 rounded border-blue-600 border text-white font-medium text-lg"
+                >
+                  Iniciar sesión
+                </button>
+                <button
+                  onClick={handleOauth}
+                  className="h-10 w-80 mt-5 bg-blue-500 rounded flex items-center justify-center text-white font-medium border-blue-600 border text-lg"
+                >
+                  <FaGoogle className='mr-2' /><p>Conectate con Google</p> 
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className='w-3/5 bg-blue-500 h-full'>
+          
         </div>
       </div>
     );

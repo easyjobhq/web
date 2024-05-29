@@ -36,7 +36,7 @@ function HomePage() {
             }
             
         </section>
-        <section className='flex w-1/5 bg-blue-400 rounded-lg'>
+        <section className='flex w-1/5 bg-green-200 rounded-lg'>
           {/* TODO -- Maps API */}
         </section>
       </div>
