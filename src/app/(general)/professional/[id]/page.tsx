@@ -19,6 +19,7 @@ import { Question } from '@/interfaces/question'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { IoSend } from "react-icons/io5";
+import { FaStar } from 'react-icons/fa';
 
 
 interface Props {
@@ -42,6 +43,11 @@ function ProfessionalPage( {params}: Props) {
   //Actions
   const [isAddQuestion, setIsAddQuestion] = useState(false);
   const [isAddReview, setIsAddReview] = useState(false);
+
+
+  //Forms
+  const [formsRating, setFormsRating] = useState<number>(0);
+  const [hover, setHover] = useState<number>(0);
   
   useEffect(() => {
 
@@ -49,8 +55,7 @@ function ProfessionalPage( {params}: Props) {
     
     const responseProfessional = await authService.getProfessional(params.id);
     setProfessional(responseProfessional);
-    console.log(responseProfessional);
-
+    
     const responseServices = await authService.getServicesOfProfessional(params.id);
     setServices(responseServices);
       
@@ -153,7 +158,7 @@ function ProfessionalPage( {params}: Props) {
 
           {
             questions.map((question: Question) => (
-              <div>
+              <div className='mb-8'>
                 <p className='text-sm font-light mb-1'>{question.client.name} {question.client.last_name}</p>
                 <div className='p-2 border-gray-200 border rounded-md'>
                   <p className='text-sm font-light'>{question.question_description}</p>
@@ -218,6 +223,35 @@ function ProfessionalPage( {params}: Props) {
               <div className="bg-gray-300 mt-4" style={{height: "0.5px"}}></div>
               <div className='mb-3 mt-3'>
                 <p className='text-sm font-light mb-1'>Pepito Perez</p>
+                <div className="flex">
+                  <div className='mb-3 flex mr-3'>
+                    {[...Array(5)].map((star, index) => {
+
+                      const currentRating = index +1;
+
+                      return (
+                        <label className='flex'>
+                          <input 
+                            className='hidden'
+                            type="radio"
+                            name='rating' 
+                            value = {currentRating}
+                            onClick={() => setFormsRating(currentRating)}
+                          />
+                          <FaStar 
+                            size={20} 
+                            className='cursor-pointer'
+                            color={currentRating <= (hover || formsRating)? "#ffc107": "e4e5e9" }
+                            onMouseEnter={()=> setHover(currentRating)}
+                            onMouseLeave={()=> setHover(0)}
+                            /> 
+                        </label>
+                      )
+                    }  )}
+                    
+                  </div>
+                  <p className='font-light text-sm'>( {formsRating}.0 )</p>
+                </div>
                 <TextField
                   className='mb-3'
                   sx={{width:"100%", '& .MuiInputBase-root': {

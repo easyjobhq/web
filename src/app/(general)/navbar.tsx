@@ -16,6 +16,7 @@ import { Speciality } from "@/interfaces/speciality";
 import { authService } from '@/services'
 import InputLabel from '@mui/material/InputLabel';
 import Box from '@mui/material/Box';
+import { useGlobalContext } from "@/context/store";
 
 
 const ITEM_HEIGHT = 80;
@@ -36,6 +37,8 @@ interface Props {
 }
 
 export default function Navbar(props: Props) {
+
+    const { userIdContext, setUserIdContext, emailContext, setEmailContext } = useGlobalContext(); 
 
     const [personName, setPersonName] = useState<string[]>([]);
     const [isProfessional, setIsProfessional] = useState<number | null>(null);
@@ -62,6 +65,10 @@ export default function Navbar(props: Props) {
             const responseSpecialities = await authService.getAllSpecialities();
             setSpecialities(responseSpecialities);
 
+            console.log("The id is", userIdContext);
+            console.log("The email is ", emailContext);
+
+
         }
 
         fetchData();
@@ -75,6 +82,7 @@ export default function Navbar(props: Props) {
               <h2 className="text-white text-2xl font-bold">Easy Job</h2>
         </Link>
         <div className="flex">
+          {userIdContext}
           
           <Box sx={{ minWidth: 250, height: 40 }}>
             <FormControl fullWidth>

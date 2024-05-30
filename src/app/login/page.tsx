@@ -1,14 +1,19 @@
 "use client"
 
 import { useLogin } from '@/hooks/auth/useLogin';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { BsTools } from "react-icons/bs";
 import { FaGoogle } from "react-icons/fa";
+import { useGlobalContext } from '@/context/store';
 
 
 function Login() {
+
+    const { userIdContext, setUserIdContext, emailContext, setEmailContext } = useGlobalContext(); 
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { login } = useLogin();
@@ -19,14 +24,18 @@ function Login() {
       const token = window.location.href = `https://easy-job-eyze.onrender.com/auth/google/callback`;
       //console.log("token de la pagina " + token)
     };
-    const onSubmit = () => {
+    const onSubmit = async () => {
       if (!email || !password) {
         alert("Please enter information");
       } else {
 
-        login(email, password)
-          .then(() => router.push("/"))
+        const loginResponse = await login(email, password)
           .catch((e: Error) => alert(e));
+
+        setUserIdContext(loginResponse.id);
+        setEmailContext(loginResponse.email);
+      
+        router.push("/home")
       }
     };
   
@@ -67,8 +76,19 @@ function Login() {
               </div>
           </div>
         </div>
-        <div className='w-3/5 bg-blue-500 h-full'>
-          
+        <div className='w-3/5 bg-blue-500 h-full flex justify-center align-middle items-center'>
+          <div>
+            <h1 className='text-5xl text-white font-bold mb-3 flex items-center justify-center'>Easy Job <BsTools className='ml-3'/></h1>
+            <h5 className='text-white font-medium text-center mb-3'>"Encuentra tu profesional facilmente por internet"</h5>
+            <Image 
+            src={'/Easy-job-logo.png'} 
+            alt={'Easy job logo'}
+            width={600}
+            height={600}
+            className='opacity-85'>
+            </Image>
+            
+          </div>
         </div>
       </div>
     );
