@@ -293,6 +293,7 @@ function ProfilePage({ params }: Props) {
 
       </div>
     </div>
+    </div>
   )
 }
 
