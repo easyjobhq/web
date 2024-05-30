@@ -49,8 +49,7 @@ function ProfessionalPage( {params}: Props) {
     
     const responseProfessional = await authService.getProfessional(params.id);
     setProfessional(responseProfessional);
-    console.log(responseProfessional);
-
+    
     const responseServices = await authService.getServicesOfProfessional(params.id);
     setServices(responseServices);
       
@@ -153,7 +152,7 @@ function ProfessionalPage( {params}: Props) {
 
           {
             questions.map((question: Question) => (
-              <div>
+              <div className='mb-8'>
                 <p className='text-sm font-light mb-1'>{question.client.name} {question.client.last_name}</p>
                 <div className='p-2 border-gray-200 border rounded-md'>
                   <p className='text-sm font-light'>{question.question_description}</p>
