@@ -7,9 +7,13 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { BsTools } from "react-icons/bs";
 import { FaGoogle } from "react-icons/fa";
+import { useGlobalContext } from '@/context/store';
 
 
 function Login() {
+
+    const { userIdContext, setUserIdContext, emailContext, setEmailContext } = useGlobalContext(); 
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const { login } = useLogin();
@@ -20,14 +24,18 @@ function Login() {
       const token = window.location.href = `https://easy-job-eyze.onrender.com/auth/google/callback`;
       //console.log("token de la pagina " + token)
     };
-    const onSubmit = () => {
+    const onSubmit = async () => {
       if (!email || !password) {
         alert("Please enter information");
       } else {
 
-        login(email, password)
-          .then(() => router.push("/"))
+        const loginResponse = await login(email, password)
           .catch((e: Error) => alert(e));
+
+        setUserIdContext(loginResponse.id);
+        setEmailContext(loginResponse.email);
+      
+        router.push("/home")
       }
     };
   
