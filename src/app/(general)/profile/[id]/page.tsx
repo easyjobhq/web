@@ -282,8 +282,14 @@ function ProfilePage({ params }: Props) {
               Cambiar
             </button>
           </div>
+        <div className="flex  px-8 py-5">
+
+            <p> email: {professional?.email}</p>
+            <br/>
+            <p> Número de telefono : {professional?.phone_number}</p>
         </div>
         
+
 
       </div>
     </div>

@@ -190,6 +190,7 @@ export class AuthService {
     return res.data
   }
 
+
   updateProfessional = async (id:string| undefined, name:string | undefined, last_name:string | undefined, email:string | undefined, phone_number:string | undefined, photo_url:string | undefined)=>{
     try {
       const res = await this.instance.patch(
@@ -211,6 +212,26 @@ export class AuthService {
       throw error; // Lanza el error para que pueda ser manejado por el llamador
     }
   }
+
+  getAllCities = async () => {
+    const res = await this.instance
+    .get('/city',{
+      headers:getAuthorizationHeader(),
+    })
+
+    return res.data
+  }
+
+  getAllSpecialities = async () => {
+    const res = await this.instance
+    .get('/specialities',{
+      headers:getAuthorizationHeader(),
+    })
+
+    return res.data
+  }
+
+
   /*uploadAvatar = (userId: string, newAvatar: File) => {
     const formData = new FormData();
     formData.append("file", newAvatar);

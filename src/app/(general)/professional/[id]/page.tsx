@@ -16,26 +16,36 @@ import { BiDollar } from "react-icons/bi";
 import { Review } from '@/interfaces/review'
 import ReviewCard from './ReviewCard'
 import { Question } from '@/interfaces/question'
+import Box from '@mui/material/Box';
+import TextField from '@mui/material/TextField';
+import { IoSend } from "react-icons/io5";
+
 
 interface Props {
   params: {id: string}
 }
 
 function ProfessionalPage( {params}: Props) {
+  
 
-  
-  
+  //Fetched data
   const [professional, setProfessional] = useState<Professional>();
   const [services, setServices] = useState<Service[]>([]);
   const [cities, setCities] = useState<City[]>([]);
   const [specialities, setSpecialities] = useState<Speciality[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
-  const [starRating, setStarRating] = useState(""); 
   const [questions, setQuestions] = useState<Question[]>([]);
+
+  //Styles
+  const [starRating, setStarRating] = useState(""); 
+
+  //Actions
+  const [isAddQuestion, setIsAddQuestion] = useState(false);
+  const [isAddReview, setIsAddReview] = useState(false);
   
-  
- useEffect(() => {
-  const fetchData = async () => {
+  useEffect(() => {
+
+    const fetchData = async () => {
     
     const responseProfessional = await authService.getProfessional(params.id);
     setProfessional(responseProfessional);
@@ -63,7 +73,8 @@ function ProfessionalPage( {params}: Props) {
   }  
 
   fetchData();
-  }, [])
+  }, []);
+
 
   return (
     <div className='flex'>
@@ -132,12 +143,18 @@ function ProfessionalPage( {params}: Props) {
             }
           </div>
         </div>
-        <div className='main-professional-card bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full'>
-          <h3 className='font-semibold text-xl mb-2' > Preguntas del profesional</h3>
+        <div className='main-professional-card bg-white mb-3 rounded-lg px-8 pt-5 pb-7 shadow-md w-full'>
+          <div className="flex justify-between">
+            <h3 className='font-semibold text-xl mb-2' > Preguntas del profesional</h3>
+            <button className='text-sm font-normal border px-3 rounded-md border-gray-300' onClick={() => {
+              setIsAddQuestion(! isAddQuestion)
+            }}>Añadir una pregunta</button>
+          </div>
+
           {
             questions.map((question: Question) => (
               <div>
-                <p className='text-sm font-light mb-2'>{question.client.name} {question.client.last_name}</p>
+                <p className='text-sm font-light mb-1'>{question.client.name} {question.client.last_name}</p>
                 <div className='p-2 border-gray-200 border rounded-md'>
                   <p className='text-sm font-light'>{question.question_description}</p>
                   
@@ -145,9 +162,38 @@ function ProfessionalPage( {params}: Props) {
               </div>
             ))
           }
+          {isAddQuestion? (
+            <>
+              <div className="bg-gray-300 mt-4" style={{height: "0.5px"}}></div>
+              <div className='mb-3 mt-3'>
+                <p className='text-sm font-light mb-1'>Pepito Perez</p>
+                <TextField
+                  className='mb-3'
+                  sx={{width:"100%", '& .MuiInputBase-root': {
+                    fontSize: "0.875rem" // Tamaño del texto dentro del input
+                  },
+                  '& .MuiInputLabel-root': {
+                    fontSize: "0.875rem" // Tamaño del texto del label
+                  } }}
+                  id="outlined-textarea"
+                  label=""
+                  placeholder="Escribe tu pregunta"
+                  multiline
+                />
+                <button className=' w-full bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center justify-center mr-3 border-blue-600 border font-medium'> <IoSend className='mr-2'/> Enviar pregunta</button>
+              </div>
+            </>
+          ): null}
         </div>
         <div className="main-professional-card bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
-          <h3 className='font-semibold text-xl mb-2' >{reviews.length} Opiniones de este profesional</h3>
+          <div className="flex justify-between">
+            <h3 className='font-semibold text-xl mb-2' >{reviews.length} Opiniones de este profesional</h3>
+            <button className='text-sm font-normal border px-3 rounded-md border-gray-300' onClick={
+              () => {
+                setIsAddReview(!isAddReview)
+              }
+            }>Añadir una opinion</button>
+          </div>
 
           <div className="items-center mb-5">
             <div className='stars-outer-opinions text-lg'  >
@@ -166,6 +212,29 @@ function ProfessionalPage( {params}: Props) {
               </>
             ))
           }
+
+          {isAddReview? (
+            <>
+              <div className="bg-gray-300 mt-4" style={{height: "0.5px"}}></div>
+              <div className='mb-3 mt-3'>
+                <p className='text-sm font-light mb-1'>Pepito Perez</p>
+                <TextField
+                  className='mb-3'
+                  sx={{width:"100%", '& .MuiInputBase-root': {
+                    fontSize: "0.875rem" // Tamaño del texto dentro del input
+                  },
+                  '& .MuiInputLabel-root': {
+                    fontSize: "0.875rem" // Tamaño del texto del label
+                  } }}
+                  id="outlined-textarea"
+                  label=""
+                  placeholder="Escribe tu pregunta"
+                  multiline
+                />
+                <button className=' w-full bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center justify-center mr-3 border-blue-600 border font-medium'> <IoSend className='mr-2'/> Enviar pregunta</button>
+              </div>
+            </>
+          ): null}
 
         </div>
       </div>
