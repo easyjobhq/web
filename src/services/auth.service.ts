@@ -189,6 +189,24 @@ export class AuthService {
     return res.data
   }
 
+  getAllCities = async () => {
+    const res = await this.instance
+    .get('/city',{
+      headers:getAuthorizationHeader(),
+    })
+
+    return res.data
+  }
+
+  getAllSpecialities = async () => {
+    const res = await this.instance
+    .get('/specialities',{
+      headers:getAuthorizationHeader(),
+    })
+
+    return res.data
+  }
+
   /*uploadAvatar = (userId: string, newAvatar: File) => {
     const formData = new FormData();
     formData.append("file", newAvatar);
