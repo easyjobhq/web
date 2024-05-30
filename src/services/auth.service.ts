@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import { getAuthorizationHeader } from "./getAuthorizationHeader";
+import { headers } from "next/headers";
 
 export class AuthService {
   protected readonly instance: AxiosInstance;
@@ -189,6 +190,27 @@ export class AuthService {
     return res.data
   }
 
+  updateProfessional = async (id:string| undefined, name:string | undefined, last_name:string | undefined, email:string | undefined, phone_number:string | undefined, photo_url:string | undefined)=>{
+    try {
+      const res = await this.instance.patch(
+        `/professionals/${id}`,
+        {
+          name,
+          last_name,
+          email,
+          phone_number,
+          photo_url,
+        },
+        {
+          headers: getAuthorizationHeader(),
+        }
+      );
+      return res.data; // Asumiendo que quieres retornar los datos de la respuesta
+    } catch (error) {
+      console.error('Error updating professional:', error);
+      throw error; // Lanza el error para que pueda ser manejado por el llamador
+    }
+  }
   /*uploadAvatar = (userId: string, newAvatar: File) => {
     const formData = new FormData();
     formData.append("file", newAvatar);
