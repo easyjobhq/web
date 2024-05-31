@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 import { getAuthorizationHeader } from "./getAuthorizationHeader";
 import { CreateQuestionDto } from "@/interfaces/create-question.dto";
+import { CreateReviewDto } from "@/interfaces/create-review.dto";
 
 export class AuthService {
   protected readonly instance: AxiosInstance;
@@ -228,7 +229,18 @@ export class AuthService {
         {
           headers: getAuthorizationHeader(),
         } 
-  );
+     );
+  }
+
+  createReview = async (id_client: string, id_professional: string, review: CreateReviewDto) => {
+    const res = await this.instance
+    .post(`reviews/client/${id_client}/profesional/${id_professional}`, 
+        review
+        ,
+        {
+          headers: getAuthorizationHeader(),
+        } 
+     );
   }
 
   /*uploadAvatar = (userId: string, newAvatar: File) => {
