@@ -11,7 +11,6 @@ export class Check{
           headers: {
             'Access-Control-Allow-Origin': '*', // Allow all origins
           },
-          
         });
     }
 
