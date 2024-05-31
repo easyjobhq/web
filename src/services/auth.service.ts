@@ -23,6 +23,8 @@ export class AuthService {
         password,
       });
 
+      console.log("Respuesta del login", res.data)
+
       return res
     }catch(error){
       const res = await this.instance

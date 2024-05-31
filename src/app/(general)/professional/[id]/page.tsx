@@ -22,6 +22,7 @@ import { Question } from '@/interfaces/question'
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { IoSend } from "react-icons/io5";
+import { FaStar } from 'react-icons/fa';
 import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import { useSession } from 'next-auth/react';
@@ -46,6 +47,11 @@ function ProfessionalPage({ params }: Props) {
   const [isAddQuestion, setIsAddQuestion] = useState(false);
   const [isAddReview, setIsAddReview] = useState(false);
 
+
+  //Forms
+  const [formsRating, setFormsRating] = useState<number>(0);
+  const [hover, setHover] = useState<number>(0);
+
   // States for scheduling
   const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -66,7 +72,18 @@ function ProfessionalPage({ params }: Props) {
     setSelectedDate(date);
   };
 
-  const handleTimeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const fetchData = async () => {
+    
+    const responseProfessional = await authService.getProfessional(params.id);
+    setProfessional(responseProfessional);
+    
+    const responseServices = await authService.getServicesOfProfessional(params.id);
+    setServices(responseServices);
+      
+    const responseCities = await authService.getCitiesOfProfessional(params.id);
+    setCities(responseCities);
+
+    const handleTimeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedTime(event.target.value);
   };
 
@@ -244,6 +261,7 @@ function ProfessionalPage({ params }: Props) {
 
           {
             questions.map((question: Question) => (
+
               <div key={question.id}>
                 <p className='text-sm font-light mb-1'>{question.client.name} {question.client.last_name}</p>
                 <div className='p-2 border-gray-200 border rounded-md'>
@@ -301,6 +319,35 @@ function ProfessionalPage({ params }: Props) {
               <div className="bg-gray-300 mt-4" style={{height: "0.5px"}}></div>
               <div className='mb-3 mt-3'>
                 <p className='text-sm font-light mb-1'>Pepito Perez</p>
+                <div className="flex">
+                  <div className='mb-3 flex mr-3'>
+                    {[...Array(5)].map((star, index) => {
+
+                      const currentRating = index +1;
+
+                      return (
+                        <label className='flex'>
+                          <input 
+                            className='hidden'
+                            type="radio"
+                            name='rating' 
+                            value = {currentRating}
+                            onClick={() => setFormsRating(currentRating)}
+                          />
+                          <FaStar 
+                            size={20} 
+                            className='cursor-pointer'
+                            color={currentRating <= (hover || formsRating)? "#ffc107": "e4e5e9" }
+                            onMouseEnter={()=> setHover(currentRating)}
+                            onMouseLeave={()=> setHover(0)}
+                            /> 
+                        </label>
+                      )
+                    }  )}
+                    
+                  </div>
+                  <p className='font-light text-sm'>( {formsRating}.0 )</p>
+                </div>
                 <TextField
                   className='mb-3'
                   sx={{width:"100%", '& .MuiInputBase-root': { fontSize: "0.875rem" }, '& .MuiInputLabel-root': { fontSize: "0.875rem" } }}
@@ -343,7 +390,8 @@ function ProfessionalPage({ params }: Props) {
             value={selectedTime || ''}
             onChange={handleTimeChange}
             className="mb-4 p-2 border rounded"
-          >
+          
+            
             <option value="" disabled>Seleccionar Hora</option>
             {availableTimes.map((time) => (
               <option key={time} value={time}>{time}</option>
