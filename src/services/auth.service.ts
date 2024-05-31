@@ -303,7 +303,7 @@ export class AuthService {
           headers: getAuthorizationHeader(),
         } 
      );
-
+    }
   
 
   /*uploadAvatar = (userId: string, newAvatar: File) => {
