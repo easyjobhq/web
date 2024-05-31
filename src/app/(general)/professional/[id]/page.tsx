@@ -66,14 +66,11 @@ function ProfessionalPage( {params}: Props) {
   async function handleSubmitQuestion () {
     console.log(formQuestion)
     const question: CreateQuestionDto = {
-      title: " ", 
+      title: "CHUPAME EL PICO", 
       question_description: formQuestion
     }
 
-    await authService.createQuestion(userIdContext, professional?.id ?? "",  {
-      title: " ", 
-      question_description: formQuestion
-    } );
+    await authService.createQuestion(userIdContext, professional?.id ?? "", question );
     router.push(`/professional/${professional?.id}`);
   }
   

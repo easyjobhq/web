@@ -223,12 +223,11 @@ export class AuthService {
   createQuestion = async (id_client: string, id_professional: string, question: CreateQuestionDto) => {
     const res = await this.instance
     .post(`/questions/${id_client}/${id_professional}`, 
-      {
         question
-      },
-      {
-        headers: getAuthorizationHeader(),
-      } 
+        ,
+        {
+          headers: getAuthorizationHeader(),
+        } 
   );
   }
 
