@@ -20,14 +20,21 @@ import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { IoSend } from "react-icons/io5";
 import { FaStar } from 'react-icons/fa';
-
+import { useGlobalContext } from '@/context/store'
+import { CreateQuestionDto } from '@/interfaces/create-question.dto'
+import { useRouter } from 'next/navigation'
 
 interface Props {
   params: {id: string}
 }
 
 function ProfessionalPage( {params}: Props) {
-  
+
+  const router = useRouter();
+
+  //Context data
+  const { userIdContext, setUserIdContext, emailContext, setEmailContext , usernameContext, setUsernameContext} = useGlobalContext(); 
+
 
   //Fetched data
   const [professional, setProfessional] = useState<Professional>();
@@ -46,8 +53,29 @@ function ProfessionalPage( {params}: Props) {
 
 
   //Forms
+
+  //Form question
+  const [formQuestion, setFormQuestion] = useState('');
+
+  //Form Rating
   const [formsRating, setFormsRating] = useState<number>(0);
   const [hover, setHover] = useState<number>(0);
+
+  //Handle submit of forms
+
+  async function handleSubmitQuestion () {
+    console.log(formQuestion)
+    const question: CreateQuestionDto = {
+      title: " ", 
+      question_description: formQuestion
+    }
+
+    await authService.createQuestion(userIdContext, professional?.id ?? "",  {
+      title: " ", 
+      question_description: formQuestion
+    } );
+    router.push(`/professional/${professional?.id}`);
+  }
   
   useEffect(() => {
 
@@ -171,7 +199,7 @@ function ProfessionalPage( {params}: Props) {
             <>
               <div className="bg-gray-300 mt-4" style={{height: "0.5px"}}></div>
               <div className='mb-3 mt-3'>
-                <p className='text-sm font-light mb-1'>Pepito Perez</p>
+                <p className='text-sm font-light mb-1'>{usernameContext}</p>
                 <TextField
                   className='mb-3'
                   sx={{width:"100%", '& .MuiInputBase-root': {
@@ -180,12 +208,12 @@ function ProfessionalPage( {params}: Props) {
                   '& .MuiInputLabel-root': {
                     fontSize: "0.875rem" // Tamaño del texto del label
                   } }}
-                  id="outlined-textarea"
-                  label=""
                   placeholder="Escribe tu pregunta"
                   multiline
+                  value={formQuestion}
+                  onChange={(e) => {setFormQuestion(e.target.value)}}
                 />
-                <button className=' w-full bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center justify-center mr-3 border-blue-600 border font-medium'> <IoSend className='mr-2'/> Enviar pregunta</button>
+                <button className=' w-full bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center justify-center mr-3 border-blue-600 border font-medium' onClick={handleSubmitQuestion} > <IoSend className='mr-2'/> Enviar pregunta</button>
               </div>
             </>
           ): null}
@@ -222,7 +250,7 @@ function ProfessionalPage( {params}: Props) {
             <>
               <div className="bg-gray-300 mt-4" style={{height: "0.5px"}}></div>
               <div className='mb-3 mt-3'>
-                <p className='text-sm font-light mb-1'>Pepito Perez</p>
+                <p className='text-sm font-light mb-1'>{usernameContext}</p>
                 <div className="flex">
                   <div className='mb-3 flex mr-3'>
                     {[...Array(5)].map((star, index) => {

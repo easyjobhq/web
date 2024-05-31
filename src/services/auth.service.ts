@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import { getAuthorizationHeader } from "./getAuthorizationHeader";
+import { CreateQuestionDto } from "@/interfaces/create-question.dto";
 
 export class AuthService {
   protected readonly instance: AxiosInstance;
@@ -83,12 +84,22 @@ export class AuthService {
   }
 
   getMe = async (userId: string) => {
-    const res = await this.instance
-      .get(`/users/${userId}`, {
+    try {
+      const res = await this.instance
+      .get(`/clients/${userId}`, {
         headers: getAuthorizationHeader(),
       });
     
       return res.data;
+
+    } catch (error ) {
+      const res = await this.instance
+      .get(`/professionals/${userId}`, {
+        headers: getAuthorizationHeader(),
+      });
+    
+      return res.data;
+    }
   };
 
   getProfessinals = async () => {
@@ -207,6 +218,18 @@ export class AuthService {
     })
 
     return res.data
+  }
+
+  createQuestion = async (id_client: string, id_professional: string, question: CreateQuestionDto) => {
+    const res = await this.instance
+    .post(`/questions/${id_client}/${id_professional}`, 
+      {
+        question
+      },
+      {
+        headers: getAuthorizationHeader(),
+      } 
+  );
   }
 
   /*uploadAvatar = (userId: string, newAvatar: File) => {
