@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from "axios";
 import { getAuthorizationHeader } from "./getAuthorizationHeader";
 import { headers } from "next/headers";
+import ProfessionalCard from "@/app/(general)/home/professionalCard";
 
 export class AuthService {
   protected readonly instance: AxiosInstance;
@@ -133,6 +134,23 @@ export class AuthService {
     })
 
     return res.data
+  }
+  
+  addServiceToProfessional=  async (professional_id:string, service_id:string) =>{
+    const res = await this.instance
+    .get(`/professionals/service/${professional_id}/${service_id}`,{
+        headers: getAuthorizationHeader(),
+      }
+    )
+
+    return res.status
+  }
+
+  addSpecialityToProfessional = async (Professional_id:string, speciality_id_id:string) =>{
+    const res = await this.instance
+    .get(`/professionals/specialities/${Professional_id}/${speciality_id_id}`,{
+      headers: getAuthorizationHeader()
+    })
   }
 
   getCity = async () =>{

@@ -26,6 +26,8 @@ function ProfilePage({ params }: Props) {
 
   const [professional, setProfessional] = useState<Professional>();
   const [services, setServices] = useState<Service[]>([]);
+  const [allServices, setAllServices] = useState<Service[]>([])
+  const [allSpeciality, setAllSpecialities] = useState<Speciality[]>([])
   const [cities, setCities] = useState<City[]>([]);
   const [specialities, setSpecialities] = useState<Speciality[]>([]);
   const [starRating, setStarRating] = useState("");
@@ -33,6 +35,8 @@ function ProfilePage({ params }: Props) {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [photo, setPhoto] = useState<File | null>(null)
   const [photo_url,setPhotoUrl]= useState<string | undefined>(professional?.photo_url || "")
+  const [serviceId, setServiceId] = useState('')
+  const [specialityId, SetSpecialityId] = useState('')
 
   const [name, setName]= useState<string | undefined>(professional?.name || '')
   const [last_name, setLastName]= useState<string | undefined>(professional?.last_name || '')
@@ -52,9 +56,18 @@ function ProfilePage({ params }: Props) {
     }
   }
 
+  const onAddService = async() =>{
+    authService.addServiceToProfessional(params.id, serviceId);
+    window.location.reload();
+  }
+
+  const onAddSpeciality = async() =>{
+    authService.addSpecialityToProfessional(params.id, specialityId);
+    window.location.reload()
+  }
   const ChangeImage= async()=>{
       authService.updateProfessional(id, name, last_name, email, phoneNumber, photo_url)
-      window.location.reload();
+      //window.location.reload();
   }
 
   const handleEmailChange = () => {
@@ -75,6 +88,9 @@ function ProfilePage({ params }: Props) {
     authService.updateProfessional(id, name, last_name, email, phoneNumber, photo_url)
     window.location.reload();
   }
+
+  const serviceIds = new Set(services.map(service => service.id));
+  const SpecialitiesIds = new Set(specialities.map(speciality => speciality.id))
 
   useEffect(() => {
     const fetchData = async () => {
@@ -106,6 +122,12 @@ function ProfilePage({ params }: Props) {
 
       const starPercentage = (responseProfessional.score / 5) * 100;
       setStarRating(`${Math.round(starPercentage / 10) * 10}%`);
+
+      const all_services = await authService.getServices();
+      setAllServices(all_services)
+
+      const all_speciality = await authService.getAllSpecialities();
+      setAllSpecialities(all_speciality)
     }
 
     fetchData();
@@ -185,6 +207,31 @@ function ProfilePage({ params }: Props) {
                 </>
               ))
             }
+
+            <div className="md:flex mb-4">
+                <label htmlFor="service" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Añadir servicio</label>
+                <select
+                  id="services"
+                  className="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  value={serviceId}
+                  onChange={(e) => setServiceId(e.target.value)}
+                >
+                  <option value="">Choose your service</option>
+                  {allServices
+                    .filter(all_service => !serviceIds.has(all_service.id)) // Filtra los servicios que no están en services
+                    .map(filtered_service => (
+                      <option key={filtered_service.id} value={filtered_service.id}>
+                        {filtered_service.title}
+                      </option>
+                    ))}
+                </select>
+
+                <button className="px-2 py-1 text-white bg-green-500 rounded-lg hover:bg-green-600 ml-2" onClick={onAddService}>
+                  Añadir
+                </button>
+            </div>
+            
+
           </div>
         </div>
         <div className='main-professional-card bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full'>
@@ -225,74 +272,68 @@ function ProfilePage({ params }: Props) {
       </div>
 
 
-      <div className="main-professional-card bg-white mb-3 rounded-lg shadow-md w-2/5 ml-2 flex-wrap">
-        <div className="bg-blue-500 text-white  rounded-tr-md rounded-tl-md px-3 py-3 text-lg  font-semibold">
-          <h3>Informacion personal</h3>
+      <div className="w-2/5">
+        <div className="bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
+          <div className="container px-6 py-8 mx-auto">
+            <h2 className="text-xl font-semibold text-gray-700 capitalize">Detalles del perfil</h2>
+            <form>
+              <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                <div>
+                  <label className="text-gray-700" htmlFor="name">Nombre</label>
+                  <input onChange={(event)=>{setName(event.target.value)}} value={name} id="name" type="text" className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring" />
+                  <button onClick={handleNameChange} className="px-3 py-2 text-sm tracking-wide text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600" type="button">Guardar cambios</button>
+                </div>
+                <div>
+                  <label className="text-gray-700" htmlFor="last_name">Apellido</label>
+                  <input onChange={(event)=>{setLastName(event.target.value)}} value={last_name} id="last_name" type="text" className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring" />
+                  <button onClick={handleLastNameChange} className="px-3 py-2 text-sm tracking-wide text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600" type="button">Guardar cambios</button>
+                </div>
+                <div>
+                  <label className="text-gray-700" htmlFor="emailAddress">Correo electrónico</label>
+                  <input onChange={(event)=>{setEmail(event.target.value)}} value={email} id="emailAddress" type="email" className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring" />
+                  <button onClick={handleEmailChange} className="px-3 py-2 text-sm tracking-wide text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600" type="button">Guardar cambios</button>
+                </div>
+                <div>
+                  <label className="text-gray-700" htmlFor="phoneNumber">Teléfono</label>
+                  <input onChange={(event)=>{setPhoneNumber(event.target.value)}} value={phoneNumber} id="phoneNumber" type="text" className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring" />
+                  <button onClick={handlePhoneNumberChange} className="px-3 py-2 text-sm tracking-wide text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600" type="button">Guardar cambios</button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
-        <div className="flex flex-col px-8 py-5 bg-gray-100 rounded-lg">
-          <div className="flex items-center mb-3 space-x-2">
-            <FaEnvelope className="text-blue-500" />
-            <input
-              type="text"
-              value={email}
-              onChange={(e)=>{setEmail(e.target.value)}}
-              className="flex-1 px-2 py-1 text-lg text-gray-700 border border-gray-300 rounded-lg"
-              placeholder={email}
-            />
-            <button className="px-2 py-1 text-white bg-blue-500 rounded-lg hover:bg-blue-600" onClick={handleEmailChange}>
-              Cambiar
-            </button>
-          </div>
-          <div className="flex items-center mb-3 space-x-2">
-            <FaPhone className="text-green-500" />
-            <input
-              type="text"
-              value={phoneNumber}
-              onChange={(e)=>{setPhoneNumber(e.target.value)}}
-              className="flex-1 px-2 py-1 text-lg text-gray-700 border border-gray-300 rounded-lg"
-              placeholder={phoneNumber}
-            />
-            <button className="px-2 py-1 text-white bg-green-500 rounded-lg hover:bg-green-600" onClick={handlePhoneNumberChange}>
-              Cambiar
-            </button>
-          </div>
-          <div className="flex items-center mb-3 space-x-2">
-            <FaUser className="text-green-500" />
-            <input
-              type="text"
-              value={name}
-              onChange={(e)=>{setName(e.target.value)}}
-              className="flex-1 px-2 py-1 text-lg text-gray-700 border border-gray-300 rounded-lg"
-              placeholder={name}
-            />
-            <button className="px-2 py-1 text-white bg-green-500 rounded-lg hover:bg-green-600" onClick={handleNameChange}>
-              Cambiar
-            </button>
-          </div>
-          <div className="flex items-center space-x-2">
-            <FaUser className="text-green-500" />
-            <input
-              type="text"
-              value={last_name}
-              onChange={(e)=>{setLastName(e.target.value)}}
-              className="flex-1 px-2 py-1 text-lg text-gray-700 border border-gray-300 rounded-lg"
-              placeholder={last_name}
-            />
-            <button className="px-2 py-1 text-white bg-green-500 rounded-lg hover:bg-green-600" onClick={handleLastNameChange}>
-              Cambiar
-            </button>
-          </div>
-        <div className="flex  px-8 py-5">
+        <div className="bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
+          <h2 className="text-xl font-semibold text-gray-700 capitalize">Añadir especialidades</h2>
+          <div className="mt-4">
+            <form>
+              <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                <div>
+                  <label className="text-gray-700" htmlFor="speciality">Especialidad</label>
+                  <select
+                  id="specialities"
+                  className="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  value={specialityId}
+                  onChange={(e) => SetSpecialityId(e.target.value)}
+                >
+                  <option value="">Choose your service</option>
+                  {allSpeciality
+                    .filter(all_speciality => !SpecialitiesIds.has(all_speciality.id)) // Filtra los servicios que no están en services
+                    .map(filtered_service => (
+                      <option key={filtered_service.id} value={filtered_service.id}>
+                        {filtered_service.speciality_name}
+                      </option>
+                    ))}
+                </select>
 
-            <p> email: {professional?.email}</p>
-            <br/>
-            <p> Número de telefono : {professional?.phone_number}</p>
+                </div>
+                <div>
+                  <button className="px-3 py-2 text-sm tracking-wide text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600" type="submit" onClick={onAddSpeciality}>Añadir especialidad</button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
-        
-
-
       </div>
-    </div>
     </div>
   )
 }
