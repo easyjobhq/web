@@ -56,6 +56,17 @@ function ProfilePage({ params }: Props) {
     }
   }
 
+  const onDeleteService = async (id_service:string) =>{
+    await authService.deleteServiceToProfessional(params.id, id_service)
+  }
+
+  const onDeleteSpeaciality = async () =>{
+    //event.preventDefault();
+    console.log('Este el speciality '+ specialityId)
+    await authService.deleteSpecialityToProfessional(params.id, specialityId)
+    window.location.reload()
+  }
+
   const onAddService = async() =>{
     authService.addServiceToProfessional(params.id, serviceId);
     window.location.reload();
@@ -204,10 +215,14 @@ function ProfilePage({ params }: Props) {
                   </li>
                   <p className='text-gray-700 text-sm font-light mb-3' style={{ textIndent: "1rem" }}>{service.description}</p>
                   <div className="bg-gray-200" style={{ height: "0.5px" }}></div>
+                  <button className="px-2 py-1 text-white bg-red-500 rounded-lg hover:bg-red-600 ml-2" onClick={() =>onDeleteService(service.id)}>
+                   eliminar
+                  </button>
                 </>
               ))
+              
             }
-
+            
             <div className="md:flex mb-4">
                 <label htmlFor="service" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Añadir servicio</label>
                 <select
@@ -328,6 +343,35 @@ function ProfilePage({ params }: Props) {
                 </div>
                 <div>
                   <button className="px-3 py-2 text-sm tracking-wide text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600" type="submit" onClick={onAddSpeciality}>Añadir especialidad</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div className="bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
+          <h2 className="text-xl font-semibold text-gray-700 capitalize">Eliminar especialidad</h2>
+          <div className="mt-4">
+            <form>
+              <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+                <div>
+                  <label className="text-gray-700" htmlFor="speciality">Especialidad</label>
+                  <select
+                  id="specialities"
+                  className="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  value={specialityId}
+                  onChange={(e) => SetSpecialityId(e.target.value)}
+                >
+                  <option value="">Choose your service</option>
+                  {specialities.map((speciality) =>(
+                    <option key={speciality.id}  value={speciality.id}>
+                      {speciality.speciality_name}
+                    </option>
+                  ))}
+                </select>
+
+                </div>
+                <div>
+                  <button className="px-3 py-2 text-sm tracking-wide text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600" type="button" onClick={onDeleteSpeaciality}>Eliminar especialidad</button>
                 </div>
               </div>
             </form>

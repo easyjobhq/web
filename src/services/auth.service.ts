@@ -251,6 +251,24 @@ export class AuthService {
     return res.data
   }
 
+  deleteServiceToProfessional = async (id_professional:string, id_service:string) =>{
+    const res = await this.instance
+    .delete(`/professionals/oneservice/${id_professional}/${id_service}`,{
+      headers: getAuthorizationHeader(),
+    })
+
+    return res.status
+
+  }
+
+  deleteSpecialityToProfessional = async (id_professional:string, id_speciality:string) =>{
+    const res= await this.instance
+    .delete(`/professionals/onespeaciality/${id_professional}/${id_speciality}`,{
+      headers: getAuthorizationHeader(),
+    })
+
+    return res.status
+  }
 
   /*uploadAvatar = (userId: string, newAvatar: File) => {
     const formData = new FormData();
