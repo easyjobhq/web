@@ -74,18 +74,19 @@ function ProfessionalPage({ params }: Props) {
 
     const fetchData = async () => {
     
-    const responseProfessional = await authService.getProfessional(params.id);
-    setProfessional(responseProfessional);
-    
-    const responseServices = await authService.getServicesOfProfessional(params.id);
-    setServices(responseServices);
+      const responseProfessional = await authService.getProfessional(params.id);
+      setProfessional(responseProfessional);
       
-    const responseCities = await authService.getCitiesOfProfessional(params.id);
-    setCities(responseCities);
+      const responseServices = await authService.getServicesOfProfessional(params.id);
+      setServices(responseServices);
+        
+      const responseCities = await authService.getCitiesOfProfessional(params.id);
+      setCities(responseCities);
+    }
 
     const handleTimeChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedTime(event.target.value);
-  };
+      setSelectedTime(event.target.value);
+    };
 
   const handleServiceChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedService(event.target.value);
@@ -95,7 +96,7 @@ function ProfessionalPage({ params }: Props) {
     setSelectedPaymentMethod(event.target.value);
   };
 
-  const router = useRouter();
+  //const router = useRouter();
 
   const handleAppointmentCreation = async () => {
     // Verificar que se hayan seleccionado todos los campos necesarios
@@ -391,7 +392,7 @@ function ProfessionalPage({ params }: Props) {
             onChange={handleTimeChange}
             className="mb-4 p-2 border rounded"
           
-            
+            >
             <option value="" disabled>Seleccionar Hora</option>
             {availableTimes.map((time) => (
               <option key={time} value={time}>{time}</option>
@@ -429,4 +430,3 @@ function ProfessionalPage({ params }: Props) {
 }
 
 export default ProfessionalPage
-
