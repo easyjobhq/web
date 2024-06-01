@@ -108,7 +108,7 @@ export class AuthService {
   getProfessinals = async () => {
     //console.log(getAuthorizationHeader())
     const res = await this.instance
-    .get('professionals/', {
+    .get('professionals/?pageSize', {
       headers: getAuthorizationHeader(),
     })
     return res.data
@@ -281,8 +281,9 @@ export class AuthService {
     })
 
     return res.status
-    
-   }
+
+  }
+
 
   createQuestion = async (id_client: string, id_professional: string, question: CreateQuestionDto) => {
     const res = await this.instance
@@ -304,6 +305,11 @@ export class AuthService {
           headers: getAuthorizationHeader(),
         } 
      );
+
+    }
+  
+
+
 
 
 
