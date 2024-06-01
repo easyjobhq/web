@@ -17,6 +17,7 @@ import { authService } from '@/services'
 import InputLabel from '@mui/material/InputLabel';
 import Box from '@mui/material/Box';
 import { useGlobalContext } from "@/context/store";
+import { Client } from "@/interfaces/Client";
 
 
 const ITEM_HEIGHT = 80;
@@ -32,7 +33,7 @@ const MenuProps = {
 
 interface Props {
 
-    id: string | undefined
+    id: string
 
 }
 
@@ -65,7 +66,14 @@ export default function Navbar(props: Props) {
             const responseSpecialities = await authService.getAllSpecialities();
             setSpecialities(responseSpecialities);
 
-
+            if(userIdContext === ''){
+              setUserIdContext(props.id);
+              console.log(props.id)
+              const user: Client | any  = await authService.getMe(props.id);
+              console.log(user)
+              setEmailContext(user.email);
+              setUsernameContext( user.name)
+            }
         }
 
         fetchData();

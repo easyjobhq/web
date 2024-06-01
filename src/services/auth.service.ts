@@ -108,7 +108,7 @@ export class AuthService {
   getProfessinals = async () => {
     //console.log(getAuthorizationHeader())
     const res = await this.instance
-    .get('professionals/', {
+    .get('professionals/?pageSize', {
       headers: getAuthorizationHeader(),
     })
     return res.data

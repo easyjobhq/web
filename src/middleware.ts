@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import cookie from "cookie";
 import jwt from 'jsonwebtoken';
 import { TbBookmarkQuestion } from "react-icons/tb";
-
+import { useGlobalContext } from '@/context/store';
+import { Client } from "./interfaces/Client";
+import { authService } from "./services";
 interface current {
   name: string,
   value: string
@@ -34,7 +36,7 @@ export function middleware(req: NextRequest) {
     const oAuthEmail = req.nextUrl.searchParams.get("email") || ""
 
     const tokenData = jwt.decode(oAuthToken);
-    console.log(tokenData);
+    //console.log(tokenData);
 
     const current = {
       id: oAuthid,
@@ -42,7 +44,7 @@ export function middleware(req: NextRequest) {
       token:oAuthToken
     }
 
-    console.log(current)
+    //console.log(current)
 
     if (oAuthToken.length > 0) {
       const response = NextResponse.redirect(new URL("/home", req.url));
@@ -52,7 +54,6 @@ export function middleware(req: NextRequest) {
         value: JSON.stringify(current),
         maxAge: 60 * 60 * 24 * 7,
       });
-
       return response;
     }
   }

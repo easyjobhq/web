@@ -2,7 +2,7 @@
 
 import { createContext, useContext, Dispatch, SetStateAction, useState } from "react";
 
-interface ContextProps {
+export interface ContextProps {
     userIdContext: string,
     setUserIdContext: Dispatch<SetStateAction<string>>,
     emailContext: string,
@@ -11,7 +11,7 @@ interface ContextProps {
     setUsernameContext: Dispatch<SetStateAction<string>>
 }
 
-const GlobalContext = createContext<ContextProps>({
+export const GlobalContext = createContext<ContextProps>({
     userIdContext: '',
     setUserIdContext: (): string => '',
     emailContext: '',

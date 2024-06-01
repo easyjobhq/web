@@ -24,7 +24,7 @@ function Login() {
     const handleOauth = async (event: any) => {
       event.preventDefault();
       const token = window.location.href = `https://easy-job-eyze.onrender.com/auth/google/callback`;
-      //console.log("token de la pagina " + token)
+      console.log("token de la pagina " + token)
     };
     const onSubmit = async () => {
       if (!email || !password) {
