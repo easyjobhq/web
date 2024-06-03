@@ -40,7 +40,7 @@ interface Props {
 
 export default function Navbar(props: Props) {
 
-    const { userIdContext, setUserIdContext, emailContext, setEmailContext , usernameContext, setUsernameContext} = useGlobalContext(); 
+    const {  userIdContext, setUserIdContext, emailContext, setEmailContext, usernameContext, setUsernameContext, searchSpeciality, setSearchSpeciality, searchCity, setSearchCity} = useGlobalContext(); 
 
     const [personName, setPersonName] = useState<string[]>([]);
     const [isProfessional, setIsProfessional] = useState<number | null>(null);
@@ -83,8 +83,10 @@ export default function Navbar(props: Props) {
 
     const handleSearch = async () => {
       if (selectedCity && selectedSpeciality) {
-          const results = await authService.searchProfessionals(selectedCity, selectedSpeciality);
-          console.log(results); // Aquí puedes manejar los resultados, por ejemplo, actualizando un estado
+          //const results = await authService.searchProfessionals(selectedCity, selectedSpeciality);
+          setSearchCity(selectedCity);
+          setSearchSpeciality(selectedSpeciality);
+          //console.log(results); // Aquí puedes manejar los resultados, por ejemplo, actualizando un estado
       } else {
           alert('Por favor, seleccione una ciudad y una especialidad');
       }

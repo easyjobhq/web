@@ -8,7 +8,11 @@ export interface ContextProps {
     emailContext: string,
     setEmailContext: Dispatch<SetStateAction<string>>, 
     usernameContext: string, 
-    setUsernameContext: Dispatch<SetStateAction<string>>
+    setUsernameContext: Dispatch<SetStateAction<string>>, 
+    searchSpeciality: string, 
+    setSearchSpeciality: Dispatch<SetStateAction<string>>,
+    searchCity: string, 
+    setSearchCity: Dispatch<SetStateAction<string>>
 }
 
 export const GlobalContext = createContext<ContextProps>({
@@ -17,17 +21,22 @@ export const GlobalContext = createContext<ContextProps>({
     emailContext: '',
     setEmailContext: (): string => '' , 
     usernameContext: '', 
-    setUsernameContext: (): string => '' 
-    
+    setUsernameContext: (): string => '' ,
+    searchSpeciality: '', 
+    setSearchSpeciality: (): string => '',
+    searchCity: '', 
+    setSearchCity: (): string => ''    
 })
 
-export const GlobalContextProvider = ({ children }) => {
+export const GlobalContextProvider = ({ children }: any) => {
     const [userIdContext, setUserIdContext] = useState('');
     const [emailContext, setEmailContext] = useState('');
     const [usernameContext, setUsernameContext] = useState('');
+    const [searchSpeciality, setSearchSpeciality] = useState('');
+    const [searchCity, setSearchCity] = useState('');
     
     return (
-        <GlobalContext.Provider value={{ userIdContext, setUserIdContext, emailContext, setEmailContext, usernameContext, setUsernameContext }}>
+        <GlobalContext.Provider value={{ userIdContext, setUserIdContext, emailContext, setEmailContext, usernameContext, setUsernameContext, searchSpeciality, setSearchSpeciality, searchCity, setSearchCity}}>
             {children}
         </GlobalContext.Provider>
     )
