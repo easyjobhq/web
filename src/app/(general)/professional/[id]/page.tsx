@@ -5,7 +5,7 @@ import { Professional } from '@/interfaces/professional'
 import { Service } from '@/interfaces/service'
 import { Speciality } from '@/interfaces/speciality'
 import { PaymentMethod } from '@/interfaces/payment_method';
-import { authService } from '@/services'
+import { authService, checkService } from '@/services'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import '../../home/professionalCard.css'
@@ -69,6 +69,7 @@ const ProfessionalPage = ({ params }: Props) => {
   const [selectedService, setSelectedService] = useState<string | null>(null);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string>('');
   const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
+  const [isClient, setIsClient] = useState<number | null>(null);
 
   const availableTimes = [
     '09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM',
@@ -176,6 +177,9 @@ const ProfessionalPage = ({ params }: Props) => {
 
       const starPercentage = (responseProfessional.score / 5) * 100;
       setStarRating(`${Math.round(starPercentage / 10) * 10}%`);
+
+      const response  = await checkService.checkIsClient(userIdContext);
+      setIsClient(response);
     }
 
     fetchData();
@@ -218,6 +222,7 @@ const ProfessionalPage = ({ params }: Props) => {
                   ))
                 }
               </div>
+              {isClient && (
               <div className="flex">
                 <button className='bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center mr-3 border-blue-600 border'>
                   <FaRegCalendarAlt className='text-white h-5 w-5 mr-2' /> Agendar cita
@@ -226,6 +231,7 @@ const ProfessionalPage = ({ params }: Props) => {
                   <MdOutlineMessage className='  text-gray-500 h-5 w-5 mr-2' /> Dejar reseña
                 </button>
               </div>
+              )}
             </div>
           </div>
           <p className='text-md mt-5 mb-3 font-light'>{professional?.description}</p>
@@ -255,9 +261,14 @@ const ProfessionalPage = ({ params }: Props) => {
         <div className='main-professional-card bg-white mb-3 rounded-lg px-8 pt-5 pb-7 shadow-md w-full'>
           <div className="flex justify-between">
             <h3 className='font-semibold text-xl mb-2'> Preguntas del profesional</h3>
-            <button className='text-sm font-normal border px-3 rounded-md border-gray-300' onClick={() => setIsAddQuestion(!isAddQuestion)}>
-              Añadir una pregunta
-            </button>
+            {isClient && (
+              <>
+                <button className='text-sm font-normal border px-3 rounded-md border-gray-300' onClick={() => setIsAddQuestion(!isAddQuestion)}>
+                  Añadir una pregunta
+                </button>
+              </>
+            )}
+            
           </div>
 
           {
@@ -296,9 +307,14 @@ const ProfessionalPage = ({ params }: Props) => {
         <div className="main-professional-card bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
           <div className="flex justify-between">
             <h3 className='font-semibold text-xl mb-2'>{reviews.length} Opiniones de este profesional</h3>
-            <button className='text-sm font-normal border px-3 rounded-md border-gray-300' onClick={() => setIsAddReview(!isAddReview)}>
-              Añadir una opinion
-            </button>
+            {isClient && (
+              <>
+                <button className='text-sm font-normal border px-3 rounded-md border-gray-300' onClick={() => setIsAddReview(!isAddReview)}>
+                  Añadir una opinion
+                </button>
+              </>
+            )}
+            
           </div>
 
           <div className="items-center mb-5">
@@ -388,7 +404,7 @@ const ProfessionalPage = ({ params }: Props) => {
               Seleccionar Ubicación
             </MenuItem>
             {cities.map((city) => (
-              <MenuItem key={city.id} value={city.id}>{city.city_name}</MenuItem>
+              <MenuItem key={city.id} value={city.city_name}>{city.city_name}</MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -412,7 +428,7 @@ const ProfessionalPage = ({ params }: Props) => {
               Seleccionar Servicio
             </MenuItem>
             {services.map((service) => (
-              <MenuItem key={service.id} value={service.id}>{service.title}</MenuItem>
+              <MenuItem key={service.id} value={service.title}>{service.title}</MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -432,9 +448,14 @@ const ProfessionalPage = ({ params }: Props) => {
           ))}
         </Select>
       </FormControl>
-        <button onClick={handleAppointmentCreation} className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
-          Agendar Cita
-        </button>
+          {isClient && (
+            <>
+                <button onClick={handleAppointmentCreation} className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+                  Agendar Cita
+                </button>
+            </>
+          )}
+        
       </div>
     </div>
     </div>

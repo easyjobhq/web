@@ -23,7 +23,7 @@ const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 export const storage = getStorage(app)
 
-export async function uploadFile(file: File){
+export async function uploadFile(file: File):Promise<string>{
     const uplodaRef = ref(storage,v4())
     await uploadBytes(uplodaRef, file).then((snapshot) => {
         console.log('Uploaded a blob or file!');
