@@ -13,7 +13,7 @@ function HomePage() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize] = useState<number>(3);
 
-  useEffect(() => {
+  useEffect(() =>{
     const fetchData = async () => {
       const response = await authService.getProfessionals(currentPage, pageSize);
       setProfessionals(response.data);
@@ -33,7 +33,7 @@ function HomePage() {
     <div>
       <div className="mb-3">
         <h1 className="text-xl font-semibold w-full mb-2">Resultados de la búsqueda</h1>
-        <p className='font-light'>Reserva por internet, nunca pagarás de más :)</p>
+        <p className='font-light'>Reserva por internet, nunca pagarás de mas :)</p>
       </div>
       <div className="flex">
         <section className="mr-3 w-4/5">
@@ -58,7 +58,7 @@ function HomePage() {
         />
       </div>
     </div>
-  );
+  )
 }
 
 export default HomePage

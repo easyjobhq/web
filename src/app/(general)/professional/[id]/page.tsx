@@ -128,9 +128,6 @@ const ProfessionalPage = ({ params }: Props) => {
       location: selectedLocation,
       hour: selectedTime,
       service: selectedService,
-      clientId: userIdContext,
-      professionalId: params.id,
-      payment_method_name: selectedPaymentMethod,
     };
 
     try {
