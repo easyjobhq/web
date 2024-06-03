@@ -48,6 +48,8 @@ function ProfilePage({ params }: Props) {
 
   
 
+  
+
   const onChangePhoto = async(event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setPhoto(event.target.files[0]);
