@@ -113,6 +113,14 @@ export class AuthService {
     return res.data;
   };
 
+  searchProfessionalsByQuery = async (city: string, speciality: string, page: number = 1, limit: number = 10 ) => {
+    const res = await this.instance
+    .get(`/professionals/city/${city}/speciality/${speciality}?page=${page}&limit=${limit}`, {
+      headers: getAuthorizationHeader(),
+    });
+    return res.data;
+  };
+
   getServicesOfProfessional = async (id: string) => {
     //console.log(getAuthorizationHeader())
     const res = await this.instance
@@ -329,13 +337,7 @@ export class AuthService {
 
     }
 
-    searchProfessionals = async (city: string, speciality: string) => {
-      const res = await this.instance
-      .get(`/professionals/city/${city}/speciality/${speciality}`, {
-        headers: getAuthorizationHeader(),
-      });
-      return res.data;
-    };
+    
   
 
 

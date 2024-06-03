@@ -405,7 +405,7 @@ function ProfilePage({ params }: Props) {
           </div>
         </div>
         <div className="bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
-          <h2 className="text-xl font-semibold text-gray-700 capitalize">Eliminar especialidad</h2>
+          <h2 className="text-xl font-semibold text-gray-700 capitalize">Citas agendadas</h2>
           <div className="mt-4">
           {appointment.length > 0 ? (
             appointment.map((appointment) => (

@@ -19,6 +19,8 @@ import Box from '@mui/material/Box';
 import { useGlobalContext } from "@/context/store";
 import { Client } from "@/interfaces/Client";
 import { AuthService } from '@/services/auth.service'
+import { useLogout } from "@/hooks/auth/logout";
+import { useRouter } from "next/router";
 
 
 const ITEM_HEIGHT = 80;
@@ -40,7 +42,10 @@ interface Props {
 
 export default function Navbar(props: Props) {
 
-    const { userIdContext, setUserIdContext, emailContext, setEmailContext , usernameContext, setUsernameContext} = useGlobalContext(); 
+    const { logout } = useLogout();
+    
+
+    const {  userIdContext, setUserIdContext, emailContext, setEmailContext, usernameContext, setUsernameContext, searchSpeciality, setSearchSpeciality, searchCity, setSearchCity} = useGlobalContext(); 
 
     const [personName, setPersonName] = useState<string[]>([]);
     const [isProfessional, setIsProfessional] = useState<number | null>(null);
@@ -83,8 +88,10 @@ export default function Navbar(props: Props) {
 
     const handleSearch = async () => {
       if (selectedCity && selectedSpeciality) {
-          const results = await authService.searchProfessionals(selectedCity, selectedSpeciality);
-          console.log(results); // Aquí puedes manejar los resultados, por ejemplo, actualizando un estado
+          //const results = await authService.searchProfessionals(selectedCity, selectedSpeciality);
+          setSearchCity(selectedCity);
+          setSearchSpeciality(selectedSpeciality);
+          //console.log(results); // Aquí puedes manejar los resultados, por ejemplo, actualizando un estado
       } else {
           alert('Por favor, seleccione una ciudad y una especialidad');
       }
@@ -122,6 +129,7 @@ export default function Navbar(props: Props) {
                   setSelectedSpeciality(event.target.value);
                 }}
               >
+                <MenuItem value={''}>Sin filtro</MenuItem>
                 {
                   specialities.map((speciality) => (
                     <MenuItem value={`${speciality.speciality_name}`}>{speciality.speciality_name}</MenuItem>
@@ -158,6 +166,7 @@ export default function Navbar(props: Props) {
                   setSelectedCity(event.target.value);
                 }}
               >
+                <MenuItem value={''}>Sin filtro</MenuItem>
                 {
                   cities.map((city) => (
                     <MenuItem value={`${city.city_name}`}>{city.city_name}</MenuItem>
@@ -181,7 +190,9 @@ export default function Navbar(props: Props) {
               </button>
             </Link>
           )}
-          <Link href={"/login"} className=" "><MdLogout /></Link>
+          <Link href={"/login"} onClick={() => {
+            logout();
+          }} className=" "><MdLogout /></Link>
         </div>
         
       </nav>
