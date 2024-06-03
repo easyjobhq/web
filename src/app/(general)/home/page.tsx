@@ -21,7 +21,7 @@ function HomePage() {
     };
 
     fetchData();
-  }, [currentPage]);
+  }, [currentPage, pageSize]);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
     setCurrentPage(newPage);

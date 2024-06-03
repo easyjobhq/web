@@ -202,7 +202,7 @@ function ProfilePage({ params }: Props) {
               <h2 className='font-semibold text-2xl mt-3 mb-1'>{professional?.name} {professional?.last_name} </h2>
 
               {specialities.map((speciality) =>
-                <p className='font-light text-sm'>{speciality.speciality_name}</p>
+                <p  key = {speciality.id} className='font-light text-sm'>{speciality.speciality_name}</p>
               )}
 
               <div className="flex items-center mb-2">
@@ -280,7 +280,7 @@ function ProfilePage({ params }: Props) {
           <h3 className='font-semibold text-xl mb-2' > Preguntas del profesional</h3>
           {
             questions.map((question: Question) => (
-              <div>
+              <div key={question.id}>
                 <p className='text-sm font-light mb-2'>{question.client.name} {question.client.last_name}</p>
                 <div className='p-2 border-gray-200 border rounded-md'>
                   <p className='text-sm font-light'>{question.question_description}</p>

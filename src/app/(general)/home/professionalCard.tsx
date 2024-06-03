@@ -92,7 +92,7 @@ function ProfessionalCard(props: ProfessionalProps) {
                   <p className='text-sm font-light'>Este profesional no tiene servicios :(</p>
                 ): (
                   services.slice(0,2).map((service) => 
-                    <div className='mb-3'>
+                    <div className='mb-3' key={service.id}>
                       <h4 className='mb-0.5 font-semibold'>{service.title}</h4>
                       <p className='text-sm font-light'>{service.description}</p>
                       <p className='text-sm font-normal flex items-center' > <BiDollar className='h-6' /> {Math.round(service.price).toLocaleString('es-ES')}</p>
