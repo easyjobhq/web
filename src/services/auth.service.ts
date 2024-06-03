@@ -105,14 +105,13 @@ export class AuthService {
     }
   };
 
-  getProfessinals = async () => {
-    //console.log(getAuthorizationHeader())
+  getProfessionals = async (page: number = 1, limit: number = 10) => {
     const res = await this.instance
-    .get('professionals/?pageSize', {
+    .get(`/professionals?page=${page}&limit=${limit}`, {
       headers: getAuthorizationHeader(),
-    })
-    return res.data
-  }
+    });
+    return res.data;
+  };
 
   getServicesOfProfessional = async (id: string) => {
     //console.log(getAuthorizationHeader())
@@ -312,6 +311,14 @@ export class AuthService {
      );
 
     }
+
+    searchProfessionals = async (city: string, speciality: string) => {
+      const res = await this.instance
+      .get(`/professionals/city/${city}/speciality/${speciality}`, {
+        headers: getAuthorizationHeader(),
+      });
+      return res.data;
+    };
   
 
 

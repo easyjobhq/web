@@ -18,6 +18,7 @@ import InputLabel from '@mui/material/InputLabel';
 import Box from '@mui/material/Box';
 import { useGlobalContext } from "@/context/store";
 import { Client } from "@/interfaces/Client";
+import { AuthService } from '@/services/auth.service'
 
 
 const ITEM_HEIGHT = 80;
@@ -79,6 +80,15 @@ export default function Navbar(props: Props) {
         fetchData();
 
     },[])
+
+    const handleSearch = async () => {
+      if (selectedCity && selectedSpeciality) {
+          const results = await authService.searchProfessionals(selectedCity, selectedSpeciality);
+          console.log(results); // Aquí puedes manejar los resultados, por ejemplo, actualizando un estado
+      } else {
+          alert('Por favor, seleccione una ciudad y una especialidad');
+      }
+  }
       
     return (
         <nav className="flex bg-blue-500 px-80 py-3 items-center justify-between">
@@ -157,7 +167,7 @@ export default function Navbar(props: Props) {
             </FormControl>
           </Box>
           
-          <button className="flex justify-center items-center">
+          <button className="flex justify-center items-center" onClick={handleSearch}>
             <IoSearchSharp color="white" size="40" style={{backgroundColor: 'rgba(255, 255, 255, 0.1)'}} className="border p-1.5 rounded-full"/>
           </button>
         </div>

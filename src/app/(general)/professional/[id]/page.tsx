@@ -8,7 +8,6 @@ import { PaymentMethod } from '@/interfaces/payment_method';
 import { authService } from '@/services'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
-import { useRouter } from 'next/router';
 import '../../home/professionalCard.css'
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { MdOutlineMessage } from "react-icons/md";
@@ -34,10 +33,7 @@ interface Props {
 }
 
 const ProfessionalPage = ({ params }: Props) => {
-  const { userIdContext, setUserIdContext, emailContext, setEmailContext } = useGlobalContext();
-
   const router = useRouter();
-
   //Context data
   const { userIdContext, setUserIdContext, emailContext, setEmailContext , usernameContext, setUsernameContext} = useGlobalContext(); 
 
@@ -138,7 +134,7 @@ const ProfessionalPage = ({ params }: Props) => {
     };
 
     try {
-        const response = await fetch(`http://localhost:3001/appointment/${userIdContext}/${params.id}/${selectedPaymentMethod}`, {
+        const response = await fetch(`https://easy-job-eyze.onrender.com/appointment/${userIdContext}/${params.id}/${selectedPaymentMethod}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -174,9 +170,6 @@ const ProfessionalPage = ({ params }: Props) => {
 
       const responseReviews = await authService.getReviewsOfProfessional(params.id);
       setReviews(responseReviews);
-
-      const responseQuestions = await authService.getQuestionsOfProfessional(params.id);
-      setQuestions(responseQuestions);
 
       const responseSpeciality = await authService.getSpecialitiesOfProfessional(params.id);
       setSpecialities(responseSpeciality);
@@ -382,7 +375,7 @@ const ProfessionalPage = ({ params }: Props) => {
         <h3>Agendar Servicio</h3>
       </div>
       <div className="flex flex-col px-8 py-5">
-        <label className="mb-2 font-medium text-gray-700">Seleccionar Fecha:</label>
+      <FormControl className="mb-4">
         <DatePicker
           selected={selectedDate}
           onChange={handleDateChange}
@@ -390,6 +383,7 @@ const ProfessionalPage = ({ params }: Props) => {
           dateFormat="MMMM d, yyyy"
           placeholderText="Seleccionar Fecha"
         />
+        </FormControl>
         <FormControl className="mb-4">
           <InputLabel>Seleccionar Ubicación</InputLabel>
           <Select value={selectedLocation || ''} onChange={handleLocationChange}>
