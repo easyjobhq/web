@@ -5,6 +5,7 @@ import { TbBookmarkQuestion } from "react-icons/tb";
 import { useGlobalContext } from '@/context/store';
 import { Client } from "./interfaces/Client";
 import { authService } from "./services";
+import { checkService } from "./services";
 interface current {
   name: string,
   value: string
@@ -25,9 +26,19 @@ export function Pid(req: NextRequest){
 
 export function middleware(req: NextRequest) {
   const cookies = cookie.parse(req.headers.get("Cookie") || "");
-  const token = cookies.token;
-  const tokenFromOauth = req.cookies.get("token");
+  const token = cookies.currentUser;
+  const tokenFromOauth = req.cookies.get("currentUser");
 
+
+  if (
+    !token &&
+    !tokenFromOauth &&
+    req.nextUrl.pathname.startsWith("/home")
+  ) {
+    console.log("cant enter home ");
+    return NextResponse.redirect(new URL("/login", req.url));
+  }
+  
  
 
   if (req.nextUrl.pathname.startsWith("/oauth")) {

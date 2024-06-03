@@ -191,6 +191,15 @@ export class AuthService {
     return res.data
   }
 
+  getAppoimentsToProfessional = async (id_professional:string) =>{
+    const res = await this.instance
+      .get(`professionals/appoiments/${id_professional}`, {
+        headers: getAuthorizationHeader(),
+      })
+
+      return res.data
+  }
+
   getSpecialitiesOfProfessional = async (id: string) => {
     const res = await this.instance
     .get(`/professionals/specialities/${id}`, {
@@ -234,8 +243,16 @@ export class AuthService {
     return res.data
   }
 
+  deleteAppoiment = async (id:string) =>{
+    const res = await this.instance
+    .delete(`/appointment/${id}`,{
+      headers: getAuthorizationHeader()
+    }
+    )
+  }
 
-  updateProfessional = async (id:string| undefined, name:string | undefined, last_name:string | undefined, email:string | undefined, phone_number:string | undefined, photo_url:string | undefined)=>{
+
+  updateProfessional = async (id:string| undefined, name:string | undefined, last_name:string | undefined, email:string | undefined, phone_number:string | undefined, photo_url:string | void)=>{
     try {
       const res = await this.instance.patch(
         `/professionals/${id}`,

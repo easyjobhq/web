@@ -72,13 +72,13 @@ function Register() {
                     alert("all fields are required")
                 }else if(selectedOption == 'Cli'){
                     await register(name, last_name, email, phone_number, password, photo_url, "", "", "", "",  selectedOption)
-                    .then(() => router.push("/"))
+                    .then(() => router.push("/login"))
                     .catch((e: Error) => alert(e));
                 }
                 else{
                     console.log("Estos son los ids" + serviceId +'\n'+ languageId + '\n' + cityId + '\n' + specialityId)
                     await register(name, last_name, email, phone_number, password, photo_url, serviceId, languageId, cityId, specialityId,  selectedOption)
-                    .then(() => router.push("/"))
+                    .then(() => router.push("/login"))
                     .catch((e: Error) => alert(e));
                 }
               
@@ -87,12 +87,12 @@ function Register() {
                     alert("all fields are required")
                 }else if(selectedOption == 'Cli'){
                     await register(name, last_name, email, phone_number, password, photo_url, "", "", "", "",  selectedOption)
-                    .then(() => router.push("/"))
+                    .then(() => router.push("/login"))
                     .catch((e: Error) => alert(e));
                 }
                 else{
                     await register(name, last_name, email, phone_number, password, "", serviceId, languageId, cityId, specialityId,  selectedOption)
-                .then(() => router.push("/"))
+                .then(() => router.push("/login"))
                 .catch((e: Error) => alert(e));
                 }
               
