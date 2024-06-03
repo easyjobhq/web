@@ -29,4 +29,18 @@ export class Check{
         
     }
 
+    checkIsClient = async(id:string) =>{
+        let res
+        try{
+            res = await this.instance
+            .get(`/clients/${id}`,{
+                headers: getAuthorizationHeader(),
+            })
+
+            return res.status
+        }catch(error){
+            return null
+        }
+    }
+
 }

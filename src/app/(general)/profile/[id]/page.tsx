@@ -17,6 +17,23 @@ import { Review } from '@/interfaces/review'
 import ReviewCard from '../../professional/[id]/ReviewCard'
 import { FaEnvelope, FaPhone } from 'react-icons/fa';
 import { uploadFile } from '@/firebase/config'
+import { Appoiment } from '@/interfaces/appoiment'
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardMedia from '@mui/material/CardMedia';
+import CardContent from '@mui/material/CardContent';
+import CardActions from '@mui/material/CardActions';
+import Collapse from '@mui/material/Collapse';
+import Avatar from '@mui/material/Avatar';
+import IconButton, { IconButtonProps } from '@mui/material/IconButton';
+import Typography from '@mui/material/Typography';
+import { red } from '@mui/material/colors';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShareIcon from '@mui/icons-material/Share';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Button } from '@mui/material'
+
 
 interface Props {
   params: { id: string }
@@ -32,11 +49,13 @@ function ProfilePage({ params }: Props) {
   const [specialities, setSpecialities] = useState<Speciality[]>([]);
   const [starRating, setStarRating] = useState("");
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [appointment, setAppoiment] = useState<Appoiment[]>([])
   const [reviews, setReviews] = useState<Review[]>([]);
   const [photo, setPhoto] = useState<File | null>(null)
-  const [photo_url,setPhotoUrl]= useState<string | undefined>(professional?.photo_url || "")
+  const [photo_url,setPhotoUrl]= useState<string |void>(professional?.photo_url || "")
   const [serviceId, setServiceId] = useState('')
   const [specialityId, SetSpecialityId] = useState('')
+
 
   const [name, setName]= useState<string | undefined>(professional?.name || '')
   const [last_name, setLastName]= useState<string | undefined>(professional?.last_name || '')
@@ -53,9 +72,13 @@ function ProfilePage({ params }: Props) {
   const onChangePhoto = async(event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       setPhoto(event.target.files[0]);
-      const url = await uploadFile(event.target.files[0]).then((url)=>setPhotoUrl(url))
-      
+      const url:string | void = await uploadFile(event.target.files[0]).then((url)=>setPhotoUrl(url))
     }
+  }
+
+  const onDeleteAppoiment = async (id:string) => {
+    await authService.deleteAppoiment(id);
+    window.location.reload()
   }
 
   const onDeleteService = async (id_service:string) =>{
@@ -141,6 +164,9 @@ function ProfilePage({ params }: Props) {
 
       const all_speciality = await authService.getAllSpecialities();
       setAllSpecialities(all_speciality)
+
+      const appoinments = await authService.getAppoimentsToProfessional(params.id)
+      setAppoiment(appoinments)
     }
 
     fetchData();
@@ -167,10 +193,9 @@ function ProfilePage({ params }: Props) {
                 <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-md">
                   <input onChange={onChangePhoto} className="w-full shadow-inner p-4 border-0" type="file" name="photo" placeholder="-99.1405168"></input>
                 </div>
-                
               )}
               <button type="submit" className="text-cream-lighter bg-brick hover:bg-brick-dark" onClick={ChangeImage}>
-                  Create profi
+                  Change Photo
               </button>
             </div>
             <div className="professional-information">
@@ -377,6 +402,42 @@ function ProfilePage({ params }: Props) {
                 </div>
               </div>
             </form>
+          </div>
+        </div>
+        <div className="bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
+          <h2 className="text-xl font-semibold text-gray-700 capitalize">Eliminar especialidad</h2>
+          <div className="mt-4">
+          {appointment.length > 0 ? (
+            appointment.map((appointment) => (
+              <Card key={appointment.id}>
+                <CardHeader
+                  avatar={
+                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
+                      R
+                    </Avatar>
+                  }
+                  action={
+                    <>
+                      <Button
+                        variant="contained"
+                        color="secondary"
+                        onClick={() => onDeleteAppoiment(appointment.id)}
+                      >
+                        Eliminar
+                      </Button>
+                    </>
+                  }
+                  title={appointment.service}
+                  subheader={appointment.date}
+                />
+              </Card>
+            ))
+          ) : (
+            <Typography variant="h6" color="textSecondary">
+              No appointments available
+            </Typography>
+          )}
+
           </div>
         </div>
       </div>
