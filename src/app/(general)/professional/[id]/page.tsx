@@ -25,6 +25,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import { Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
 import { useGlobalContext } from '@/context/store';
+import { CreateQuestionDto } from '@/interfaces/create-question.dto'
+import { useRouter } from 'next/navigation'
+import { CreateReviewDto } from '@/interfaces/create-review.dto'
 
 interface Props {
   params: { id: string }
@@ -32,6 +35,11 @@ interface Props {
 
 const ProfessionalPage = ({ params }: Props) => {
   const { userIdContext, setUserIdContext, emailContext, setEmailContext } = useGlobalContext();
+
+  const router = useRouter();
+
+  //Context data
+  const { userIdContext, setUserIdContext, emailContext, setEmailContext , usernameContext, setUsernameContext} = useGlobalContext(); 
 
   // Fetched data
   const [professional, setProfessional] = useState<Professional>();
@@ -49,6 +57,12 @@ const ProfessionalPage = ({ params }: Props) => {
   const [isAddReview, setIsAddReview] = useState(false);
 
   //Forms
+
+  //Form question
+  const [formQuestion, setFormQuestion] = useState('');
+  const [formReviewComment, setFormReviewComment]= useState('');
+
+  //Form Rating
   const [formsRating, setFormsRating] = useState<number>(0);
   const [hover, setHover] = useState<number>(0);
 
@@ -64,6 +78,29 @@ const ProfessionalPage = ({ params }: Props) => {
     '09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM',
     '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM'
   ];
+  
+  //Handle submit of forms
+  async function handleSubmitQuestion () {
+    //console.log(formQuestion)
+    const question: CreateQuestionDto = {
+      title: "CHUPAME EL PICO", 
+      question_description: formQuestion
+    }
+
+    await authService.createQuestion(userIdContext, professional?.id ?? "", question );
+    router.push(`/home`);
+  }
+
+  async function handleSubmitReview() {
+    console.log("AYUDA")
+    const review: CreateReviewDto = {
+      score: formsRating, 
+      comment: formReviewComment
+    }
+
+    await authService.createReview(userIdContext, professional?.id ?? "", review );
+    router.push(`/home`);
+  }
   
   const handleDateChange = (date: string | null) => {
     setSelectedDate(date);
@@ -131,6 +168,9 @@ const ProfessionalPage = ({ params }: Props) => {
 
       const responseCities = await authService.getCitiesOfProfessional(params.id);
       setCities(responseCities);
+      
+      const responseQuestions = await authService.getQuestionsOfProfessional(params.id);
+      setQuestions(responseQuestions);
 
       const responseReviews = await authService.getReviewsOfProfessional(params.id);
       setReviews(responseReviews);
@@ -232,8 +272,7 @@ const ProfessionalPage = ({ params }: Props) => {
 
           {
             questions.map((question: Question) => (
-
-              <div key={question.id}>
+              <div className='mb-2'>
                 <p className='text-sm font-light mb-1'>{question.client.name} {question.client.last_name}</p>
                 <div className='p-2 border-gray-200 border rounded-md'>
                   <p className='text-sm font-light'>{question.question_description}</p>
@@ -245,18 +284,21 @@ const ProfessionalPage = ({ params }: Props) => {
             <>
               <div className="bg-gray-300 mt-4" style={{height: "0.5px"}}></div>
               <div className='mb-3 mt-3'>
-                <p className='text-sm font-light mb-1'>Pepito Perez</p>
+                <p className='text-sm font-light mb-1'>{usernameContext}</p>
                 <TextField
                   className='mb-3'
-                  sx={{width:"100%", '& .MuiInputBase-root': { fontSize: "0.875rem" }, '& .MuiInputLabel-root': { fontSize: "0.875rem" } }}
-                  id="outlined-textarea"
-                  label=""
+                  sx={{width:"100%", '& .MuiInputBase-root': {
+                    fontSize: "0.875rem" // Tamaño del texto dentro del input
+                  },
+                  '& .MuiInputLabel-root': {
+                    fontSize: "0.875rem" // Tamaño del texto del label
+                  } }}
                   placeholder="Escribe tu pregunta"
                   multiline
+                  value={formQuestion}
+                  onChange={(e) => {setFormQuestion(e.target.value)}}
                 />
-                <button className='w-full bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center justify-center mr-3 border-blue-600 border font-medium'>
-                  <IoSend className='mr-2'/> Enviar pregunta
-                </button>
+                <button className=' w-full bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center justify-center mr-3 border-blue-600 border font-medium' onClick={handleSubmitQuestion} > <IoSend className='mr-2'/> Enviar pregunta</button>
               </div>
             </>
           )}
@@ -289,7 +331,7 @@ const ProfessionalPage = ({ params }: Props) => {
             <>
               <div className="bg-gray-300 mt-4" style={{height: "0.5px"}}></div>
               <div className='mb-3 mt-3'>
-                <p className='text-sm font-light mb-1'>Pepito Perez</p>
+                <p className='text-sm font-light mb-1'>{usernameContext}</p>
                 <div className="flex">
                   <div className='mb-3 flex mr-3'>
                     {[...Array(5)].map((star, index) => {
@@ -323,13 +365,12 @@ const ProfessionalPage = ({ params }: Props) => {
                   className='mb-3'
                   sx={{width:"100%", '& .MuiInputBase-root': { fontSize: "0.875rem" }, '& .MuiInputLabel-root': { fontSize: "0.875rem" } }}
                   id="outlined-textarea"
-                  label=""
-                  placeholder="Escribe tu reseña"
+                  placeholder="Escribe tu pregunta"
                   multiline
+                  value={formReviewComment}
+                  onChange={(e) => {setFormReviewComment(e.target.value)}}
                 />
-                <button className='w-full bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center justify-center mr-3 border-blue-600 border font-medium'>
-                  <IoSend className='mr-2'/> Enviar reseña
-                </button>
+                <button className=' w-full bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center justify-center mr-3 border-blue-600 border font-medium' onClick={handleSubmitReview}> <IoSend className='mr-2'/> Enviar pregunta</button>
               </div>
             </>
           )}

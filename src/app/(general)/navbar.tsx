@@ -17,6 +17,7 @@ import { authService } from '@/services'
 import InputLabel from '@mui/material/InputLabel';
 import Box from '@mui/material/Box';
 import { useGlobalContext } from "@/context/store";
+import { Client } from "@/interfaces/Client";
 
 
 const ITEM_HEIGHT = 80;
@@ -32,13 +33,13 @@ const MenuProps = {
 
 interface Props {
 
-    id: string | undefined
+    id: string
 
 }
 
 export default function Navbar(props: Props) {
 
-    const { userIdContext, setUserIdContext, emailContext, setEmailContext } = useGlobalContext(); 
+    const { userIdContext, setUserIdContext, emailContext, setEmailContext , usernameContext, setUsernameContext} = useGlobalContext(); 
 
     const [personName, setPersonName] = useState<string[]>([]);
     const [isProfessional, setIsProfessional] = useState<number | null>(null);
@@ -65,10 +66,14 @@ export default function Navbar(props: Props) {
             const responseSpecialities = await authService.getAllSpecialities();
             setSpecialities(responseSpecialities);
 
-            console.log("The id is", userIdContext);
-            console.log("The email is ", emailContext);
-
-
+            if(userIdContext === ''){
+              setUserIdContext(props.id);
+              console.log(props.id)
+              const user: Client | any  = await authService.getMe(props.id);
+              console.log(user)
+              setEmailContext(user.email);
+              setUsernameContext( user.name)
+            }
         }
 
         fetchData();
@@ -82,7 +87,6 @@ export default function Navbar(props: Props) {
               <h2 className="text-white text-2xl font-bold">Easy Job</h2>
         </Link>
         <div className="flex">
-          {userIdContext}
           
           <Box sx={{ minWidth: 250, height: 40 }}>
             <FormControl fullWidth>

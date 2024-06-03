@@ -8,6 +8,9 @@ import Footer from "./Footer";
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers'
 import Navbar from "./navbar";
+import { useGlobalContext } from '@/context/store';
+import { Client } from "@/interfaces/Client";
+import { authService } from "@/services";
 
 
 const ITEM_HEIGHT = 80;
@@ -33,6 +36,7 @@ interface user {
   token: string;
 }
 
+//const { userIdContext, setUserIdContext, emailContext, setEmailContext, usernameContext, setUsernameContext } = useGlobalContext(); 
 
 export default function RootLayout({
   children,
@@ -70,13 +74,21 @@ export default function RootLayout({
 
   const cookieStore = cookies()
 
-  let id
+  let id:string
   if(cookieStore.get('currentUser') === undefined){
-    id = undefined
+    id = ''
   }else{
     const theme = JSON.parse(JSON.stringify(cookieStore.get('currentUser'))) as current;
     const tokenn = JSON.parse(theme.value) as user;
     id = tokenn.id
+    
+    //if(userIdContext === ''){
+      //setUserIdContext(id);
+      //setEmailContext(tokenn.email);
+      //const user: Client | any  = authService.getMe(id);
+      //setUsernameContext( user.name + " " + user.last_name)
+
+    //}
   }
   
 

@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import cookie from "cookie";
 import jwt from 'jsonwebtoken';
 import { TbBookmarkQuestion } from "react-icons/tb";
-
+import { useGlobalContext } from '@/context/store';
+import { Client } from "./interfaces/Client";
+import { authService } from "./services";
 interface current {
   name: string,
   value: string
@@ -30,21 +32,28 @@ export function middleware(req: NextRequest) {
 
   if (req.nextUrl.pathname.startsWith("/oauth")) {
     const oAuthToken = req.nextUrl.searchParams.get("token") || "";
+    const oAuthid = req.nextUrl.searchParams.get("id") || ""
+    const oAuthEmail = req.nextUrl.searchParams.get("email") || ""
 
     const tokenData = jwt.decode(oAuthToken);
-    console.log(tokenData);
+    //console.log(tokenData);
+
+    const current = {
+      id: oAuthid,
+      email:oAuthEmail,
+      token:oAuthToken
+    }
+
+    //console.log(current)
 
     if (oAuthToken.length > 0) {
       const response = NextResponse.redirect(new URL("/home", req.url));
 
       response.cookies.set({
-        name: "token",
-        value: JSON.stringify(oAuthToken),
+        name: "currentUser",
+        value: JSON.stringify(current),
         maxAge: 60 * 60 * 24 * 7,
       });
-
-      response.cookies.delete("currentUser")
-
       return response;
     }
   }

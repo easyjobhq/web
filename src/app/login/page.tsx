@@ -8,11 +8,13 @@ import React, { useState } from 'react'
 import { BsTools } from "react-icons/bs";
 import { FaGoogle } from "react-icons/fa";
 import { useGlobalContext } from '@/context/store';
+import { authService } from '@/services';
+import { Client } from '@/interfaces/Client';
 
 
 function Login() {
 
-    const { userIdContext, setUserIdContext, emailContext, setEmailContext } = useGlobalContext(); 
+    const { userIdContext, setUserIdContext, emailContext, setEmailContext, usernameContext, setUsernameContext } = useGlobalContext(); 
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -22,7 +24,7 @@ function Login() {
     const handleOauth = async (event: any) => {
       event.preventDefault();
       const token = window.location.href = `https://easy-job-eyze.onrender.com/auth/google/callback`;
-      //console.log("token de la pagina " + token)
+      console.log("token de la pagina " + token)
     };
     const onSubmit = async () => {
       if (!email || !password) {
@@ -34,8 +36,11 @@ function Login() {
 
         setUserIdContext(loginResponse.id);
         setEmailContext(loginResponse.email);
-      
+        const user: Client | any  = await authService.getMe(loginResponse.id);
+        setUsernameContext( user.name + " " + user.last_name)
+        
         router.push("/home")
+        
       }
     };
   

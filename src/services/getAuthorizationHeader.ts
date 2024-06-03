@@ -19,7 +19,8 @@ export function getAuthorizationHeader() {
   }else{
     return {
       //Authorization: `Bearer ${JSON.parse(currentUser || "")?.token || ""}`,
-      Authorization: `Bearer ${JSON.parse(currentUser || "")?.token}`,
+      Authorization: `Bearer ${JSON.parse(currentUser || "")?.token}`
+      
     };
   }
   //TODO - Manage when the user isn't logged

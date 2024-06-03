@@ -1,5 +1,9 @@
 import axios, { AxiosInstance } from "axios";
 import { getAuthorizationHeader } from "./getAuthorizationHeader";
+import { CreateQuestionDto } from "@/interfaces/create-question.dto";
+import { CreateReviewDto } from "@/interfaces/create-review.dto";
+import { headers } from "next/headers";
+import ProfessionalCard from "@/app/(general)/home/professionalCard";
 
 export class AuthService {
   protected readonly instance: AxiosInstance;
@@ -83,18 +87,28 @@ export class AuthService {
   }
 
   getMe = async (userId: string) => {
-    const res = await this.instance
-      .get(`/users/${userId}`, {
+    try {
+      const res = await this.instance
+      .get(`/clients/${userId}`, {
         headers: getAuthorizationHeader(),
       });
     
       return res.data;
+
+    } catch (error ) {
+      const res = await this.instance
+      .get(`/professionals/${userId}`, {
+        headers: getAuthorizationHeader(),
+      });
+    
+      return res.data;
+    }
   };
 
   getProfessinals = async () => {
     //console.log(getAuthorizationHeader())
     const res = await this.instance
-    .get('professionals/', {
+    .get('professionals/?pageSize', {
       headers: getAuthorizationHeader(),
     })
     return res.data
@@ -134,6 +148,23 @@ export class AuthService {
     })
 
     return res.data
+  }
+  
+  addServiceToProfessional=  async (professional_id:string, service_id:string) =>{
+    const res = await this.instance
+    .get(`/professionals/service/${professional_id}/${service_id}`,{
+        headers: getAuthorizationHeader(),
+      }
+    )
+
+    return res.status
+  }
+
+  addSpecialityToProfessional = async (Professional_id:string, speciality_id_id:string) =>{
+    const res = await this.instance
+    .get(`/professionals/specialities/${Professional_id}/${speciality_id_id}`,{
+      headers: getAuthorizationHeader()
+    })
   }
 
   getCity = async () =>{
@@ -196,6 +227,29 @@ export class AuthService {
     return res.data
   }
 
+
+  updateProfessional = async (id:string| undefined, name:string | undefined, last_name:string | undefined, email:string | undefined, phone_number:string | undefined, photo_url:string | undefined)=>{
+    try {
+      const res = await this.instance.patch(
+        `/professionals/${id}`,
+        {
+          name,
+          last_name,
+          email,
+          phone_number,
+          photo_url,
+        },
+        {
+          headers: getAuthorizationHeader(),
+        }
+      );
+      return res.data; // Asumiendo que quieres retornar los datos de la respuesta
+    } catch (error) {
+      console.error('Error updating professional:', error);
+      throw error; // Lanza el error para que pueda ser manejado por el llamador
+    }
+  }
+
   getAllCities = async () => {
     const res = await this.instance
     .get('/city',{
@@ -213,6 +267,56 @@ export class AuthService {
 
     return res.data
   }
+
+
+  deleteServiceToProfessional = async (id_professional:string, id_service:string) =>{
+    const res = await this.instance
+    .delete(`/professionals/oneservice/${id_professional}/${id_service}`,{
+      headers: getAuthorizationHeader(),
+    })
+
+    return res.status
+
+  }
+
+  deleteSpecialityToProfessional = async (id_professional:string, id_speciality:string) =>{
+    const res= await this.instance
+    .delete(`/professionals/onespeaciality/${id_professional}/${id_speciality}`,{
+      headers: getAuthorizationHeader(),
+    })
+
+    return res.status
+
+  }
+
+
+  createQuestion = async (id_client: string, id_professional: string, question: CreateQuestionDto) => {
+    const res = await this.instance
+    .post(`/questions/${id_client}/${id_professional}`, 
+        question
+        ,
+        {
+          headers: getAuthorizationHeader(),
+        } 
+     );
+  }
+
+  createReview = async (id_client: string, id_professional: string, review: CreateReviewDto) => {
+    const res = await this.instance
+    .post(`reviews/client/${id_client}/profesional/${id_professional}`, 
+        review
+        ,
+        {
+          headers: getAuthorizationHeader(),
+        } 
+     );
+
+    }
+  
+
+
+
+
 
   /*uploadAvatar = (userId: string, newAvatar: File) => {
     const formData = new FormData();
