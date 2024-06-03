@@ -162,7 +162,12 @@ export class AuthService {
     return res.data
   }
 
-
+  getPaymentMethods = async () => {
+    const res = await this.instance.get('/payment-method', {
+      headers: getAuthorizationHeader(),
+    });
+    return res.data;
+  };
 
   getLanguage = async () =>{
     const res = await this.instance
