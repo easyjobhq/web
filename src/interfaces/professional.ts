@@ -1,3 +1,5 @@
+import { Speciality } from "./speciality";
+
 export interface Professional {
     id: string;    
     name: string;
@@ -8,4 +10,5 @@ export interface Professional {
     roles: string[];
     score: number;
     description: string;
+    specialities: Speciality[];
 };
