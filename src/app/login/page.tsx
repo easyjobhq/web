@@ -84,7 +84,7 @@ function Login() {
         <div className='w-3/5 bg-blue-500 h-full flex justify-center align-middle items-center'>
           <div>
             <h1 className='text-5xl text-white font-bold mb-3 flex items-center justify-center'>Easy Job <BsTools className='ml-3'/></h1>
-            <h5 className='text-white font-medium text-center mb-3'>"Encuentra tu profesional facilmente por internet"</h5>
+            <h5 className='text-white font-medium text-center mb-3'>Encuentra tu profesional facilmente por internet</h5>
             <Image 
             src={'/Easy-job-logo.png'} 
             alt={'Easy job logo'}

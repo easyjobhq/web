@@ -52,10 +52,10 @@ function HomePage() {
       fetchData();
     }
 
+
     
     console.log(searchCity, searchSpeciality)
   }, [searchCity, searchSpeciality, currentPage]);
-
   const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
     setCurrentPage(newPage);
   };
