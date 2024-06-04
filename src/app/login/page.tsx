@@ -23,9 +23,11 @@ function Login() {
 
     const handleOauth = async (event: any) => {
       event.preventDefault();
-      const token = window.location.href = `https://easy-job-eyze.onrender.com/auth/google/callback`;
-      console.log("token de la pagina " + token)
-    };
+      if (typeof window !== 'undefined') {
+         window.location.href = `https://easy-job-eyze.onrender.com/auth/google/callback`;
+      }
+   };
+   
     const onSubmit = async () => {
       if (!email || !password) {
         alert("Please enter information");

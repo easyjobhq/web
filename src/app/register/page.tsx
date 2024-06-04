@@ -49,15 +49,16 @@ function Register() {
     }, []);
 
     const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files.length > 0) {
-            setPhoto(event.target.files[0]);
-            const url = await uploadFile(event.target.files[0]);
-            setPhotoUrl(url);
+        if (typeof window !== 'undefined') {
+            if (event.target.files && event.target.files.length > 0) {
+                setPhoto(event.target.files[0]);
+                const url = await uploadFile(event.target.files[0]);
+                setPhotoUrl(url);
+            }
         }
     };
 
-    const onSubmit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        event.preventDefault();
+    const onSubmit = async () => {
         if (!name || !last_name || !email || !phone_number || !password || !selectedOption) {
             alert("All fields are required");
             return;
@@ -200,7 +201,7 @@ function Register() {
                                     </>
                                 )}
                                 <div className="md:flex mb-4">
-                                    <button type="submit" onClick={onSubmit} className="bg-purple text-white font-bold uppercase text-lg mx-auto p-4 rounded">Submit</button>
+                                    <button type="submit" onClick={()=>onSubmit} className="bg-purple text-white font-bold uppercase text-lg mx-auto p-4 rounded">Submit</button>
                                 </div>
                             </div>
                         </div>
