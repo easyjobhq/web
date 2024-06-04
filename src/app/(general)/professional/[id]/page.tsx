@@ -384,98 +384,104 @@ const ProfessionalPage = ({ params }: Props) => {
       </div>
       
       <div className="main-professional-card bg-white mb-3 rounded-lg shadow-md w-2/5 ml-2 flex-wrap h-auto">
+      {isClient && (
+        <>
       <div className="bg-blue-500 text-white rounded-tr-md rounded-tl-md px-3 py-3 text-lg font-semibold">
         <h3>Agendar Servicio</h3>
       </div>
-      <div className="flex flex-col px-8 py-5">
-      <FormControl className="mb-4 text-gray-950">
-        <DatePicker
-          
-          selected={selectedDate}
-          onChange={handleDateChange}
-          className="p-2 border border-gray-400 rounded w-full "
-          dateFormat="MMMM d, yyyy"
-          placeholderText="Seleccionar Fecha"
-        />
-        </FormControl>
-        <FormControl className="mb-4">
-          
-          <Select 
-            sx={{height: 45, fontSize: '16px'}}
-            displayEmpty
-            value={selectedLocation || ''} 
-            onChange={handleLocationChange}>
-            <MenuItem value="" disabled>
-              Seleccionar Ubicación
-            </MenuItem>
-            {cities.map((city) => (
-              <MenuItem key={city.id} value={city.city_name}>{city.city_name}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        
-        <FormControl className="mb-4">
-          <Select 
-            sx={{height: 45, fontSize: '16px'}}
-            value={selectedTime || ''} 
-            onChange={handleTimeChange}
-            displayEmpty
-            >
-            <MenuItem value="" disabled>
-              Seleccionar Hora
-            </MenuItem>
-            {availableTimes.map((time) => (
-              <MenuItem key={time} value={time}>{time}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        
-        <FormControl className="mb-4">
-          <Select 
-          sx={{height: 45, fontSize: '16px'}}
-          value={selectedService || ''} 
-          onChange={handleServiceChange}
-          displayEmpty  
-          >
-            <MenuItem value="" disabled>
-              Seleccionar Servicio
-            </MenuItem>
-            {services.map((service) => (
-              <MenuItem key={service.id} value={service.title}>{service.title}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        
-        <FormControl className='mb-4'>
-        <Select
-          sx={{height: 45, fontSize: '16px'}}
-          displayEmpty
-          value={selectedPaymentMethod || ''}
-          
-          onChange={handlePaymentMethodChange}
-          >
-             <MenuItem value="" disabled>
-              Seleccionar Metodo de pago
-            </MenuItem>
-          {paymentMethods.map((method) => (
-            <MenuItem 
-              key={method.id} 
-              value={method.payment_method_name}
+      
+          <div className="flex flex-col px-8 py-5">
+          <FormControl className="mb-4 text-gray-950">
+            <DatePicker
+              
+              selected={selectedDate}
+              onChange={handleDateChange}
+              className="p-2 border border-gray-400 rounded w-full "
+              dateFormat="MMMM d, yyyy"
+              placeholderText="Seleccionar Fecha"
+            />
+            </FormControl>
+            <FormControl className="mb-4">
+              
+              <Select 
+                sx={{height: 45, fontSize: '16px'}}
+                displayEmpty
+                value={selectedLocation || ''} 
+                onChange={handleLocationChange}>
+                <MenuItem value="" disabled>
+                  Seleccionar Ubicación
+                </MenuItem>
+                {cities.map((city) => (
+                  <MenuItem key={city.id} value={city.city_name}>{city.city_name}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            
+            <FormControl className="mb-4">
+              <Select 
+                sx={{height: 45, fontSize: '16px'}}
+                value={selectedTime || ''} 
+                onChange={handleTimeChange}
+                displayEmpty
+                >
+                <MenuItem value="" disabled>
+                  Seleccionar Hora
+                </MenuItem>
+                {availableTimes.map((time) => (
+                  <MenuItem key={time} value={time}>{time}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            
+            <FormControl className="mb-4">
+              <Select 
+              sx={{height: 45, fontSize: '16px'}}
+              value={selectedService || ''} 
+              onChange={handleServiceChange}
+              displayEmpty  
               >
-              {method.payment_method_name}
-            </MenuItem>
-          ))}
-        </Select>
-      </FormControl>
-          {isClient && (
-            <>
-                <button onClick={handleAppointmentCreation} className="bg-blue-500 text-white p-2 mb-3 rounded hover:bg-blue-600 font-medium">
-                  Agendar Cita
-                </button>
-            </>
-          )}
-        
-      </div>
+                <MenuItem value="" disabled>
+                  Seleccionar Servicio
+                </MenuItem>
+                {services.map((service) => (
+                  <MenuItem key={service.id} value={service.title}>{service.title}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+            
+            <FormControl className='mb-4'>
+            <Select
+              sx={{height: 45, fontSize: '16px'}}
+              displayEmpty
+              value={selectedPaymentMethod || ''}
+              
+              onChange={handlePaymentMethodChange}
+              >
+                 <MenuItem value="" disabled>
+                  Seleccionar Metodo de pago
+                </MenuItem>
+              {paymentMethods.map((method) => (
+                <MenuItem 
+                  key={method.id} 
+                  value={method.payment_method_name}
+                  >
+                  {method.payment_method_name}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+              
+                <>
+                    <button onClick={handleAppointmentCreation} className="bg-blue-500 text-white p-2 mb-3 rounded hover:bg-blue-600 font-medium">
+                      Agendar Cita
+                    </button>
+                </>
+              
+            
+          </div>
+          </>
+      )}
+      
     </div>
     </div>
   )

@@ -24,7 +24,7 @@ export function Pid(req: NextRequest){
   return tokenn.id
 }
 
-export function middleware(req: NextRequest) {
+export async function middleware(req: NextRequest) {
   const cookies = cookie.parse(req.headers.get("Cookie") || "");
   const token = cookies.currentUser;
   const tokenFromOauth = req.cookies.get("currentUser");
@@ -38,8 +38,17 @@ export function middleware(req: NextRequest) {
     console.log("cant enter home ");
     return NextResponse.redirect(new URL("/login", req.url));
   }
+
   
  
+
+  if(req.nextUrl.pathname.startsWith('/profile')){
+    const currentUser =  JSON.parse(JSON.stringify( tokenFromOauth)) as current
+    const tokenn =JSON.parse(currentUser.value) as user
+    const isClient = await checkService.checkIsClient(tokenn.id)
+    if(isClient)
+      return NextResponse.redirect(new URL('/home', req.url))
+  }
 
   if (req.nextUrl.pathname.startsWith("/oauth")) {
     const oAuthToken = req.nextUrl.searchParams.get("token") || "";
