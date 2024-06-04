@@ -28,11 +28,11 @@ import Avatar from '@mui/material/Avatar';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { FaSave } from "react-icons/fa";
 import { Button } from '@mui/material'
+import { MdDelete } from "react-icons/md";
+import { IoMdAddCircle } from "react-icons/io";
+import { MdOutlineAddAPhoto } from "react-icons/md";
 
 
 interface Props {
@@ -194,8 +194,8 @@ function ProfilePage({ params }: Props) {
                   <input onChange={onChangePhoto} className="w-full shadow-inner p-4 border-0" type="file" name="photo" placeholder="-99.1405168"></input>
                 </div>
               )}
-              <button type="submit" className="text-cream-lighter bg-brick hover:bg-brick-dark" onClick={ChangeImage}>
-                  Change Photo
+              <button type="submit" className="font-light w-full mt-3 mb-2 border border-gray-400 rounded-md  flex justify-center items-center" onClick={ChangeImage}>
+                  Cambiar foto <MdOutlineAddAPhoto className='ml-3 text-gray-600'/>
               </button>
             </div>
             <div className="professional-information">
@@ -223,7 +223,7 @@ function ProfilePage({ params }: Props) {
               </div>
             </div>
           </div>
-          <p className='text-md mt-5 mb-3 font-light'>{professional?.description}</p>
+          <p className='text-md mt-10 mb-3 font-light'>{professional?.description}</p>
         </div>
         <div className="main-professional-card bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
           <h3 className='font-semibold text-xl' >Servicios y precios</h3>
@@ -232,33 +232,38 @@ function ProfilePage({ params }: Props) {
             {
               services.map((service: Service) => (
                 <>
-                  <li className='flex items-center text-gray-700 mt-2 font-light mb-2'>
-                    <div className="flex justify-between w-full">
-                      <div className='flex items-center'>
-                        <IoIosArrowForward className='text-xs mr-2' /> {service.title}
-                      </div>
-                      <p className=' font-light flex'><BiDollar className='h-6' /> {Math.round(service.price).toLocaleString('es-ES')}</p>
-                    </div>
-                  </li>
-                  <p className='text-gray-700 text-sm font-light mb-3' style={{ textIndent: "1rem" }}>{service.description}</p>
+                 <div className="flex">
+                  <div className="w-full">
+                    <li className='flex items-center text-gray-700 mt-2 font-light mb-2'>
+                        <div className="flex justify-between w-full">
+                          <div className='flex items-center'>
+                            <IoIosArrowForward className='text-xs mr-2' /> {service.title}
+                          </div>
+                          <p className=' font-light flex'><BiDollar className='h-6' /> {Math.round(service.price).toLocaleString('es-ES')}</p>
+                        </div>
+                      </li>
+                      <p className='text-gray-700 text-sm font-light mb-3' style={{ textIndent: "1rem" }}>{service.description}</p>
+                  </div>
+                  <button className="ml-3 px-2 py-1 text-gray-500 text-2xl " onClick={() =>onDeleteService(service.id)}>
+                    <MdDelete />
+                    </button>
+                 </div>
                   <div className="bg-gray-200" style={{ height: "0.5px" }}></div>
-                  <button className="px-2 py-1 text-white bg-red-500 rounded-lg hover:bg-red-600 ml-2" onClick={() =>onDeleteService(service.id)}>
-                   eliminar
-                  </button>
+                  
                 </>
               ))
               
             }
             
-            <div className="md:flex mb-4">
-                <label htmlFor="service" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-400">Añadir servicio</label>
+            <label htmlFor="service" className="block mb-2 text-sm font-md w-40 mt-5">Añadir servicio</label>
+            <div className="md:flex mb-4 items-center">
                 <select
                   id="services"
-                  className="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="border text-sm rounded-lg w-full p-2.5 bg-gray-100"
                   value={serviceId}
                   onChange={(e) => setServiceId(e.target.value)}
                 >
-                  <option value="">Choose your service</option>
+                  <option value="">Elegir servicio</option>
                   {allServices
                     .filter(all_service => !serviceIds.has(all_service.id)) // Filtra los servicios que no están en services
                     .map(filtered_service => (
@@ -268,8 +273,8 @@ function ProfilePage({ params }: Props) {
                     ))}
                 </select>
 
-                <button className="px-2 py-1 text-white bg-green-500 rounded-lg hover:bg-green-600 ml-2" onClick={onAddService}>
-                  Añadir
+                <button className="px-2 py-1 text-gray-500 ml-2 text-2xl" onClick={onAddService}>
+                  <IoMdAddCircle />
                 </button>
             </div>
             
@@ -315,49 +320,57 @@ function ProfilePage({ params }: Props) {
 
 
       <div className="w-2/5">
-        <div className="bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
+        <div className="bg-white mb-3 rounded-lg px-3 shadow-md w-full">
           <div className="container px-6 py-8 mx-auto">
-            <h2 className="text-xl font-semibold text-gray-700 capitalize">Detalles del perfil</h2>
+            <h2 className="text-lg font-medium">Detalles del perfil</h2>
             <form>
-              <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
+              <div className="grid grid-cols-1 gap-4 mt-4 sm:grid-cols-2">
                 <div>
-                  <label className="text-gray-700" htmlFor="name">Nombre</label>
-                  <input onChange={(event)=>{setName(event.target.value)}} value={name} id="name" type="text" className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring" />
-                  <button onClick={handleNameChange} className="px-3 py-2 text-sm tracking-wide text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600" type="button">Guardar cambios</button>
+                  <label className="" htmlFor="name">Nombre</label>
+                  <div className="flex">
+                    <input onChange={(event)=>{setName(event.target.value)}} value={name} id="name" type="text" className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring" />
+                    <button onClick={handleNameChange} className="px-3 text-lg tracking-wide text-gray-500  " type="button"><FaSave /></button>
+                  </div>
                 </div>
                 <div>
-                  <label className="text-gray-700" htmlFor="last_name">Apellido</label>
-                  <input onChange={(event)=>{setLastName(event.target.value)}} value={last_name} id="last_name" type="text" className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring" />
-                  <button onClick={handleLastNameChange} className="px-3 py-2 text-sm tracking-wide text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600" type="button">Guardar cambios</button>
+                  <label className="" htmlFor="last_name">Apellido</label>
+                  <div className="flex">
+                    <input onChange={(event)=>{setLastName(event.target.value)}} value={last_name} id="last_name" type="text" className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring" />
+                    <button onClick={handleLastNameChange} className="px-3 text-lg tracking-wide text-gray-500  " type="button"><FaSave /></button>
+                  </div>
                 </div>
                 <div>
-                  <label className="text-gray-700" htmlFor="emailAddress">Correo electrónico</label>
-                  <input onChange={(event)=>{setEmail(event.target.value)}} value={email} id="emailAddress" type="email" className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring" />
-                  <button onClick={handleEmailChange} className="px-3 py-2 text-sm tracking-wide text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600" type="button">Guardar cambios</button>
+                  <label className="" htmlFor="emailAddress">Correo electrónico</label>
+                  <div className="flex">
+                    <input onChange={(event)=>{setEmail(event.target.value)}} value={email} id="emailAddress" type="email" className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring" />
+                    <button onClick={handleEmailChange} className="px-3 text-lg tracking-wide text-gray-500  " type="button"><FaSave /></button>
+                  </div>
                 </div>
                 <div>
-                  <label className="text-gray-700" htmlFor="phoneNumber">Teléfono</label>
-                  <input onChange={(event)=>{setPhoneNumber(event.target.value)}} value={phoneNumber} id="phoneNumber" type="text" className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring" />
-                  <button onClick={handlePhoneNumberChange} className="px-3 py-2 text-sm tracking-wide text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600" type="button">Guardar cambios</button>
+                  <label className="" htmlFor="phoneNumber">Teléfono</label>
+                  <div className="flex">
+                    <input onChange={(event)=>{setPhoneNumber(event.target.value)}} value={phoneNumber} id="phoneNumber" type="text" className="block w-full px-4 py-2 mt-1 text-gray-700 bg-white border border-gray-300 rounded-md focus:border-blue-500 focus:outline-none focus:ring" />
+                    <button onClick={handlePhoneNumberChange} className="px-3 text-lg tracking-wide text-gray-500  " type="button"><FaSave /></button>
+                  </div>
                 </div>
               </div>
             </form>
           </div>
         </div>
         <div className="bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
-          <h2 className="text-xl font-semibold text-gray-700 capitalize">Añadir especialidades</h2>
+          <h2 className="text-lg font-medium">Añadir especialidades</h2>
           <div className="mt-4">
             <form>
-              <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-                <div>
-                  <label className="text-gray-700" htmlFor="speciality">Especialidad</label>
+              <div className="">
+                <label className="font-normal" htmlFor="speciality">Especialidad</label>
+                <div className='flex align-middle justify-center items-center mt-2'>
                   <select
                   id="specialities"
-                  className="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                  className="border text-sm rounded-lg bg-gray-100 block w-full p-2.5"
                   value={specialityId}
                   onChange={(e) => SetSpecialityId(e.target.value)}
                 >
-                  <option value="">Choose your service</option>
+                  <option value="">Elije tu servicio</option>
                   {allSpeciality
                     .filter(all_speciality => !SpecialitiesIds.has(all_speciality.id)) // Filtra los servicios que no están en services
                     .map(filtered_service => (
@@ -366,40 +379,42 @@ function ProfilePage({ params }: Props) {
                       </option>
                     ))}
                 </select>
+                <div>
+                  <button className="px-3  tracking-wide text-gray-500 text-2xl" type="submit" onClick={onAddSpeciality}><IoMdAddCircle /></button>
+                </div>
 
                 </div>
-                <div>
-                  <button className="px-3 py-2 text-sm tracking-wide text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600" type="submit" onClick={onAddSpeciality}>Añadir especialidad</button>
-                </div>
+                
               </div>
             </form>
           </div>
         </div>
         <div className="bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
-          <h2 className="text-xl font-semibold text-gray-700 capitalize">Eliminar especialidad</h2>
-          <div className="mt-4">
+          <h2 className="text-lg font-medium  ">Eliminar especialidad</h2>
+          <div className="mt-2">
             <form>
-              <div className="grid grid-cols-1 gap-6 mt-4 sm:grid-cols-2">
-                <div>
-                  <label className="text-gray-700" htmlFor="speciality">Especialidad</label>
+              <div className="">
+              <label className="" htmlFor="speciality">Especialidad</label>
+                <div className='flex align-middle justify-center mt-2'>
                   <select
-                  id="specialities"
-                  className="border text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                  value={specialityId}
-                  onChange={(e) => SetSpecialityId(e.target.value)}
-                >
-                  <option value="">Choose your service</option>
-                  {specialities.map((speciality) =>(
-                    <option key={speciality.id}  value={speciality.id}>
-                      {speciality.speciality_name}
-                    </option>
-                  ))}
-                </select>
+                    id="specialities"
+                    className="border text-sm rounded-lg bg-gray-100 block w-full p-2.5"
+                    value={specialityId}
+                    onChange={(e) => SetSpecialityId(e.target.value)}
+                  >
+                    <option value="">Elige tu servicio</option>
+                    {specialities.map((speciality) =>(
+                      <option key={speciality.id}  value={speciality.id}>
+                        {speciality.speciality_name}
+                      </option>
+                    ))}
+                  </select>
+                  <div>
+                    <button className="px-3 py-2 text-gray-500 text-2xl" type="button" onClick={onDeleteSpeaciality}><MdDelete/></button>
+                  </div>
 
                 </div>
-                <div>
-                  <button className="px-3 py-2 text-sm tracking-wide text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:bg-red-600" type="button" onClick={onDeleteSpeaciality}>Eliminar especialidad</button>
-                </div>
+                
               </div>
             </form>
           </div>
@@ -419,11 +434,15 @@ function ProfilePage({ params }: Props) {
                   action={
                     <>
                       <Button
-                        variant="contained"
-                        color="secondary"
+                      className='text-2xl'
+                        sx={{
+                          color: "rgb(107 114 128 )",
+                          fontSize: "1.5rem",
+                          lineHeight: "2rem"
+                        }}
                         onClick={() => onDeleteAppoiment(appointment.id)}
                       >
-                        Eliminar
+                        <MdDelete />
                       </Button>
                     </>
                   }

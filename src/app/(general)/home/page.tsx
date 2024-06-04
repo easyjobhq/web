@@ -79,7 +79,7 @@ function HomePage() {
             <p>No hay profesionales disponibles.</p>
           )}
         </section>
-        <section className='flex w-1/5 bg-green-200 rounded-lg'>
+        <section className='flex w-1/5 bg-blue-300 rounded-lg'>
           {/* TODO -- Maps API */}
         </section>
       </div>

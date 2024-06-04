@@ -77,7 +77,10 @@ function Login() {
                 >
                   <FaGoogle className='mr-2' /><p>Conectate con Google</p> 
                 </button>
-                <Link href={"/register"} className='text-sm font-normal mt-4 text-center text-blue-700 hover:underline'>¿No tienes cuenta? Registrate</Link>
+                <div className="flex items-center justify-center">
+                <p className='text-sm font-light mt-4 mr-1'>¿No tienes cuenta?</p>
+                <Link href={"/register"} className='text-sm font-normal mt-4 text-center text-blue-700 hover:underline'> Registrate</Link>
+                </div>
               </div>
           </div>
         </div>
