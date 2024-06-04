@@ -132,7 +132,7 @@ export default function Navbar(props: Props) {
                 <MenuItem value={''}>Sin filtro</MenuItem>
                 {
                   specialities.map((speciality) => (
-                    <MenuItem value={`${speciality.speciality_name}`}>{speciality.speciality_name}</MenuItem>
+                    <MenuItem key={speciality.id} value={`${speciality.speciality_name}`}>{speciality.speciality_name}</MenuItem>
                   ))
                 }
               </Select>
@@ -169,7 +169,7 @@ export default function Navbar(props: Props) {
                 <MenuItem value={''}>Sin filtro</MenuItem>
                 {
                   cities.map((city) => (
-                    <MenuItem value={`${city.city_name}`}>{city.city_name}</MenuItem>
+                    <MenuItem key={city.id} value={`${city.city_name}`}>{city.city_name}</MenuItem>
                   ))
                 }
               </Select>

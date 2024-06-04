@@ -1,8 +1,9 @@
 'use client';
 
-import { createContext, useContext, Dispatch, SetStateAction, useState } from "react";
+import { createContext, useContext, Dispatch, SetStateAction, useState, ReactNode } from "react";
 
 export interface ContextProps {
+
     userIdContext: string,
     setUserIdContext: Dispatch<SetStateAction<string>>,
     emailContext: string,
@@ -19,6 +20,7 @@ export const GlobalContext = createContext<ContextProps>({
     userIdContext: '',
     setUserIdContext: (): string => '',
     emailContext: '',
+
     setEmailContext: (): string => '' , 
     usernameContext: '', 
     setUsernameContext: (): string => '' ,
@@ -35,11 +37,12 @@ export const GlobalContextProvider = ({ children }: any) => {
     const [searchSpeciality, setSearchSpeciality] = useState('');
     const [searchCity, setSearchCity] = useState('');
     
+
     return (
         <GlobalContext.Provider value={{ userIdContext, setUserIdContext, emailContext, setEmailContext, usernameContext, setUsernameContext, searchSpeciality, setSearchSpeciality, searchCity, setSearchCity}}>
             {children}
         </GlobalContext.Provider>
-    )
+    );
 };
 
 export const useGlobalContext = () => useContext(GlobalContext);
