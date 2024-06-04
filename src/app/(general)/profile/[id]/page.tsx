@@ -71,8 +71,11 @@ function ProfilePage({ params }: Props) {
 
   const onChangePhoto = async(event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
-      setPhoto(event.target.files[0]);
-      const url:string | void = await uploadFile(event.target.files[0]).then((url)=>setPhotoUrl(url))
+      if (typeof window !== 'undefined') {
+        setPhoto(event.target.files[0]);
+        const url:string | void = await uploadFile(event.target.files[0]).then((url)=>setPhotoUrl(url))
+      }
+      
     }
   }
 
