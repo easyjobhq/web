@@ -9,6 +9,7 @@ import { BiDollar } from "react-icons/bi";
 import { City } from '@/interfaces/city';
 import Link from "next/link";
 import { SlArrowRight } from "react-icons/sl";
+import { Speciality } from '@/interfaces/speciality';
 
 interface ProfessionalProps {
   professional: Professional;
@@ -20,6 +21,7 @@ function ProfessionalCard(props: ProfessionalProps) {
   const starRating = `${Math.round(starPercentage/10) *10}%`; 
   const [services, setServices] = useState<Service[]>([]);
   const [cities, setCities] = useState<City[]>([]);
+  const [specialities, setSpecialities] = useState<Speciality[]>([]);
 
 
   useEffect( () => {
@@ -29,6 +31,9 @@ function ProfessionalCard(props: ProfessionalProps) {
       
       const responseCities = await authService.getCitiesOfProfessional(props.professional.id);
       setCities(responseCities);
+
+      const responseSpecialities = await authService.getSpecialitiesOfProfessional(props.professional.id);
+      setSpecialities(responseSpecialities);
        
     }  
 
@@ -54,7 +59,18 @@ function ProfessionalCard(props: ProfessionalProps) {
                 {props.professional.name} {props.professional.last_name}
               </Link>
             </h2>
-            <p className='text-sm font-light'>Poner la profesion</p>
+            <p className='text-sm font-light'>
+            { specialities && specialities.length> 0? (
+              specialities.map((speciality, index) => (
+                <>
+                  {speciality.speciality_name} {index  < specialities.length -1? ', ': ''}
+                </>
+              ))
+            ): (
+              "Sin profesion"
+            )}
+            </p>
+            
             <div className='flex justify-left items-center'>
               <div className='stars-outer'>
                 <div className='stars-inner' style={{width: `${starRating}`}}>

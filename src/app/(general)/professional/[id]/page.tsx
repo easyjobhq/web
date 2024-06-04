@@ -186,7 +186,7 @@ const ProfessionalPage = ({ params }: Props) => {
   }, [params.id]);
 
   return (
-    <div className='flex'>
+    <div className='flex items-start '>
       <div className="w-3/5 mr-2">
         <div className="main-professional-card bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
           <div className="flex">
@@ -383,23 +383,28 @@ const ProfessionalPage = ({ params }: Props) => {
         </div>
       </div>
       
-      <div className="main-professional-card bg-white mb-3 rounded-lg shadow-md w-2/5 ml-2 flex-wrap">
+      <div className="main-professional-card bg-white mb-3 rounded-lg shadow-md w-2/5 ml-2 flex-wrap h-auto">
       <div className="bg-blue-500 text-white rounded-tr-md rounded-tl-md px-3 py-3 text-lg font-semibold">
         <h3>Agendar Servicio</h3>
       </div>
       <div className="flex flex-col px-8 py-5">
-      <FormControl className="mb-4">
+      <FormControl className="mb-4 text-gray-950">
         <DatePicker
+          
           selected={selectedDate}
           onChange={handleDateChange}
-          className="mb-4 p-2 border rounded"
+          className="p-2 border border-gray-400 rounded w-full "
           dateFormat="MMMM d, yyyy"
           placeholderText="Seleccionar Fecha"
         />
         </FormControl>
         <FormControl className="mb-4">
-          <InputLabel>Seleccionar Ubicación</InputLabel>
-          <Select value={selectedLocation || ''} onChange={handleLocationChange}>
+          
+          <Select 
+            sx={{height: 45, fontSize: '16px'}}
+            displayEmpty
+            value={selectedLocation || ''} 
+            onChange={handleLocationChange}>
             <MenuItem value="" disabled>
               Seleccionar Ubicación
             </MenuItem>
@@ -410,8 +415,12 @@ const ProfessionalPage = ({ params }: Props) => {
         </FormControl>
         
         <FormControl className="mb-4">
-          <InputLabel>Seleccionar Hora</InputLabel>
-          <Select value={selectedTime || ''} onChange={handleTimeChange}>
+          <Select 
+            sx={{height: 45, fontSize: '16px'}}
+            value={selectedTime || ''} 
+            onChange={handleTimeChange}
+            displayEmpty
+            >
             <MenuItem value="" disabled>
               Seleccionar Hora
             </MenuItem>
@@ -422,8 +431,12 @@ const ProfessionalPage = ({ params }: Props) => {
         </FormControl>
         
         <FormControl className="mb-4">
-          <InputLabel>Seleccionar Servicio</InputLabel>
-          <Select value={selectedService || ''} onChange={handleServiceChange}>
+          <Select 
+          sx={{height: 45, fontSize: '16px'}}
+          value={selectedService || ''} 
+          onChange={handleServiceChange}
+          displayEmpty  
+          >
             <MenuItem value="" disabled>
               Seleccionar Servicio
             </MenuItem>
@@ -434,15 +447,21 @@ const ProfessionalPage = ({ params }: Props) => {
         </FormControl>
         
         <FormControl className='mb-4'>
-        <InputLabel id="payment-method-label">Método de Pago</InputLabel>
         <Select
-          labelId="payment-method-label"
+          sx={{height: 45, fontSize: '16px'}}
+          displayEmpty
           value={selectedPaymentMethod || ''}
-          label="Método de Pago"
+          
           onChange={handlePaymentMethodChange}
           >
+             <MenuItem value="" disabled>
+              Seleccionar Metodo de pago
+            </MenuItem>
           {paymentMethods.map((method) => (
-            <MenuItem key={method.id} value={method.payment_method_name}>
+            <MenuItem 
+              key={method.id} 
+              value={method.payment_method_name}
+              >
               {method.payment_method_name}
             </MenuItem>
           ))}
@@ -450,7 +469,7 @@ const ProfessionalPage = ({ params }: Props) => {
       </FormControl>
           {isClient && (
             <>
-                <button onClick={handleAppointmentCreation} className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+                <button onClick={handleAppointmentCreation} className="bg-blue-500 text-white p-2 mb-3 rounded hover:bg-blue-600 font-medium">
                   Agendar Cita
                 </button>
             </>
