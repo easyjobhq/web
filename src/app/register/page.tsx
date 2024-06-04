@@ -49,13 +49,13 @@ function Register() {
     }, []);
 
     const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
-        if (typeof window !== 'undefined') {
+        
             if (event.target.files && event.target.files.length > 0) {
                 setPhoto(event.target.files[0]);
                 const url = await uploadFile(event.target.files[0]);
                 setPhotoUrl(url);
             }
-        }
+        
     };
 
     const onSubmit = async () => {
