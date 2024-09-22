@@ -1,0 +1,27 @@
+name: CD Pipeline
+
+on:
+  workflow_run:
+    workflows: ["CI Pipeline"]
+    types:
+      - completed
+
+jobs:
+
+  build:
+
+    runs-on: self-hosted
+    
+    steps:
+    - name: pull Docker image
+      run: sudo docker pull juanjodiazzz/easyjob-frontend-cicd-pipeline:latest
+    - name: Delete old Docker container
+      run: sudo docker rm -f easyjob-frontend-cicd-container || true
+    - name: Run Docker container 
+      env:
+          JWT_SECRET: ${{secrets.JWT_SECRET}}
+          NEXT_PUBLIC_BACKEND_URL: ${{secrets.NEXT_PUBLIC_BACKEND_URL}}
+      run: |
+        sudo docker run -d -p 3000:3000 --name easyjob-frontend-cicd-container \
+        -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
+        -e NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }} 
