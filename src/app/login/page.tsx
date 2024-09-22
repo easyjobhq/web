@@ -24,7 +24,7 @@ function Login() {
     const handleOauth = async (event: any) => {
       event.preventDefault();
       
-         window.location.href = `https://easy-job-eyze.onrender.com/auth/google/callback`;
+         window.location.href = `${process.env.BACKEND_URL}/auth/google/callback`;
       
    };
    

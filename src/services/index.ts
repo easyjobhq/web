@@ -1,8 +1,6 @@
 import { AuthService } from "./auth.service";
 import { Check } from "./checkStatus.service";
 
-export const authService = new AuthService("https://easy-job-eyze.onrender.com");
+export const authService = new AuthService(process.env.NEXT_PUBLIC_BACKEND_URL || "localhost:3001");
 
-export const checkService = new Check("https://easy-job-eyze.onrender.com")
-
-//export const authService = new AuthService("http://localhost:3001");
+export const checkService = new Check(process.env.NEXT_PUBLIC_BACKEND_URL || "localhost:3001");
