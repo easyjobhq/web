@@ -44,7 +44,7 @@ function HomePage() {
       const fetchData = async () => {
         const response = await authService.getProfessionals(currentPage, pageSize);
         console.log(response);
-        setProfessionals(response);
+        setProfessionals(response.data);
         setTotalProfessionals(response.total);
         console.log("Response . total es: ", response.total);
       };
