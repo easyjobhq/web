@@ -22,7 +22,7 @@ jobs:
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
         NEXT_PUBLIC_BACKEND_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_URL }}
       run: |
-        sudo docker run -d -p 3000:3000 --name easyjob-frontend-cicd-container \
+        sudo docker run -d -p 80:3000 --name easyjob-frontend-cicd-container \
         -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
         -e NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }} \
         juanjodiazzz/easyjob-frontend-cicd-pipeline:latest
