@@ -1,26 +1,41 @@
-# Step 1: Build Stage
-FROM node:18-alpine AS builder
-# Set working directory
+FROM node:20-slim AS base
+
+FROM base AS builder
+
 WORKDIR /app
-# Copy package.json and package-lock.json
-COPY package*.json ./
-# Install dependencies
-RUN npm install
-# Copy the rest of the application
+
+COPY package.json package-lock.json* ./
+RUN npm ci
 COPY . .
-# Build the application
+
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production
+
 RUN npm run build
-# Step 2: Production Stage
-FROM node:18-alpine AS production
-# Set working directory
+
+FROM base AS runner
 WORKDIR /app
-# Copy only the build output and necessary files from the builder stage
-COPY --from=builder /app/.next ./.next
+
+ENV NEXT_TELEMETRY_DISABLED=1
+ENV NODE_ENV=production
+
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/package*.json ./
-# Install only production dependencies
-RUN npm install --only=production
-# Expose the port the app runs on
+
+RUN mkdir .next
+RUN chown nextjs:nodejs .next
+
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+
+USER nextjs
+
 EXPOSE 3000
-# Start the application
-CMD ["npm", "start"]
+
+ENV PORT=3000
+
+ARG HOSTNAME
+
+CMD node server.js
