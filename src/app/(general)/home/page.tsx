@@ -65,12 +65,11 @@ function HomePage() {
   return (
     <div>
       <div className="mb-3">
-        {searchSpeciality}
         <h1 className="text-xl font-semibold w-full mb-2">Resultados de la búsqueda</h1>
         <p className='font-light'>Reserva por internet, nunca pagarás de mas :)</p>
       </div>
       <div className="flex">
-        <section className="mr-3 w-4/5">
+        <section className="min-h-screen mr-3 w-4/5">
           {professionals.length > 0 ? (
             professionals.map((professional: Professional) => (
               <ProfessionalCard key={professional.id} professional={professional} />

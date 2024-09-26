@@ -43,34 +43,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  
-  
-
-  /*
-    const fetchUserId = async () => {
-      try {
-        const response = await fetch('api/get-user-id', {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include', // Para enviar cookies con la solicitud
-        });
-
-        if (!response.ok) {
-          throw new Error(`Error: ${response.status} ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        console.log(data)
-        return data.userId
-      } catch (err) {
-        throw err;
-      }
-    };
-
-  fetchUserId();
-  */
 
   const cookieStore = cookies()
 
@@ -81,14 +53,6 @@ export default function RootLayout({
     const theme = JSON.parse(JSON.stringify(cookieStore.get('currentUser'))) as current;
     const tokenn = JSON.parse(theme.value) as user;
     id = tokenn.id
-    
-    //if(userIdContext === ''){
-      //setUserIdContext(id);
-      //setEmailContext(tokenn.email);
-      //const user: Client | any  = authService.getMe(id);
-      //setUsernameContext( user.name + " " + user.last_name)
-
-    //}
   }
   
 
@@ -96,7 +60,7 @@ export default function RootLayout({
     <>
         <Navbar id={id} />
 
-        <div className="px-80 pt-10 w-full">
+        <div className="px-80 pt-10  min-h-screen">
           {children}
         </div>
         <Footer/>
