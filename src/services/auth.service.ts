@@ -42,47 +42,64 @@ export class AuthService {
   };
 
 
-  register = async (name:string, last_name:string, email:string, phone_number:string, password:string, photo_url:string, service_id: string, language_id:string, city_id:string, speciality_id:string, selectedOption: string) =>{
+  register = async (name:string, last_name:string, email:string, phone_number:string, password:string, photo:File, service_id: string, language_id:string, city_id:string, speciality_id:string, selectedOption: string) =>{
+    
     if(selectedOption == 'Prof'){
+      
+      //Fix this to the Form form xd
 
-      //console.log("este es el serviceId " + service_id + '\n este es el language_id ' + language_id + "\n este es el city_id" + city_id + "\n este es el speciality_id " + speciality_id);
-      const res = await this.instance
-      .post("/auth/professional/register",{
-        name,
-        last_name,
-        email,
-        phone_number,
-        photo_url,
-        password,
-        service_id,
-        language_id,
-        city_id,
-        speciality_id,
-      });
-      console.log(res)
+      const formData = new FormData();
 
+      // Append form fields to FormData
+      formData.append('name', name);
+      formData.append('last_name', last_name);
+      formData.append('email', email);
+      formData.append('phone_number', phone_number);
+      formData.append('password', password);
+      formData.append('professional_image', photo); 
+      formData.append('service_id', service_id);
+      formData.append('language_id', language_id);
+      formData.append('city_id', city_id);
+      formData.append('speciality_id', speciality_id);
+
+
+      // Send the POST request with FormData
+    const res = await this.instance.post("/auth/professional/register", formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',  // Ensure proper content type for file upload
+      },
+    });
+
+    return res;
+      
     }else{
-      const res = await this.instance
-      .post("/auth/client/register",{
-        name,
-        last_name,
-        email,
-        phone_number,
-        photo_url,
-        password
+      // Create a FormData object to handle file uploads
+      const formData = new FormData();
+      
+      // Append form fields to FormData
+      formData.append('name', name);
+      formData.append('last_name', last_name);
+      formData.append('email', email);
+      formData.append('phone_number', phone_number);
+      formData.append('password', password);
+      formData.append('client_image', photo);  // Append the file as 'photo'
+
+      
+      // Send the POST request with FormData
+      const res = await this.instance.post("/auth/client/register", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',  // Set the appropriate content type for file upload
+        },
       });
 
-      console.log(res)
-
-
+      // Return mock data as per your example
       return {
         username: "test",
         id: "test",
         accessToken: "test",
-        expiredAt:  Date.now() + 60 * 60 * 24 * 7,
+        expiredAt: Date.now() + 60 * 60 * 24 * 7,  // Expires in 1 week
+      };
     }  
-    }
-      
 
   }
 
@@ -252,25 +269,37 @@ export class AuthService {
   }
 
 
-  updateProfessional = async (id:string| undefined, name:string | undefined, last_name:string | undefined, email:string | undefined, phone_number:string | undefined, photo_url:string | void)=>{
+  updateProfessional = async (id:string| undefined, name:string | undefined, last_name:string | undefined, email:string | undefined, phone_number:string | undefined, photo:File | null)=>{
     try {
+
+      // Create a FormData object to handle file uploads
+      const formData = new FormData();
+      
+      // Append fields to FormData
+      if (name) formData.append('name', name);
+      if (last_name) formData.append('last_name', last_name);
+      if (email) formData.append('email', email);
+      if (phone_number) formData.append('phone_number', phone_number);
+      if (photo) formData.append('professional_image', photo);  // Append the file if it exists
+
+      console.log(formData)
+
+      // Send the PATCH request with FormData
       const res = await this.instance.patch(
         `/professionals/${id}`,
+        formData,  // Use FormData here
         {
-          name,
-          last_name,
-          email,
-          phone_number,
-          photo_url,
-        },
-        {
-          headers: getAuthorizationHeader(),
+          headers: {
+            ...getAuthorizationHeader(),
+            'Content-Type': 'multipart/form-data',  // Set the appropriate content type for file upload
+          },
         }
       );
-      return res.data; // Asumiendo que quieres retornar los datos de la respuesta
+  
+      return res.data; // Return the data from the response
     } catch (error) {
       console.error('Error updating professional:', error);
-      throw error; // Lanza el error para que pueda ser manejado por el llamador
+      throw error; // Rethrow the error for further handling
     }
   }
 
@@ -337,24 +366,4 @@ export class AuthService {
 
     }
 
-    
-  
-
-
-
-
-
-  /*uploadAvatar = (userId: string, newAvatar: File) => {
-    const formData = new FormData();
-    formData.append("file", newAvatar);
-    return this.instance
-      .post(`/users/${userId}/upload`, formData, {
-        headers: getAuthorizationHeader(),
-      })
-      .then((res) => {
-        return {
-          newAvatar: res.data.data.url,
-        };
-      });
-  };*/
 }
