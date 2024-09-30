@@ -33,6 +33,7 @@ function Register() {
 
     useEffect(()=>{
         const fetchData = async () =>{
+
             const services = await authService.getServices();
             setServices(services);
       
@@ -44,10 +45,6 @@ function Register() {
 
             const speciality = await authService.getSpeciality();
             SetSpeciality(speciality);
-            console.log(language)
-            console.log(services)
-            console.log(city)
-            console.log(speciality)
         }
         
         fetchData();
@@ -57,56 +54,35 @@ function Register() {
     const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
         if (event.target.files && event.target.files.length > 0) {
             setPhoto(event.target.files[0]);
-            const url = await uploadFile(event.target.files[0]).then((url)=>setPhotoUrl(url))
-            //console.log(photo_url)
         }
     };
 
     const onSubmit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        
+        console.log("AYUDAAA")
+        
         event.preventDefault();
-        if (!name || !last_name || !email || !phone_number || !password || !selectedOption) {
+        if (!name || !last_name || !email || !phone_number || !password || !selectedOption || !photo) {
             alert("All fields are required");
         } else {
-            if(photo!== null){
-                if(selectedOption == 'Prof' && (!serviceId || !cityId || !languageId || !specialityId)){
-                    alert("all fields are required")
-                }else if(selectedOption == 'Cli'){
-                    await register(name, last_name, email, phone_number, password, photo_url, "", "", "", "",  selectedOption)
-                    .then(() => router.push("/login"))
-                    .catch((e: Error) => alert(e));
-                }
-                else{
-                    console.log("Estos son los ids" + serviceId +'\n'+ languageId + '\n' + cityId + '\n' + specialityId)
-                    await register(name, last_name, email, phone_number, password, photo_url, serviceId, languageId, cityId, specialityId,  selectedOption)
-                    .then(() => router.push("/login"))
-                    .catch((e: Error) => alert(e));
-                }
-              
-            }else{
-                if(selectedOption == 'Prof' && (!serviceId || !cityId || !languageId || !specialityId)){
-                    alert("all fields are required")
-                }else if(selectedOption == 'Cli'){
-                    await register(name, last_name, email, phone_number, password, photo_url, "", "", "", "",  selectedOption)
-                    .then(() => router.push("/login"))
-                    .catch((e: Error) => alert(e));
-                }
-                else{
-                    await register(name, last_name, email, phone_number, password, "", serviceId, languageId, cityId, specialityId,  selectedOption)
+            
+            if(selectedOption == 'Prof' && (!serviceId || !cityId || !languageId || !specialityId)){
+                alert("all fields are required")
+            }else if(selectedOption == 'Cli'){
+                await register(name, last_name, email, phone_number, password, photo, "", "", "", "",  selectedOption)
                 .then(() => router.push("/login"))
                 .catch((e: Error) => alert(e));
-                }
-              
             }
-            
+            else{
+                await register(name, last_name, email, phone_number, password, photo, serviceId, languageId, cityId, specialityId,  selectedOption)
+                .then(() => router.push("/login"))
+                .catch((e: Error) => alert(e));
+            }
         }
     }
 
     return (
-        // <body className="bg-cream text-charcoal">
-        //     <main className="flex-1 md:p-0 lg:pt-8 lg:px-8 md:ml-24 flex flex-col">
-                
-        //     </main>
-        // </body>
+        
         <section className=" p-4 shadow-md bg-white rounded-lg ">
             <div className="md:flex">
                 <h2 className="md:w-1/3 tracking-wide font-bold mb-6 ml-2 text-2xl">Crea tu perfil</h2>

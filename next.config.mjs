@@ -5,7 +5,7 @@ const nextConfig = {
       domains: [
         'firebasestorage.googleapis.com',
         'example.com',  // Add more domains as needed
-        'another-example.com',
+        'easyjob-bucket.s3.us-east-2.amazonaws.com'
         // Add other domains here
       ],
     },

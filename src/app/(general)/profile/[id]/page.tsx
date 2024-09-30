@@ -73,9 +73,6 @@ function ProfilePage({ params }: Props) {
     if (event.target.files && event.target.files.length > 0) {
       
         setPhoto(event.target.files[0]);
-        const url:string | void = await uploadFile(event.target.files[0]).then((url)=>setPhotoUrl(url))
-      
-      
     }
   }
 
@@ -135,7 +132,6 @@ function ProfilePage({ params }: Props) {
     const fetchData = async () => {
       const responseProfessional = await authService.getProfessional(params.id);
       setProfessional(responseProfessional);
-      console.log(responseProfessional);
       setName(responseProfessional.name)
       setLastName(responseProfessional.last_name)
       setEmail(responseProfessional.email)
