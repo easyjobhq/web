@@ -269,25 +269,37 @@ export class AuthService {
   }
 
 
-  updateProfessional = async (id:string| undefined, name:string | undefined, last_name:string | undefined, email:string | undefined, phone_number:string | undefined, photo_url:string | void)=>{
+  updateProfessional = async (id:string| undefined, name:string | undefined, last_name:string | undefined, email:string | undefined, phone_number:string | undefined, photo:File | null)=>{
     try {
+
+      // Create a FormData object to handle file uploads
+      const formData = new FormData();
+      
+      // Append fields to FormData
+      if (name) formData.append('name', name);
+      if (last_name) formData.append('last_name', last_name);
+      if (email) formData.append('email', email);
+      if (phone_number) formData.append('phone_number', phone_number);
+      if (photo) formData.append('professional_image', photo);  // Append the file if it exists
+
+      console.log(formData)
+
+      // Send the PATCH request with FormData
       const res = await this.instance.patch(
         `/professionals/${id}`,
+        formData,  // Use FormData here
         {
-          name,
-          last_name,
-          email,
-          phone_number,
-          photo_url,
-        },
-        {
-          headers: getAuthorizationHeader(),
+          headers: {
+            ...getAuthorizationHeader(),
+            'Content-Type': 'multipart/form-data',  // Set the appropriate content type for file upload
+          },
         }
       );
-      return res.data; // Asumiendo que quieres retornar los datos de la respuesta
+  
+      return res.data; // Return the data from the response
     } catch (error) {
       console.error('Error updating professional:', error);
-      throw error; // Lanza el error para que pueda ser manejado por el llamador
+      throw error; // Rethrow the error for further handling
     }
   }
 
@@ -354,24 +366,4 @@ export class AuthService {
 
     }
 
-    
-  
-
-
-
-
-
-  /*uploadAvatar = (userId: string, newAvatar: File) => {
-    const formData = new FormData();
-    formData.append("file", newAvatar);
-    return this.instance
-      .post(`/users/${userId}/upload`, formData, {
-        headers: getAuthorizationHeader(),
-      })
-      .then((res) => {
-        return {
-          newAvatar: res.data.data.url,
-        };
-      });
-  };*/
 }

@@ -102,26 +102,25 @@ function ProfilePage({ params }: Props) {
     window.location.reload()
   }
   const ChangeImage= async()=>{
-      authService.updateProfessional(id, name, last_name, email, phoneNumber, photo_url)
+      authService.updateProfessional(id, name, last_name, email, phoneNumber, photo)
       //window.location.reload();
   }
 
   const handleEmailChange = () => {
-    
-    authService.updateProfessional(id, name, last_name, email, phoneNumber, photo_url)
+    authService.updateProfessional(id, name, last_name, email, phoneNumber, null)
     window.location.reload();
 
   }
   const handlePhoneNumberChange = () => {
-    authService.updateProfessional(id, name, last_name, email, phoneNumber, photo_url)
+    authService.updateProfessional(id, name, last_name, email, phoneNumber, null)
     window.location.reload();
   }
   const handleNameChange = ()=>{
-    authService.updateProfessional(id, name, last_name, email, phoneNumber, photo_url)
+    authService.updateProfessional(id, name, last_name, email, phoneNumber, null)
     window.location.reload();
   }
   const handleLastNameChange = () =>{
-    authService.updateProfessional(id, name, last_name, email, phoneNumber, photo_url)
+    authService.updateProfessional(id, name, last_name, email, phoneNumber, null)
     window.location.reload();
   }
 
