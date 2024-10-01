@@ -8,6 +8,7 @@ import ProfessionalCard from "@/app/(general)/home/professionalCard";
 export class AuthService {
   protected readonly instance: AxiosInstance;
   public constructor(url: string) {
+    console.log("La url del back es esta: "+ url)
     this.instance = axios.create({
       baseURL: url,
       timeout: 30000,
