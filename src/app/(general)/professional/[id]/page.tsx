@@ -89,7 +89,7 @@ const ProfessionalPage = ({ params }: Props) => {
   }
 
   async function handleSubmitReview() {
-    //console.log("AYUDA")
+
     const review: CreateReviewDto = {
       score: formsRating, 
       comment: formReviewComment
@@ -132,7 +132,7 @@ const ProfessionalPage = ({ params }: Props) => {
     };
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/appointment/${userIdContext}/${params.id}/${selectedPaymentMethod}`, {
+        const response = await fetch(`${process.env.BACKEND_URL}/appointment/${userIdContext}/${params.id}/${selectedPaymentMethod}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
