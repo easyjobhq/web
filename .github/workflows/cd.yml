@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     runs-on: self-hosted
-    
+
     steps:
     - name: Pull Docker image
       run: sudo docker pull juanjodiazzz/easyjob-frontend-cicd-pipeline:latest
@@ -23,6 +23,10 @@ jobs:
         NEXT_PUBLIC_BACKEND_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_URL }}
       run: |
         sudo docker run -d -p 80:3000 --name easyjob-frontend-cicd-container \
-        -e JWT_SECRET=${{ secrets.JWT_SECRET }} \
-        -e NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }} \
+        -e JWT_SECRET=$JWT_SECRET \
+        -e NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL \
         juanjodiazzz/easyjob-frontend-cicd-pipeline:latest
+
+    - name: Verify environment variables inside Docker container
+      run: |
+        sudo docker exec easyjob-frontend-cicd-container printenv NEXT_PUBLIC_BACKEND_URL
