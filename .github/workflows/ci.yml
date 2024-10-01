@@ -21,9 +21,13 @@ jobs:
       run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
       
     - name: Build the Docker image
-      run: |
-        sudo docker build -t juanjodiazzz/easyjob-frontend-cicd-pipeline:latest \
-        --build-arg NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }} .
+      env: 
+          NEXT_PUBLIC_BACKEND_URL: ${{secrets.NEXT_PUBLIC_BACKEND_URL}}
+          JWT_SECRET: ${{secrets.JWT_SECRET}}
+          
+      run: sudo docker build -t juanjodiazzz/easyjob-frontend-cicd-pipeline:latest \
+        --build-arg NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }} \
+        --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} .
       
     - name: Push to Dockerhub
       run: docker push juanjodiazzz/easyjob-frontend-cicd-pipeline:latest
