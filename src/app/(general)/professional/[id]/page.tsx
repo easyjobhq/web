@@ -132,7 +132,7 @@ const ProfessionalPage = ({ params }: Props) => {
     };
 
     try {
-        const response = await fetch(`${process.env.BACKEND_URL}/appointment/${userIdContext}/${params.id}/${selectedPaymentMethod}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/appointment/${userIdContext}/${params.id}/${selectedPaymentMethod}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
