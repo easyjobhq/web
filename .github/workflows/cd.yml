@@ -15,26 +15,14 @@ jobs:
     - name: Delete old Docker container
       run: sudo docker rm -f easyjob-frontend-cicd-container || true
 
-    - name: Verify environment variables
-      env:
-        JWT_SECRET: ${{ secrets.JWT_SECRET }}
-        NEXT_PUBLIC_BACKEND_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_URL }}
-      run: |
-        echo "JWT_SECRET is set: ${{ secrets.JWT_SECRET != '' }}"
-        echo "NEXT_PUBLIC_BACKEND_URL is set: ${{ secrets.NEXT_PUBLIC_BACKEND_URL != '' }}"
-        echo "NEXT_PUBLIC_BACKEND_URL: $NEXT_PUBLIC_BACKEND_URL"
-
     - name: Run Docker container 
       env:
         JWT_SECRET: ${{ secrets.JWT_SECRET }}
+        BACKEND_URL: ${{ secrets.BACKEND_URL }}
         NEXT_PUBLIC_BACKEND_URL: ${{ secrets.NEXT_PUBLIC_BACKEND_URL }}
+
       run: |
         sudo docker run -d -p 80:3000 --name easyjob-frontend-cicd-container \
         -e JWT_SECRET=$JWT_SECRET \
-        -e NEXT_PUBLIC_BACKEND_URL=$NEXT_PUBLIC_BACKEND_URL \
+        -e BACKEND_URL=$BACKEND_URL \
         juanjodiazzz/easyjob-frontend-cicd-pipeline:latest
-
-    - name: Verify environment variables inside Docker container
-      run: |
-        sudo docker exec easyjob-frontend-cicd-container printenv NEXT_PUBLIC_BACKEND_URL
-
