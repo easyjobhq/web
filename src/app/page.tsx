@@ -4,7 +4,7 @@ import Link from "next/link";
 import { BsTools } from "react-icons/bs";
 //importa button from materia ui
 import Button from "@mui/material/Button";
-import { createTheme, ThemeProvider, CssBaseline } from '@mui/material/styles';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { purple } from '@mui/material/colors';
 import { FaSearch } from 'react-icons/fa';
 import { Carousel, Card } from "@/components/ui/apple-cards-carousel";
@@ -13,6 +13,10 @@ import { WavyBackground } from "../components/ui/wavy-background";
 import { useEffect, useState } from "react";
 import { authService } from '@/services'
 import Footer from "./(general)/Footer";
+import { City } from "@/interfaces/city";
+import { Speciality } from "@/interfaces/speciality";
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import { ChangeEvent } from 'react';
 
 
 const DummyContent = () => {
@@ -71,7 +75,6 @@ export default function Home() {
       secondary: {
         main: purple[50],
         dark: '#002884',
-        hover: '#2196f3'
       },
       
     },
@@ -109,7 +112,7 @@ export default function Home() {
          <div id='selects' className='flex space-x-4 bg-blue-700 p-3 rounded-lg'>
           <select className="bg-white rounded-lg p-4 w-1/3" 
           value={selectedSpeciality} 
-          onChange={(event: SelectChangeEvent) => {
+          onChange={(event: ChangeEvent<HTMLSelectElement>) => {
               setSelectedSpeciality(event.target.value);
               
           }}
@@ -126,7 +129,7 @@ export default function Home() {
           </select>
           <select className="bg-white rounded-lg p-3 w-1/4"
           value={selectedCity} 
-          onChange={(event: SelectChangeEvent) => {
+          onChange={(event: ChangeEvent<HTMLSelectElement>) => {
               setSelectedCity(event.target.value);
               
           }}
