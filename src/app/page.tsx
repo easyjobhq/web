@@ -17,6 +17,8 @@ import { City } from "@/interfaces/city";
 import { Speciality } from "@/interfaces/speciality";
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { ChangeEvent } from 'react';
+import Skeleton from 'react-loading-skeleton'
+import 'react-loading-skeleton/dist/skeleton.css'
 
 
 const DummyContent = () => {
