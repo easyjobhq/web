@@ -24,7 +24,7 @@ function Login() {
     const handleOauth = async (event: any) => {
       event.preventDefault();
       
-         window.location.href = `${process.env.BACKEND_URL}/auth/google/callback`;
+         window.location.href = `${process.env.NEXT_PUBLIC_BACKEND_URL}/auth/google/callback`;
       
    };
    

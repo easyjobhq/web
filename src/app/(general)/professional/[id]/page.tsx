@@ -89,7 +89,7 @@ const ProfessionalPage = ({ params }: Props) => {
   }
 
   async function handleSubmitReview() {
-    //console.log("AYUDA")
+
     const review: CreateReviewDto = {
       score: formsRating, 
       comment: formReviewComment
