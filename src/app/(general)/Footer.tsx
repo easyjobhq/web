@@ -1,37 +1,50 @@
-import React from 'react'
 import { BsTools } from "react-icons/bs";
+import Link from "next/link";
+import { Wrench } from "lucide-react";
 
-function Footer() {
+export default function Footer() {
   return (
-    <footer className=' bg-white mt-10 '>
-        <div className='bg-blue-400 h-1.5'></div>
-        <div className="px-80 py-10 justify-center">
-            <div className='mb-10 flex justify-around font-light'>
-                
-                <div className="">
-                    <p className='font-semibold text-medium mb-2'>Creado y Desarrollado por:</p> 
-                    <div style={{textIndent: "1rem"}}>
-                        <li>Juan Jose Diaz</li>
-                        <li>Mateo Silva</li>
-                        <li>Luis Charria</li>
-                    </div>
-                </div>
-                <div className="">
-                    <div className="flex mb-3">
-                        <BsTools size="30" className="mr-5"/>
-                        <h2 className="text-2xl font-semibold">EasyJob</h2>
-                    </div>
-                    <p className='mb-1'>Universidad ICESI, Computacion en Internet III</p>
-                    <p className='text-sm'>Cl. 18 #122-135, Barrio Pance, Cali, Valle del Cauca</p>    
-                </div>
-            </div>
-            <div className="bg-blue-500 flex justify-center mb-8" style={{height: "0.75px"}}>
-                <p className='text-sm mt-5 font-light'>www.easy-job.com © 2024 - Encuentra tu profesional y pide cita</p>
-                
-            </div>
+    <footer className="bg-white border-t">
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+          <div className="flex items-center space-x-2">
+            <BsTools size="30" className="mr-5" />
+            <span className="text-xl font-semibold">EasyJob</span>
+          </div>
+          <nav className="flex space-x-4">
+            <Link
+              href="https://www.linkedin.com/in/juan-jose-diaz-parra/"
+              target="_blank"
+              rel="noopener nofollow"
+              className="text-sm text-muted-foreground hover:text-primary"
+            >
+              Juan Jose Diaz
+            </Link>
+            <Link
+              href="https://www.linkedin.com/in/mateo-silva-6b76b41a5/"
+              target="_blank"
+              rel="noopener nofollow"
+              className="text-sm text-muted-foreground hover:text-primary"
+            >
+              Mateo Silva
+            </Link>
+            <Link
+              href="https://www.linkedin.com/in/david-dulce/"
+              target="_blank"
+              rel="noopener nofollow"
+              className="text-sm text-muted-foreground hover:text-primary"
+            >
+              David Dulce
+            </Link>
+          </nav>
         </div>
+        <div className="mt-8 text-center text-sm text-muted-foreground">
+          <Link href="https://easyjob.com.co" className="hover:underline">
+            easyjob.com.co
+          </Link>{" "}
+          © {new Date().getFullYear()} - Encuentra a tu profesional y pide cita
+        </div>
+      </div>
     </footer>
-  )
+  );
 }
-
-export default Footer
