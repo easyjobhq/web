@@ -15,19 +15,8 @@ function HomePage() {
   const [professionals, setProfessionals] = useState<Professional[]>([]);
   const [totalProfessionals, setTotalProfessionals] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageSize] = useState<number>(3);
+  const [pageSize] = useState<number>(5);
 
-  // useEffect(() =>{
-  //   const fetchData = async () => {
-  //     const response = await authService.getProfessionals(currentPage, pageSize);
-  //     setProfessionals(response.data);
-  //     setTotalProfessionals(response.total);
-  //     console.log(response.data)
-  //     console.log("Response . total es: ", response.total);
-  //   };
-
-  //   fetchData();
-  // }, [currentPage]);
 
   useEffect(() =>{
     if(searchCity !== '' && searchSpeciality !== '') {

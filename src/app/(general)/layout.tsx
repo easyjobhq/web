@@ -60,12 +60,11 @@ export default function RootLayout({
     <>
         <Navbar id={id} />
 
-        <div className="px-80 pt-10  min-h-screen">
+        <div className="bg-slate-100 px-80 pt-10 min-h-screen pb-10">
           {children}
         </div>
         <Footer/>
         
-
     </>
   );
 }
