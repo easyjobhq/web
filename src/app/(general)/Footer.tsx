@@ -3,7 +3,7 @@ import { BsTools } from "react-icons/bs";
 
 function Footer() {
   return (
-    <footer className=' bg-white mt-10 '>
+    <footer className=' bg-white'>
         <div className='bg-blue-400 h-1.5'></div>
         <div className="px-80 py-10 justify-center">
             <div className='mb-10 flex justify-around font-light'>
