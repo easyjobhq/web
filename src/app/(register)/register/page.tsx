@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation'
 import React, { ChangeEvent, useEffect, useState } from 'react'
 import { useRegister } from '@/hooks/auth/useRegister'
-import { uploadFile } from '@/firebase/config'
 import { City } from '@/interfaces/city'
 import { Service } from '@/interfaces/service'
 import { Language } from '@/interfaces/language'
@@ -59,7 +58,6 @@ function Register() {
 
     const onSubmit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         
-        console.log("AYUDAAA")
         
         event.preventDefault();
         if (!name || !last_name || !email || !phone_number || !password || !selectedOption || !photo) {

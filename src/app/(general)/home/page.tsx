@@ -7,10 +7,11 @@ import React, { useEffect, useState } from 'react'
 import ProfessionalCard from './professionalCard';
 import { Pagination } from '@mui/material';
 import { useGlobalContext } from '@/context/store';
+import { useSearchParams } from 'next/navigation';
 
 function HomePage() {
 
-  const {  userIdContext, setUserIdContext, emailContext, setEmailContext, usernameContext, setUsernameContext, searchSpeciality, setSearchSpeciality, searchCity, setSearchCity} = useGlobalContext(); 
+  const { searchSpeciality, setSearchSpeciality, searchCity, setSearchCity} = useGlobalContext(); 
 
   const [professionals, setProfessionals] = useState<Professional[]>([]);
   const [totalProfessionals, setTotalProfessionals] = useState<number>(0);
@@ -18,33 +19,39 @@ function HomePage() {
   const [pageSize] = useState<number>(5);
 
 
-  useEffect(() =>{
-    if(searchCity !== '' && searchSpeciality !== '') {
-      const fetchData = async () => {
-        const response = await authService.searchProfessionalsByQuery( searchCity, searchSpeciality ,currentPage, pageSize)
-        setProfessionals(response.data);
-        setTotalProfessionals(response.total);
-        console.log(response.data)
-        console.log("Response . total de QUERY es: ", response.total);
-      };
+  const searchParams = useSearchParams();
 
-      fetchData();
-    } else { 
-      const fetchData = async () => {
-        const response = await authService.getProfessionals(currentPage, pageSize);
-        console.log(response);
-        setProfessionals(response.data);
-        setTotalProfessionals(response.total);
-        console.log("Response . total es: ", response.total);
-      };
+  useEffect(() => {
+    
+    const specialityParam = searchParams.get('speciality');
+    const cityParam = searchParams.get('city');
+
+    if(cityParam && specialityParam) {
+      fetchProfessionalsWithFilter(cityParam, specialityParam);
+    } else {
+      fetchProfessionalsWithNoFilter()
+    }
+
+  }, [currentPage, searchParams]);
   
-      fetchData();
+  
+  const fetchProfessionalsWithFilter = async (cityParam: string, specialityParam: string) => {
+
+    if (cityParam && specialityParam) {
+      const response = await authService.searchProfessionalsByQuery(cityParam, specialityParam, currentPage, pageSize);
+      setProfessionals(response.data);
+      setTotalProfessionals(response.total);
     }
 
 
-    
-    console.log(searchCity, searchSpeciality)
-  }, [searchCity, searchSpeciality, currentPage]);
+  };
+
+  const fetchProfessionalsWithNoFilter = async () => {
+    const response = await authService.getProfessionals(currentPage, pageSize);
+    setProfessionals(response.data);
+    setTotalProfessionals(response.total);
+  }
+  
   const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
     setCurrentPage(newPage);
   };

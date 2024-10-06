@@ -16,7 +16,7 @@ export default function Footer() {
             <p className='text-sm text-center'>Cali, Valle del Cauca, Colombia</p>
           </div>
           <div className="">
-            <div className='flex flex-wrap list-none' style={{ textIndent: "1rem" }}>
+            <div className='flex flex-wrap list-none justify-center' style={{ textIndent: "1rem" }}>
               <Link
                 href="https://www.linkedin.com/in/juan-jose-diaz-parra/"
                 target="_blank"
@@ -45,7 +45,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="bg-blue-500 flex justify-center mb-8" style={{ height: "0.75px" }}>
-          <p className='text-sm mt-5 font-light'>www.easyjob.com.co © {new Date().getFullYear()} - Encuentra tu profesional y pide cita</p>
+          <p className='text-sm mt-5 font-light text-center'>www.easyjob.com.co © {new Date().getFullYear()} - Encuentra tu profesional y pide cita</p>
         </div>
       </div>
     </footer>

@@ -12,7 +12,6 @@ export const useCurrentUser = () => {
       setUser(JSON.parse(currentUser));
     }
     
-    console.log("this is the current user "+ currentUser)
   }, []);
 
   const refetchUser = async (userId: string) => {

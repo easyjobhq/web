@@ -10,7 +10,6 @@ export function getAuthorizationHeader() {
     if (token) {
       // Decodificar el token si es necesario y obtener la información del usuario
       // Aquí asumimos que el token ya es el valor que necesitamos
-      console.log(token)
       return {
         Authorization: `Bearer ${JSON.parse(token || "")}`,
       };

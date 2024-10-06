@@ -78,7 +78,7 @@ const ProfessionalPage = ({ params }: Props) => {
   
   //Handle submit of forms
   async function handleSubmitQuestion () {
-    //console.log(formQuestion)
+  
     const question: CreateQuestionDto = {
       title: "CHUPAME EL PICO", 
       question_description: formQuestion
@@ -156,33 +156,26 @@ const ProfessionalPage = ({ params }: Props) => {
     const fetchData = async () => {
       const responseProfessional = await authService.getProfessional(params.id);
       setProfessional(responseProfessional);
-      //console.log(responseProfessional);
 
       const responseServices = await authService.getServicesOfProfessional(params.id);
       setServices(responseServices);
-      //console.log(responseServices);
 
       const responseCities = await authService.getCitiesOfProfessional(params.id);
       setCities(responseCities);
-      //console.log(responseCities);
       
       const responseQuestions = await authService.getQuestionsOfProfessional(params.id);
       setQuestions(responseQuestions);
-      //console.log(responseQuestions);
 
       const responseReviews = await authService.getReviewsOfProfessional(params.id);
       setReviews(responseReviews);
-      console.log("REVIEWSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
-      console.log(responseReviews);
 
       const responseSpeciality = await authService.getSpecialitiesOfProfessional(params.id);
       setSpecialities(responseSpeciality);
-      //console.log(responseReviews);
+      
 
       const responsePaymentMethods = await authService.getPaymentMethods(); 
       setPaymentMethods(responsePaymentMethods); 
-      //console.log(responsePaymentMethods);
-
+      
       const starPercentage = (responseProfessional.score / 5) * 100;
       setStarRating(`${Math.round(starPercentage / 10) * 10}%`);
 
