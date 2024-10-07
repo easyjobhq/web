@@ -102,7 +102,7 @@ export default function Home() {
       <div className="flex flex-col justify-between h-[75vh] bg-blue-500 px-[3%] md:px-[15%]">
         <nav className="flex justify-between items-center pt-5">
           <Link href={"/home"} className="flex">
-            <BsTools color="white" size="30" className="mr-5" />
+          <Image src="/EasyJob-logo-white.png" alt="EasyJob logo" width={25} height={25} layout="intrinsic" className="w-7 h-7 mr-3 object-fill"/>
             <h2 className="text-white text-lg md:text-2xl font-bold">Easy Job</h2>
           </Link>
           <div id="left-elements" className="flex justify-between items-center space-x-4">
