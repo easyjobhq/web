@@ -113,7 +113,7 @@ export default function Navbar(props: Props) {
   return (
     <nav className="flex bg-blue-500 px-5 sm:px-[5%] md:px-[5%] xl:px-[15%] py-3 items-center justify-between">
       <Link href={"/"} className="flex flex-wrap">
-        <Image src="/EasyJob-logo-white.png" alt="EasyJob logo" width={25} height={25} layout="intrinsic" className="w-7 h-7 mr-3 object-fill"/>
+        <Image src="/EasyJob-logo-white.png" alt="EasyJob logo" width={25} height={25} layout="intrinsic" className="w-7 h-7 mr-3 object-fill flex-grow-0 self-center"/>
         <h2 className="text-white text-2xl font-bold hidden sm:block">Easy Job</h2>
       </Link>
       <div className="hidden md:flex">
