@@ -47,11 +47,11 @@ function ProfessionalCard(props: ProfessionalProps) {
         <div className="left-section-card w-full lg:w-6/12 pr-5">
           <div className="upper-section flex mb-2">
             <Image
-              src={props.professional.photo_url}
+              src={props.professional.photo_url || ""}
               alt=""
-              width={110}
-              height={110}
-              className='object-cover rounded-full m-1 w-30 h-30'
+              width={200}
+              height={200}
+              className='object-cover rounded-full m-1 w-24 h-24'
             />
             <div className='p-5'>
               <h2 className="font-semibold text-xl hover:underline">
