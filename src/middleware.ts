@@ -35,7 +35,6 @@ export async function middleware(req: NextRequest) {
     !tokenFromOauth &&
     req.nextUrl.pathname.startsWith("/home")
   ) {
-    console.log("cant enter home ");
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
@@ -56,7 +55,6 @@ export async function middleware(req: NextRequest) {
     const oAuthEmail = req.nextUrl.searchParams.get("email") || ""
 
     const tokenData = jwt.decode(oAuthToken);
-    //console.log(tokenData);
 
     const current = {
       id: oAuthid,
@@ -64,7 +62,6 @@ export async function middleware(req: NextRequest) {
       token:oAuthToken
     }
 
-    //console.log(current)
 
     if (oAuthToken.length > 0) {
       const response = NextResponse.redirect(new URL("/home", req.url));

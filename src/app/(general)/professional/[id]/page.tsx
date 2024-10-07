@@ -35,7 +35,7 @@ interface Props {
 const ProfessionalPage = ({ params }: Props) => {
   const router = useRouter();
   //Context data
-  const { userIdContext, setUserIdContext, emailContext, setEmailContext , usernameContext, setUsernameContext} = useGlobalContext(); 
+  const { userIdContext, setUserIdContext, emailContext, setEmailContext, usernameContext, setUsernameContext } = useGlobalContext();
 
   // Fetched data
   const [professional, setProfessional] = useState<Professional>();
@@ -56,7 +56,7 @@ const ProfessionalPage = ({ params }: Props) => {
 
   //Form question
   const [formQuestion, setFormQuestion] = useState('');
-  const [formReviewComment, setFormReviewComment]= useState('');
+  const [formReviewComment, setFormReviewComment] = useState('');
 
   //Form Rating
   const [formsRating, setFormsRating] = useState<number>(0);
@@ -75,30 +75,30 @@ const ProfessionalPage = ({ params }: Props) => {
     '09:00 AM', '10:00 AM', '11:00 AM', '12:00 PM',
     '01:00 PM', '02:00 PM', '03:00 PM', '04:00 PM', '05:00 PM'
   ];
-  
+
   //Handle submit of forms
-  async function handleSubmitQuestion () {
-    //console.log(formQuestion)
+  async function handleSubmitQuestion() {
+
     const question: CreateQuestionDto = {
-      title: "CHUPAME EL PICO", 
+      title: "CHUPAME EL PICO",
       question_description: formQuestion
     }
 
-    await authService.createQuestion(userIdContext, professional?.id ?? "", question );
+    await authService.createQuestion(userIdContext, professional?.id ?? "", question);
     router.push(`/home`);
   }
 
   async function handleSubmitReview() {
 
     const review: CreateReviewDto = {
-      score: formsRating, 
+      score: formsRating,
       comment: formReviewComment
     }
 
-    await authService.createReview(userIdContext, professional?.id ?? "", review );
+    await authService.createReview(userIdContext, professional?.id ?? "", review);
     router.push(`/home`);
   }
-  
+
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
   };
@@ -121,8 +121,8 @@ const ProfessionalPage = ({ params }: Props) => {
 
   const handleAppointmentCreation = async () => {
     if (!selectedDate || !selectedLocation || !selectedTime || !selectedService || !selectedPaymentMethod) {
-        alert('Por favor, complete todos los campos para agendar la cita.');
-        return;
+      alert('Por favor, complete todos los campos para agendar la cita.');
+      return;
     }
     const appointmentData = {
       date: JSON.stringify(selectedDate),
@@ -132,61 +132,54 @@ const ProfessionalPage = ({ params }: Props) => {
     };
 
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/appointment/${userIdContext}/${params.id}/${selectedPaymentMethod}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(appointmentData),
-        });
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/appointment/${userIdContext}/${params.id}/${selectedPaymentMethod}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(appointmentData),
+      });
 
-        if (response.ok) {
-            alert('Cita agendada exitosamente');
-        } else {
-            const errorData = await response.json();
-            alert(`Error al agendar la cita: ${errorData.message}`);
-        }
+      if (response.ok) {
+        alert('Cita agendada exitosamente');
+      } else {
+        const errorData = await response.json();
+        alert(`Error al agendar la cita: ${errorData.message}`);
+      }
     } catch (error) {
-        alert(`Error al agendar la cita: ${error}`);
+      alert(`Error al agendar la cita: ${error}`);
     }
-};
+  };
 
 
   useEffect(() => {
     const fetchData = async () => {
       const responseProfessional = await authService.getProfessional(params.id);
       setProfessional(responseProfessional);
-      //console.log(responseProfessional);
 
       const responseServices = await authService.getServicesOfProfessional(params.id);
       setServices(responseServices);
-      //console.log(responseServices);
 
       const responseCities = await authService.getCitiesOfProfessional(params.id);
       setCities(responseCities);
-      //console.log(responseCities);
-      
+
       const responseQuestions = await authService.getQuestionsOfProfessional(params.id);
       setQuestions(responseQuestions);
-      //console.log(responseQuestions);
 
       const responseReviews = await authService.getReviewsOfProfessional(params.id);
       setReviews(responseReviews);
-      console.log("REVIEWSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS")
-      console.log(responseReviews);
 
       const responseSpeciality = await authService.getSpecialitiesOfProfessional(params.id);
       setSpecialities(responseSpeciality);
-      //console.log(responseReviews);
 
-      const responsePaymentMethods = await authService.getPaymentMethods(); 
-      setPaymentMethods(responsePaymentMethods); 
-      //console.log(responsePaymentMethods);
+
+      const responsePaymentMethods = await authService.getPaymentMethods();
+      setPaymentMethods(responsePaymentMethods);
 
       const starPercentage = (responseProfessional.score / 5) * 100;
       setStarRating(`${Math.round(starPercentage / 10) * 10}%`);
 
-      const response  = await checkService.checkIsClient(userIdContext);
+      const response = await checkService.checkIsClient(userIdContext);
       setIsClient(response);
     }
 
@@ -194,8 +187,8 @@ const ProfessionalPage = ({ params }: Props) => {
   }, [params.id]);
 
   return (
-    <div className='flex items-start '>
-      <div className="w-3/5 mr-2">
+    <div className='flex flex-wrap justify-between'>
+      <div className="w-full md:w-[60%]">
         <div className="main-professional-card bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
           <div className="flex">
             <div className="photo-container mr-5">
@@ -231,21 +224,21 @@ const ProfessionalPage = ({ params }: Props) => {
                 }
               </div>
               {isClient && (
-              <div className="flex">
-                <button className='bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center mr-3 border-blue-600 border'>
-                  <FaRegCalendarAlt className='text-white h-5 w-5 mr-2' /> Agendar cita
-                </button>
-                <button className=' border  border-gray-400 px-3 py-1 rounded-md flex items-center p-3 text-gray-500 text-sm'>
-                  <MdOutlineMessage className='  text-gray-500 h-5 w-5 mr-2' /> Dejar reseña
-                </button>
-              </div>
+                <div className="flex">
+                  <button className='bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center mr-3 border-blue-600 border'>
+                    <FaRegCalendarAlt className='text-white h-5 w-5 mr-2' /> Agendar cita
+                  </button>
+                  <button className=' border  border-gray-400 px-3 py-1 rounded-md flex items-center p-3 text-gray-500 text-sm'>
+                    <MdOutlineMessage className='  text-gray-500 h-5 w-5 mr-2' /> Dejar reseña
+                  </button>
+                </div>
               )}
             </div>
           </div>
           <p className='text-md mt-5 mb-3 font-light'>{professional?.description}</p>
         </div>
         <div className="main-professional-card bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
-        <h3 className='font-semibold text-xl'>Servicios y precios</h3>
+          <h3 className='font-semibold text-xl'>Servicios y precios</h3>
           <p className='mt-2 text-sm font-light mb-3'>Servicios populares</p>
           <div className="services">
             {
@@ -256,11 +249,11 @@ const ProfessionalPage = ({ params }: Props) => {
                       <div className='flex items-center'>
                         <IoIosArrowForward className='text-xs mr-2 font-medium' /> {service.title}
                       </div>
-                      <p className='font-light flex'><BiDollar className='h-6' /> {Math.round(service.price).toLocaleString('es-ES')}</p> 
+                      <p className='font-light flex'><BiDollar className='h-6' /> {Math.round(service.price).toLocaleString('es-ES')}</p>
                     </div>
                   </li>
                   <p className='text-gray-700 text-sm font-light mb-3' style={{ textIndent: "1rem" }}>{service.description}</p>
-                  <div className="bg-gray-200" style={{height: "0.5px"}}></div>
+                  <div className="bg-gray-200" style={{ height: "0.5px" }}></div>
                 </React.Fragment>
               ))
             }
@@ -276,7 +269,7 @@ const ProfessionalPage = ({ params }: Props) => {
                 </button>
               </>
             )}
-            
+
           </div>
 
           {
@@ -291,23 +284,25 @@ const ProfessionalPage = ({ params }: Props) => {
           }
           {isAddQuestion && (
             <>
-              <div className="bg-gray-300 mt-4" style={{height: "0.5px"}}></div>
+              <div className="bg-gray-300 mt-4" style={{ height: "0.5px" }}></div>
               <div className='mb-3 mt-3'>
                 <p className='text-sm font-light mb-1'>{usernameContext}</p>
                 <TextField
                   className='mb-3'
-                  sx={{width:"100%", '& .MuiInputBase-root': {
-                    fontSize: "0.875rem" // Tamaño del texto dentro del input
-                  },
-                  '& .MuiInputLabel-root': {
-                    fontSize: "0.875rem" // Tamaño del texto del label
-                  } }}
+                  sx={{
+                    width: "100%", '& .MuiInputBase-root': {
+                      fontSize: "0.875rem" // Tamaño del texto dentro del input
+                    },
+                    '& .MuiInputLabel-root': {
+                      fontSize: "0.875rem" // Tamaño del texto del label
+                    }
+                  }}
                   placeholder="Escribe tu pregunta"
                   multiline
                   value={formQuestion}
-                  onChange={(e) => {setFormQuestion(e.target.value)}}
+                  onChange={(e) => { setFormQuestion(e.target.value) }}
                 />
-                <button className=' w-full bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center justify-center mr-3 border-blue-600 border font-medium' onClick={handleSubmitQuestion} > <IoSend className='mr-2'/> Enviar pregunta</button>
+                <button className=' w-full bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center justify-center mr-3 border-blue-600 border font-medium' onClick={handleSubmitQuestion} > <IoSend className='mr-2' /> Enviar pregunta</button>
               </div>
             </>
           )}
@@ -322,12 +317,12 @@ const ProfessionalPage = ({ params }: Props) => {
                 </button>
               </>
             )}
-            
+
           </div>
 
           <div className="items-center mb-5">
             <div className='stars-outer-opinions text-lg'>
-              <div className='stars-inner-opinions text-lg' style={{width: `${starRating}`}}>
+              <div className='stars-inner-opinions text-lg' style={{ width: `${starRating}` }}>
                 ★ ★ ★ ★ ★
               </div>
             </div>
@@ -343,154 +338,154 @@ const ProfessionalPage = ({ params }: Props) => {
 
           {isAddReview && (
             <>
-              <div className="bg-gray-300 mt-4" style={{height: "0.5px"}}></div>
+              <div className="bg-gray-300 mt-4" style={{ height: "0.5px" }}></div>
               <div className='mb-3 mt-3'>
                 <p className='text-sm font-light mb-1'>{usernameContext}</p>
                 <div className="flex">
                   <div className='mb-3 flex mr-3'>
                     {[...Array(5)].map((star, index) => {
 
-                      const currentRating = index +1;
+                      const currentRating = index + 1;
 
                       return (
                         <label className='flex' key={index}>
-                          <input 
+                          <input
                             className='hidden'
                             type="radio"
-                            name='rating' 
-                            value = {currentRating}
+                            name='rating'
+                            value={currentRating}
                             onClick={() => setFormsRating(currentRating)}
                           />
-                          <FaStar 
-                            size={20} 
+                          <FaStar
+                            size={20}
                             className='cursor-pointer'
-                            color={currentRating <= (hover || formsRating)? "#ffc107": "e4e5e9" }
-                            onMouseEnter={()=> setHover(currentRating)}
-                            onMouseLeave={()=> setHover(0)}
-                            /> 
+                            color={currentRating <= (hover || formsRating) ? "#ffc107" : "e4e5e9"}
+                            onMouseEnter={() => setHover(currentRating)}
+                            onMouseLeave={() => setHover(0)}
+                          />
                         </label>
                       )
-                    }  )}
-                    
+                    })}
+
                   </div>
                   <p className='font-light text-sm'>( {formsRating}.0 )</p>
                 </div>
                 <TextField
                   className='mb-3'
-                  sx={{width:"100%", '& .MuiInputBase-root': { fontSize: "0.875rem" }, '& .MuiInputLabel-root': { fontSize: "0.875rem" } }}
+                  sx={{ width: "100%", '& .MuiInputBase-root': { fontSize: "0.875rem" }, '& .MuiInputLabel-root': { fontSize: "0.875rem" } }}
                   id="outlined-textarea"
                   placeholder="Escribe tu pregunta"
                   multiline
                   value={formReviewComment}
-                  onChange={(e) => {setFormReviewComment(e.target.value)}}
+                  onChange={(e) => { setFormReviewComment(e.target.value) }}
                 />
-                <button className=' w-full bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center justify-center mr-3 border-blue-600 border font-medium' onClick={handleSubmitReview}> <IoSend className='mr-2'/> Enviar pregunta</button>
+                <button className=' w-full bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center justify-center mr-3 border-blue-600 border font-medium' onClick={handleSubmitReview}> <IoSend className='mr-2' /> Enviar pregunta</button>
               </div>
             </>
           )}
         </div>
       </div>
-      
-      <div className="main-professional-card bg-white mb-3 rounded-lg shadow-md w-2/5 ml-2 flex-wrap h-auto">
-      {isClient && (
-        <>
-      <div className="bg-blue-500 text-white rounded-tr-md rounded-tl-md px-3 py-3 text-lg font-semibold">
-        <h3>Agendar Servicio</h3>
-      </div>
-      
-          <div className="flex flex-col px-8 py-5">
-          <FormControl className="mb-4 text-gray-950">
-            <DatePicker
-              
-              selected={selectedDate}
-              onChange={handleDateChange}
-              className="p-2 border border-gray-400 rounded w-full "
-              dateFormat="MMMM d, yyyy"
-              placeholderText="Seleccionar Fecha"
-            />
-            </FormControl>
-            <FormControl className="mb-4">
-              
-              <Select 
-                sx={{height: 45, fontSize: '16px'}}
-                displayEmpty
-                value={selectedLocation || ''} 
-                onChange={handleLocationChange}>
-                <MenuItem value="" disabled>
-                  Seleccionar Ubicación
-                </MenuItem>
-                {cities.map((city) => (
-                  <MenuItem key={city.id} value={city.city_name}>{city.city_name}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            
-            <FormControl className="mb-4">
-              <Select 
-                sx={{height: 45, fontSize: '16px'}}
-                value={selectedTime || ''} 
-                onChange={handleTimeChange}
-                displayEmpty
+
+      <div className="w-full md:w-[38%] bg-white mb-3 rounded-lg shadow-md flex-grow-0 self-start">
+        {isClient && (
+          <>
+            <div className="bg-blue-500 text-white rounded-tr-md rounded-tl-md px-3 py-3 text-lg font-semibold">
+              <h3>Agendar Servicio</h3>
+            </div>
+
+            <div className="flex flex-col px-8 py-5">
+              <FormControl className="mb-4 text-gray-950">
+                <DatePicker
+
+                  selected={selectedDate}
+                  onChange={handleDateChange}
+                  className="p-2 border border-gray-400 rounded w-full "
+                  dateFormat="MMMM d, yyyy"
+                  placeholderText="Seleccionar Fecha"
+                />
+              </FormControl>
+              <FormControl className="mb-4">
+
+                <Select
+                  sx={{ height: 45, fontSize: '16px' }}
+                  displayEmpty
+                  value={selectedLocation || ''}
+                  onChange={handleLocationChange}>
+                  <MenuItem value="" disabled>
+                    Seleccionar Ubicación
+                  </MenuItem>
+                  {cities.map((city) => (
+                    <MenuItem key={city.id} value={city.city_name}>{city.city_name}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <FormControl className="mb-4">
+                <Select
+                  sx={{ height: 45, fontSize: '16px' }}
+                  value={selectedTime || ''}
+                  onChange={handleTimeChange}
+                  displayEmpty
                 >
-                <MenuItem value="" disabled>
-                  Seleccionar Hora
-                </MenuItem>
-                {availableTimes.map((time) => (
-                  <MenuItem key={time} value={time}>{time}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            
-            <FormControl className="mb-4">
-              <Select 
-              sx={{height: 45, fontSize: '16px'}}
-              value={selectedService || ''} 
-              onChange={handleServiceChange}
-              displayEmpty  
-              >
-                <MenuItem value="" disabled>
-                  Seleccionar Servicio
-                </MenuItem>
-                {services.map((service) => (
-                  <MenuItem key={service.id} value={service.title}>{service.title}</MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-            
-            <FormControl className='mb-4'>
-            <Select
-              sx={{height: 45, fontSize: '16px'}}
-              displayEmpty
-              value={selectedPaymentMethod || ''}
-              
-              onChange={handlePaymentMethodChange}
-              >
-                 <MenuItem value="" disabled>
-                  Seleccionar Metodo de pago
-                </MenuItem>
-              {paymentMethods.map((method) => (
-                <MenuItem 
-                  key={method.id} 
-                  value={method.payment_method_name}
-                  >
-                  {method.payment_method_name}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-              
-                <>
-                    <button onClick={handleAppointmentCreation} className="bg-blue-500 text-white p-2 mb-3 rounded hover:bg-blue-600 font-medium">
-                      Agendar Cita
-                    </button>
-                </>
-              
-            
-          </div>
+                  <MenuItem value="" disabled>
+                    Seleccionar Hora
+                  </MenuItem>
+                  {availableTimes.map((time) => (
+                    <MenuItem key={time} value={time}>{time}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <FormControl className="mb-4">
+                <Select
+                  sx={{ height: 45, fontSize: '16px' }}
+                  value={selectedService || ''}
+                  onChange={handleServiceChange}
+                  displayEmpty
+                >
+                  <MenuItem value="" disabled>
+                    Seleccionar Servicio
+                  </MenuItem>
+                  {services.map((service) => (
+                    <MenuItem key={service.id} value={service.title}>{service.title}</MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <FormControl className='mb-4'>
+                <Select
+                  sx={{ height: 45, fontSize: '16px' }}
+                  displayEmpty
+                  value={selectedPaymentMethod || ''}
+
+                  onChange={handlePaymentMethodChange}
+                >
+                  <MenuItem value="" disabled>
+                    Seleccionar Metodo de pago
+                  </MenuItem>
+                  {paymentMethods.map((method) => (
+                    <MenuItem
+                      key={method.id}
+                      value={method.payment_method_name}
+                    >
+                      {method.payment_method_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              <>
+                <button onClick={handleAppointmentCreation} className="bg-blue-500 text-white p-2 mb-3 rounded hover:bg-blue-600 font-medium">
+                  Agendar Cita
+                </button>
+              </>
+
+
+            </div>
           </>
-      )}
-      
-    </div>
+        )}
+
+      </div>
     </div>
   )
 }
