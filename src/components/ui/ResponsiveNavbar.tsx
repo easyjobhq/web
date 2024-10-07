@@ -12,7 +12,7 @@ interface SideBarMenuProps {
 
 const ResponsiveNavbar: React.FC<SideBarMenuProps> = ({ clickedFunction }) => {
   return (
-    <div className="fixed inset-0 w-screen h-screen z-50 py-3 px-7" style={{ backgroundColor: 'rgba(59, 130, 246, 0.95)' }}>
+    <div className="fixed inset-0 w-screen h-screen z-50 py-3 px-7" style={{ backgroundColor: 'rgba(59, 130, 246, 0.8)' }}>
       <div className="flex justify-between">
         <Image src="/EasyJob-logo-white.png" alt="EasyJob logo" width={25} height={25} layout="intrinsic" className="w-7 h-7 mr-3 object-fill flex-grow-0 self-start" />
         <IoMdClose className='text-4xl cursor-pointer font-bold' onClick={() => {

@@ -72,7 +72,7 @@ function ProfessionalCard(props: ProfessionalProps) {
                 )}
               </p>
 
-              <div className='flex justify-left items-center'>
+              <div className='hidden sm:flex justify-left items-center'>
                 <div className='stars-outer'>
                   <div className='stars-inner' style={{ width: `${starRating}` }}>
                     ★ ★ ★ ★ ★
@@ -82,6 +82,14 @@ function ProfessionalCard(props: ProfessionalProps) {
               </div>
             </div>
           </div>
+          <div className='flex sm:hidden justify-left items-center mb-3'>
+                <div className='stars-outer'>
+                  <div className='stars-inner' style={{ width: `${starRating}` }}>
+                    ★ ★ ★ ★ ★
+                  </div>
+                </div>
+                <div className="ml-2 text-sm font-light">{`(${props.professional.score})`}</div>
+              </div>
           <div className='bg-gray-300 w-full pr-3' style={{ height: "0.25px" }}></div>
           <div className="medium-section pt-3 pl-3 flex items-center">
             <FaPhoneAlt className='mr-2 h-3' />
