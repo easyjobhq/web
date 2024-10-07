@@ -1,7 +1,7 @@
 .stars-outer {
     position: relative; 
     display: inline-block;
-    font-size: large;
+    font-size: small;
 }
 
 .stars-inner {
@@ -11,25 +11,25 @@
     white-space: nowrap; 
     overflow: hidden;
     width: 0;
-    font-size: large;
+    font-size:  small;
 }
 
 .stars-outer::before { 
     content: "★ ★ ★ ★ ★";
     color: #ccc;
-    font-size: large;
+    font-size:  small;
 }
 
 .stars-inner::before { 
     content: "★ ★ ★ ★ ★";
     color: #3B82F6;
-    font-size: large;
+    font-size:  small;
 }
 
 .stars-outer-opinions {
     position: relative; 
     display: inline-block;
-    font-size: x-large;
+    font-size:  small;
 }
 
 .stars-inner-opinions {
@@ -39,19 +39,19 @@
     white-space: nowrap; 
     overflow: hidden;
     width: 0;
-    font-size: x-large;
+    font-size:  small;
 }
 
 .stars-outer-opinions::before { 
     content: "★ ★ ★ ★ ★";
     color: #ccc;
-    font-size: x-large;
+    font-size:  small;
 }
 
 .stars-inner-opinions::before { 
     content: "★ ★ ★ ★ ★";
     color: #3B82F6;
-    font-size: x-large;
+    font-size:  small;
 }
 
 

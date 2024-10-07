@@ -197,17 +197,23 @@ const ProfessionalPage = ({ params }: Props) => {
                 alt=""
                 width={200}
                 height={200}
-                className='object-cover w-40 h-40 rounded-md'
+                className='object-cover w-24 h-24 sm:w-40 sm:h-40 rounded-md'
               />
             </div>
             <div className="professional-information">
-              <h2 className='font-semibold text-2xl mt-3 mb-1'>{professional?.name} {professional?.last_name} </h2>
+              <h2 className='font-semibold text-lg md:text-2xl mt-3 mb-1'>{professional?.name} {professional?.last_name} </h2>
 
               {specialities.map((speciality) =>
                 <p className='font-light text-sm' key={speciality.id}>{speciality.speciality_name}</p>
               )}
-
-              <div className="flex items-center mb-2">
+              <div className="font-light text-sm mb-2">
+                {
+                  cities.map((city, index) => (
+                    index < cities.length - 1 ? (`${city.city_name}, `) : (`${city.city_name}`)
+                  ))
+                }
+              </div>
+              <div className="items-center mb-2 hidden sm:flex">
                 <div className='stars-outer'>
                   <div className='stars-inner' style={{ width: `${starRating}` }}>
                     ★ ★ ★ ★ ★
@@ -216,24 +222,34 @@ const ProfessionalPage = ({ params }: Props) => {
 
                 <div className="ml-2 text-sm font-light">{`(${professional?.score})`}</div>
               </div>
-              <div className="font-light text-sm mb-6">
-                {
-                  cities.map((city, index) => (
-                    index < cities.length - 1 ? (`${city.city_name}, `) : (`${city.city_name}`)
-                  ))
-                }
-              </div>
               {isClient && (
-                <div className="flex flex-wrap">
-                  <button className='bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center mr-3 border-blue-600 border'>
+                <div className="hidden md:flex">
+                  <button className='bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center md:mr-3 border-blue-600 border w-full md:w-auto justify-center mb-2 md:mb-0'>
                     <FaRegCalendarAlt className='text-white h-5 w-5 mr-2' /> Agendar cita
                   </button>
-                  <button className=' border  border-gray-400 px-3 py-1 rounded-md flex items-center p-3 text-gray-500 text-sm'>
+                  <button className=' border border-gray-400 px-3 py-2 rounded-md flex items-center p-3 text-gray-500 text-sm w-full md:w-auto justify-center' >
                     <MdOutlineMessage className='  text-gray-500 h-5 w-5 mr-2' /> Dejar reseña
                   </button>
                 </div>
               )}
             </div>
+          </div>
+
+          <div className="items-center mt-3 mb-2 flex sm:hidden">
+            <div className='stars-outer'>
+              <div className='stars-inner' style={{ width: `${starRating}` }}>
+                ★ ★ ★ ★ ★
+              </div>
+            </div>
+            <div className="ml-2 text-sm font-light">{`(${professional?.score})`}</div>
+          </div>
+          <div className="flex-col justify-between md:hidden mt-4 space-y-3">
+            <button className='bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center border-blue-600 border w-[95%] md:w-auto justify-center md:mb-0'>
+              <FaRegCalendarAlt className='text-white h-5 w-5 mr-2' /> Agendar cita
+            </button>
+            <button className=' border border-gray-400 px-3 py-2 rounded-md flex items-center p-3 text-gray-500 text-sm w-[95%] md:w-auto justify-center' >
+              <MdOutlineMessage className='  text-gray-500 h-5 w-5 mr-2' /> Dejar reseña
+            </button>
           </div>
           <p className='text-md mt-5 mb-3 font-light'>{professional?.description}</p>
         </div>
