@@ -21,6 +21,9 @@ import { Client } from "@/interfaces/Client";
 import { AuthService } from '@/services/auth.service'
 import { useLogout } from "@/hooks/auth/logout";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
+import Image from "next/image";
+import ResponsiveNavbar from "@/components/ui/ResponsiveNavbar";
+import { FaBars } from "react-icons/fa";
 
 const ITEM_HEIGHT = 80;
 const ITEM_PADDING_TOP = 8;
@@ -43,18 +46,19 @@ export default function Navbar(props: Props) {
 
   const router = useRouter();
   const searchParams = useSearchParams();
-
   const { logout } = useLogout();
 
   const { userIdContext, setUserIdContext, emailContext, setEmailContext, usernameContext, setUsernameContext, searchSpeciality, setSearchSpeciality, searchCity, setSearchCity } = useGlobalContext();
 
-  const [personName, setPersonName] = useState<string[]>([]);
   const [isProfessional, setIsProfessional] = useState<number | null>(null);
   const [cities, setCities] = useState<City[]>([]);
   const [specialities, setSpecialities] = useState<Speciality[]>([]);
 
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedSpeciality, setSelectedSpeciality] = useState('');
+
+
+  const [isNavVisible, setIsNavVisible] = useState(false);
 
   useEffect(() => {
 
@@ -108,11 +112,11 @@ export default function Navbar(props: Props) {
 
   return (
     <nav className="flex bg-blue-500 px-5 sm:px-[5%] md:px-[5%] xl:px-[15%] py-3 items-center justify-between">
-      <Link href={"/"} className="flex">
-        <BsTools color="white" size="30" className="mr-5" />
+      <Link href={"/"} className="flex flex-wrap">
+        <Image src="/EasyJob-logo-white.png" alt="EasyJob logo" width={25} height={25} layout="intrinsic" className="w-7 h-7 mr-3 object-fill flex-grow-0 self-center"/>
         <h2 className="text-white text-2xl font-bold hidden sm:block">Easy Job</h2>
       </Link>
-      <div className="flex">
+      <div className="hidden md:flex">
 
         <Box sx={{ minWidth: 250, height: 40 }}>
           <FormControl fullWidth>
@@ -188,8 +192,7 @@ export default function Navbar(props: Props) {
         </button>
       </div>
 
-
-      <div className="flex text-3xl text-white">
+      <div className="hidden md:flex text-3xl text-white">
         {isProfessional != null && (
           <Link href={`/profile/${props.id}`}>
             <button className="mr-3" type="button">
@@ -200,6 +203,13 @@ export default function Navbar(props: Props) {
         <Link href={"/login"} onClick={() => {
           logout();
         }} className=" "><MdLogout /></Link>
+      </div>
+
+      <div className="md:hidden text-2xl text-white">
+        <FaBars className="cursor-pointer" onClick={() => {
+          setIsNavVisible(!isNavVisible);
+        }} />
+        { isNavVisible && <ResponsiveNavbar clickedFunction={setIsNavVisible}/>}
       </div>
 
     </nav>

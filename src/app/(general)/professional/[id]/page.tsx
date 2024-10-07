@@ -224,7 +224,7 @@ const ProfessionalPage = ({ params }: Props) => {
                 }
               </div>
               {isClient && (
-                <div className="flex">
+                <div className="flex flex-wrap">
                   <button className='bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center mr-3 border-blue-600 border'>
                     <FaRegCalendarAlt className='text-white h-5 w-5 mr-2' /> Agendar cita
                   </button>
