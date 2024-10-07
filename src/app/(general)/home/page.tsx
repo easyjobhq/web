@@ -64,8 +64,8 @@ function HomePage() {
         <h1 className="text-xl font-semibold w-full mb-2">Resultados de la búsqueda</h1>
         <p className='font-light'>Reserva por internet, nunca pagarás de mas :)</p>
       </div>
-      <div className="flex">
-        <section className="min-h-screen mr-3 w-4/5">
+      <div className="flex flex-wrap min-h-screen justify-between">
+        <section className="w-full sm:w-[78%]">
           {professionals.length > 0 ? (
             professionals.map((professional: Professional) => (
               <ProfessionalCard key={professional.id} professional={professional} />
@@ -73,8 +73,8 @@ function HomePage() {
           ) : (
             <p>No hay profesionales disponibles.</p>
           )}
-        </section>
-        <section className='flex w-1/5 bg-blue-300 rounded-lg'>
+        </section>  
+        <section className='flex w-full sm:w-[20%] bg-blue-300 rounded-lg min-h-60'>
           {/* TODO -- Maps API */}
         </section>
       </div>

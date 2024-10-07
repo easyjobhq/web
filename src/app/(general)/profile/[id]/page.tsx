@@ -64,10 +64,6 @@ function ProfilePage({ params }: Props) {
 
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  
-
-  
-
   const onChangePhoto = async(event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       
