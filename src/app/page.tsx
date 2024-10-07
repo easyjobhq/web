@@ -19,6 +19,7 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { ChangeEvent } from 'react';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
+import { useRouter } from "next/navigation";
 
 
 const DummyContent = () => {
@@ -52,6 +53,8 @@ const words = `¡Conoce lo que hacemos!`;
 
 export default function Home() {
 
+  const router = useRouter();
+
   const [cities, setCities] = useState<City[]>([]);
   const [specialities, setSpecialities] = useState<Speciality[]>([]);
 
@@ -70,7 +73,11 @@ export default function Home() {
 
     fetchData();
 
-  }, [])
+  }, []);
+
+  function handleSubmitSearch() {
+    router.push(`/home?speciality=${selectedSpeciality}&city=${selectedCity}`)
+  }
 
   const theme = createTheme({
     palette: {
@@ -92,15 +99,15 @@ export default function Home() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="flex flex-col justify-between h-[75vh] bg-blue-500 sm:px-[3%] md:px-[15%]">
+      <div className="flex flex-col justify-between h-[75vh] bg-blue-500 px-[3%] md:px-[15%]">
         <nav className="flex justify-between items-center pt-5">
           <Link href={"/home"} className="flex">
             <BsTools color="white" size="30" className="mr-5" />
-            <h2 className="text-white text-2xl font-bold">Easy Job</h2>
+            <h2 className="text-white text-lg md:text-2xl font-bold">Easy Job</h2>
           </Link>
           <div id="left-elements" className="flex justify-between items-center space-x-4">
             <Link href={"/login"}>
-              <p className="text-white text-l">Inicia Sesión</p>
+              <p className="text-white text-xs md:text-sm">Inicia Sesión</p>
             </Link>
             <Button
               variant="contained"
@@ -109,39 +116,45 @@ export default function Home() {
               className='hover:bg-yellow-300'
               style={{ textTransform: 'none' }}
             >
-              ¿Eres un profesional?
+              <p className="text-xs md:text-sm" >¿Eres un profesional?</p>
             </Button>
           </div>
         </nav>
         <nav className="flex-col items-end mb-32 space-y-4">
           <h1 className='text-white text-4xl font-bold'>Encuentra un profesional en solo unos clicks</h1>
           <h4 className='text-gray-300 text-l'>Mas de * profesionales estan aqui para ayudarte</h4>
-          <div id='selects' className='w-4/5 inline-flex space-x-4 bg-blue-700 p-3 rounded-lg'>
-            <select className="bg-white rounded-lg p-4 flex-grow"
+          <div id='selects' className='w-full lg:w-4/5 inline-flex flex-wrap space-y-2 sm:space-y-0 sm:space-x-4 bg-blue-700 p-3 rounded-lg '>
+            
+            <select className="bg-white rounded-lg p-4 flex-grow w-full sm:w-auto"
               value={selectedSpeciality}
               onChange={(event: ChangeEvent<HTMLSelectElement>) => {
                 setSelectedSpeciality(event.target.value);
               }}
             >
-              <option value='No_selected'>Escoge un filtro</option>
+              <option value='No_selected'>Especialidad</option>
               {specialities.map((speciality) => (
                 <option key={speciality.id} value={speciality.speciality_name}>{speciality.speciality_name}</option>
               ))}
             </select>
 
-            <select className="bg-white rounded-lg p-3 flex-grow"
+            <select className="bg-white rounded-lg p-4 flex-grow w-full sm:w-auto"
               value={selectedCity}
               onChange={(event: ChangeEvent<HTMLSelectElement>) => {
                 setSelectedCity(event.target.value);
               }}
             >
-              <option value="No_selected">Escoje un filtro</option>
+              <option value="No_selected">Ciudad</option>
               {cities.map((city) => (
                 <option key={city.id} value={city.city_name}>{city.city_name}</option>
               ))}
             </select>
 
-            <Button variant="contained" href="/home" className='flex space-x-2 bg-yellow-300 hover:bg-yellow-400' style={{ textTransform: 'none', padding: '0 2rem' }}>
+            <Button 
+              variant="contained" 
+              className='flex space-x-2 bg-yellow-300 hover:bg-yellow-400 min-h-14 w-full sm:w-auto mt-3' 
+              style={{ textTransform: 'none', padding: '0 2rem' }}
+              onClick={handleSubmitSearch}
+              >
               <FaSearch className='text-black' />
               <p className='text-black'>Buscar</p>
             </Button>

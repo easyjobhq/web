@@ -7,10 +7,11 @@ import React, { useEffect, useState } from 'react'
 import ProfessionalCard from './professionalCard';
 import { Pagination } from '@mui/material';
 import { useGlobalContext } from '@/context/store';
+import { useSearchParams } from 'next/navigation';
 
 function HomePage() {
 
-  const {  userIdContext, setUserIdContext, emailContext, setEmailContext, usernameContext, setUsernameContext, searchSpeciality, setSearchSpeciality, searchCity, setSearchCity} = useGlobalContext(); 
+  const { searchSpeciality, setSearchSpeciality, searchCity, setSearchCity} = useGlobalContext(); 
 
   const [professionals, setProfessionals] = useState<Professional[]>([]);
   const [totalProfessionals, setTotalProfessionals] = useState<number>(0);
@@ -18,33 +19,39 @@ function HomePage() {
   const [pageSize] = useState<number>(5);
 
 
-  useEffect(() =>{
-    if(searchCity !== '' && searchSpeciality !== '') {
-      const fetchData = async () => {
-        const response = await authService.searchProfessionalsByQuery( searchCity, searchSpeciality ,currentPage, pageSize)
-        setProfessionals(response.data);
-        setTotalProfessionals(response.total);
-        console.log(response.data)
-        console.log("Response . total de QUERY es: ", response.total);
-      };
+  const searchParams = useSearchParams();
 
-      fetchData();
-    } else { 
-      const fetchData = async () => {
-        const response = await authService.getProfessionals(currentPage, pageSize);
-        console.log(response);
-        setProfessionals(response.data);
-        setTotalProfessionals(response.total);
-        console.log("Response . total es: ", response.total);
-      };
+  useEffect(() => {
+    
+    const specialityParam = searchParams.get('speciality');
+    const cityParam = searchParams.get('city');
+
+    if(cityParam && specialityParam) {
+      fetchProfessionalsWithFilter(cityParam, specialityParam);
+    } else {
+      fetchProfessionalsWithNoFilter()
+    }
+
+  }, [currentPage, searchParams]);
   
-      fetchData();
+  
+  const fetchProfessionalsWithFilter = async (cityParam: string, specialityParam: string) => {
+
+    if (cityParam && specialityParam) {
+      const response = await authService.searchProfessionalsByQuery(cityParam, specialityParam, currentPage, pageSize);
+      setProfessionals(response.data);
+      setTotalProfessionals(response.total);
     }
 
 
-    
-    console.log(searchCity, searchSpeciality)
-  }, [searchCity, searchSpeciality, currentPage]);
+  };
+
+  const fetchProfessionalsWithNoFilter = async () => {
+    const response = await authService.getProfessionals(currentPage, pageSize);
+    setProfessionals(response.data);
+    setTotalProfessionals(response.total);
+  }
+  
   const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
     setCurrentPage(newPage);
   };
@@ -57,8 +64,8 @@ function HomePage() {
         <h1 className="text-xl font-semibold w-full mb-2">Resultados de la búsqueda</h1>
         <p className='font-light'>Reserva por internet, nunca pagarás de mas :)</p>
       </div>
-      <div className="flex">
-        <section className="min-h-screen mr-3 w-4/5">
+      <div className="flex flex-wrap min-h-screen justify-between">
+        <section className="w-full sm:w-[78%]">
           {professionals.length > 0 ? (
             professionals.map((professional: Professional) => (
               <ProfessionalCard key={professional.id} professional={professional} />
@@ -66,8 +73,8 @@ function HomePage() {
           ) : (
             <p>No hay profesionales disponibles.</p>
           )}
-        </section>
-        <section className='flex w-1/5 bg-blue-300 rounded-lg'>
+        </section>  
+        <section className='flex w-full sm:w-[20%] bg-blue-300 rounded-lg min-h-60'>
           {/* TODO -- Maps API */}
         </section>
       </div>

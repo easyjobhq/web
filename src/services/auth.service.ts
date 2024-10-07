@@ -8,7 +8,6 @@ import ProfessionalCard from "@/app/(general)/home/professionalCard";
 export class AuthService {
   protected readonly instance: AxiosInstance;
   public constructor(url: string) {
-    console.log("La url del back es esta: "+ url)
     this.instance = axios.create({
       baseURL: url,
       timeout: 30000,
@@ -27,8 +26,6 @@ export class AuthService {
         email,
         password,
       });
-
-      console.log("Respuesta del login", res.data)
 
       return res
     }catch(error){
@@ -140,7 +137,7 @@ export class AuthService {
   };
 
   getServicesOfProfessional = async (id: string) => {
-    //console.log(getAuthorizationHeader())
+
     const res = await this.instance
     .get(`/professionals/services/${id}`, {
       headers: getAuthorizationHeader(),
@@ -149,7 +146,6 @@ export class AuthService {
   }
 
   getCitiesOfProfessional = async (id: string) => {
-    //console.log(getAuthorizationHeader())
     const res = await this.instance
     .get(`/professionals/cities/${id}`, {
       headers: getAuthorizationHeader(),
@@ -283,8 +279,6 @@ export class AuthService {
       if (phone_number) formData.append('phone_number', phone_number);
       if (photo) formData.append('professional_image', photo);  // Append the file if it exists
 
-      console.log(formData)
-
       // Send the PATCH request with FormData
       const res = await this.instance.patch(
         `/professionals/${id}`,
@@ -299,7 +293,7 @@ export class AuthService {
   
       return res.data; // Return the data from the response
     } catch (error) {
-      console.error('Error updating professional:', error);
+        console.error('Error updating professional:', error);
       throw error; // Rethrow the error for further handling
     }
   }

@@ -16,7 +16,6 @@ import { Question } from '@/interfaces/question'
 import { Review } from '@/interfaces/review'
 import ReviewCard from '../../professional/[id]/ReviewCard'
 import { FaEnvelope, FaPhone } from 'react-icons/fa';
-import { uploadFile } from '@/firebase/config'
 import { Appoiment } from '@/interfaces/appoiment'
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -65,10 +64,6 @@ function ProfilePage({ params }: Props) {
 
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  
-
-  
-
   const onChangePhoto = async(event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
       
@@ -86,8 +81,6 @@ function ProfilePage({ params }: Props) {
   }
 
   const onDeleteSpeaciality = async () =>{
-    //event.preventDefault();
-    console.log('Este el speciality '+ specialityId)
     await authService.deleteSpecialityToProfessional(params.id, specialityId)
     window.location.reload()
   }
@@ -148,7 +141,6 @@ function ProfilePage({ params }: Props) {
       setReviews(responseReviews);
 
       const responseQuestions = await authService.getQuestionsOfProfessional(params.id);
-      console.log(responseQuestions)
       setQuestions(responseQuestions);
 
       const responseSpeciality = await authService.getSpecialitiesOfProfessional(params.id);

@@ -12,7 +12,6 @@ function ReviewCard(props: Props) {
   const [starRating, setStarRating] = useState(""); 
 
   useEffect(()=>{
-    console.log("AYUDAAA" + props)
     const starPercentage = (props.review.score /5) * 100;
     setStarRating(`${Math.round(starPercentage/10) *10}%`);
   }, [])
