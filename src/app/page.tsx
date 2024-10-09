@@ -112,7 +112,7 @@ export default function Home() {
             <Button
               variant="contained"
               color="secondary"
-              href="/register"
+              href="/register-professional"
               className='hover:bg-yellow-300'
               style={{ textTransform: 'none' }}
             >
