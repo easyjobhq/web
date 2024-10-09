@@ -99,10 +99,10 @@ export default function Home() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="flex flex-col justify-between h-[75vh] bg-blue-500 px-[3%] md:px-[15%]">
+      <div className="flex flex-col justify-between min-h-[75vh] bg-blue-500 px-[10%] md:px-[15%] lg:px-[15%]">
         <nav className="flex justify-between items-center pt-5">
           <Link href={"/home"} className="flex">
-          <Image src="/EasyJob-logo-white.png" alt="EasyJob logo" width={25} height={25} layout="intrinsic" className="w-7 h-7 mr-3 object-fill"/>
+            <Image src="/EasyJob-logo-white.png" alt="EasyJob logo" width={25} height={25} layout="intrinsic" className="w-7 h-7 mr-3 object-fill" />
             <h2 className="text-white text-lg md:text-2xl font-bold">Easy Job</h2>
           </Link>
           <div id="left-elements" className="flex justify-between items-center space-x-4">
@@ -120,46 +120,49 @@ export default function Home() {
             </Button>
           </div>
         </nav>
-        <nav className="flex-col items-end mb-32 space-y-4">
-          <h1 className='text-white text-4xl font-bold'>Encuentra un profesional en solo unos clicks</h1>
-          <h4 className='text-gray-300 text-l'>Mas de * profesionales estan aqui para ayudarte</h4>
-          <div id='selects' className='w-full lg:w-4/5 inline-flex flex-wrap space-y-2 sm:space-y-0 sm:space-x-4 bg-blue-700 p-3 rounded-lg '>
-            
-            <select className="bg-white rounded-lg p-4 flex-grow w-full sm:w-auto"
-              value={selectedSpeciality}
-              onChange={(event: ChangeEvent<HTMLSelectElement>) => {
-                setSelectedSpeciality(event.target.value);
-              }}
-            >
-              <option value='No_selected'>Especialidad</option>
-              {specialities.map((speciality) => (
-                <option key={speciality.id} value={speciality.speciality_name}>{speciality.speciality_name}</option>
-              ))}
-            </select>
+        <div className="flex flex-wrap lg:flex-nowrap items-center justify-between flex-grow mt-20 lg:mt-0">
+          <nav className="flex-col items-end space-y-4 w-full lg:w-[40%]">
+            <h1 className='text-white text-3xl font-bold'>Encuentra un profesional en solo unos clicks</h1>
+            <h4 className='text-gray-300 text-l'>Mas de * profesionales estan aqui para ayudarte</h4>
+            <div id='selects' className='w-full  flex-wrap space-y-2 bg-[#377AE7] p-3 rounded-lg'>
 
-            <select className="bg-white rounded-lg p-4 flex-grow w-full sm:w-auto"
-              value={selectedCity}
-              onChange={(event: ChangeEvent<HTMLSelectElement>) => {
-                setSelectedCity(event.target.value);
-              }}
-            >
-              <option value="No_selected">Ciudad</option>
-              {cities.map((city) => (
-                <option key={city.id} value={city.city_name}>{city.city_name}</option>
-              ))}
-            </select>
-
-            <Button 
-              variant="contained" 
-              className='flex space-x-2 bg-yellow-300 hover:bg-yellow-400 min-h-14 w-full sm:w-auto mt-3' 
-              style={{ textTransform: 'none', padding: '0 2rem' }}
-              onClick={handleSubmitSearch}
+              <select className="bg-white font-light rounded-md p-4 flex-grow w-full"
+                value={selectedSpeciality}
+                onChange={(event: ChangeEvent<HTMLSelectElement>) => {
+                  setSelectedSpeciality(event.target.value);
+                }}
               >
-              <FaSearch className='text-black' />
-              <p className='text-black'>Buscar</p>
-            </Button>
-          </div>
-        </nav>
+                <option value='No_selected'>Especialidad</option>
+                {specialities.map((speciality) => (
+                  <option key={speciality.id} value={speciality.speciality_name}>{speciality.speciality_name}</option>
+                ))}
+              </select>
+
+              <select className="bg-white font-light rounded-md p-4 flex-grow w-full"
+                value={selectedCity}
+                onChange={(event: ChangeEvent<HTMLSelectElement>) => {
+                  setSelectedCity(event.target.value);
+                }}
+              >
+                <option value="No_selected">Ciudad</option>
+                {cities.map((city) => (
+                  <option key={city.id} value={city.city_name}>{city.city_name}</option>
+                ))}
+              </select>
+
+              <Button
+                variant="contained"
+                className='flex space-x-2 bg-yellow-300 hover:bg-yellow-400 min-h-14 w-full mt-3'
+                style={{ textTransform: 'none', padding: '0 2rem' }}
+                onClick={handleSubmitSearch}
+              >
+                <FaSearch className='text-black' />
+                <p className='text-black'>Buscar</p>
+              </Button>
+            </div>
+          </nav>
+          <Image src="/welcome-page-image.png" alt="EasyJob landing page" width={2000} height={1000} layout="intrinsic" className="w-full lg:w-[55%]" />
+        </div>
       </div>
       <div className='items-center flex flex-col'>
         <TextGenerateEffect words={words} />
