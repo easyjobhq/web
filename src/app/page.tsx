@@ -99,7 +99,7 @@ export default function Home() {
 
   return (
     <ThemeProvider theme={theme}>
-      <div className="flex flex-col justify-between min-h-[75vh] bg-blue-500 px-[10%] md:px-[15%] lg:px-[15%]">
+      <div className="flex flex-col justify-between min-h-[75vh] bg-blue-500 px-[5%] md:px-[15%] lg:px-[15%]">
         <nav className="flex justify-between items-center pt-5">
           <Link href={"/home"} className="flex">
             <Image src="/EasyJob-logo-white.png" alt="EasyJob logo" width={25} height={25} layout="intrinsic" className="w-7 h-7 mr-3 object-fill" />
