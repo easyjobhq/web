@@ -20,7 +20,7 @@ import { useGlobalContext } from "@/context/store";
 import { Client } from "@/interfaces/Client";
 import { AuthService } from '@/services/auth.service'
 import { useLogout } from "@/hooks/auth/logout";
-import { useParams, useRouter, useSearchParams } from "next/navigation";
+import { useParams, useRouter, useSearchParams, usePathname } from "next/navigation";
 import Image from "next/image";
 import ResponsiveNavbar from "@/components/ui/ResponsiveNavbar";
 import { FaBars } from "react-icons/fa";
@@ -59,6 +59,9 @@ export default function Navbar(props: Props) {
 
 
   const [isNavVisible, setIsNavVisible] = useState(false);
+
+  const pathName = usePathname();
+  
 
   useEffect(() => {
 
@@ -107,7 +110,11 @@ export default function Navbar(props: Props) {
       setSelectedSpeciality(specialityParam)
     }
     
-  }, [useParams])
+  }, [useParams]);
+
+  useEffect(() => {
+    setIsNavVisible(false);
+  }, [pathName]);
 
 
   return (
@@ -209,7 +216,16 @@ export default function Navbar(props: Props) {
         <FaBars className="cursor-pointer" onClick={() => {
           setIsNavVisible(!isNavVisible);
         }} />
-        { isNavVisible && <ResponsiveNavbar clickedFunction={setIsNavVisible}/>}
+        { isNavVisible && <ResponsiveNavbar 
+          clickedFunction={setIsNavVisible}
+          cities={cities}
+          specialities={specialities}
+          selectedCity={selectedCity}
+          selectedSpeciality={selectedSpeciality}
+          setSelectedCity={setSelectedCity}
+          setSelectedSpeciality={setSelectedSpeciality}
+          handleSearch = {handleSearch}
+          />}
       </div>
 
     </nav>
