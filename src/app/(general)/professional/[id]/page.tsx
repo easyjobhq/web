@@ -120,7 +120,7 @@ const ProfessionalPage = ({ params }: Props) => {
   };
 
   const handleAppointmentCreation = async () => {
-    if (!selectedDate || !selectedLocation || !selectedTime || !selectedService || !selectedPaymentMethod) {
+    if (!selectedDate || !selectedLocation || !selectedTime || !selectedService ) {
         alert('Por favor, complete todos los campos para agendar la cita.');
         return;
     }
