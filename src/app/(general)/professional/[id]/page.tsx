@@ -120,9 +120,9 @@ const ProfessionalPage = ({ params }: Props) => {
   };
 
   const handleAppointmentCreation = async () => {
-    if (!selectedDate || !selectedLocation || !selectedTime || !selectedService || !selectedPaymentMethod) {
-      alert('Por favor, complete todos los campos para agendar la cita.');
-      return;
+    if (!selectedDate || !selectedLocation || !selectedTime || !selectedService ) {
+        alert('Por favor, complete todos los campos para agendar la cita.');
+        return;
     }
     const appointmentData = {
       date: JSON.stringify(selectedDate),
@@ -132,13 +132,13 @@ const ProfessionalPage = ({ params }: Props) => {
     };
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/appointment/${userIdContext}/${params.id}/${selectedPaymentMethod}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(appointmentData),
-      });
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/appointment/${userIdContext}/${params.id}/${selectedPaymentMethod}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(appointmentData),
+        });
 
       if (response.ok) {
         alert('Cita agendada exitosamente');

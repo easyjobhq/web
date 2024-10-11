@@ -2,6 +2,7 @@ import { Review } from '@/interfaces/review'
 import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import '../../home/professionalCard.css'
+import { Rating } from '@mui/material'
 
 interface Props {
   review: Review
