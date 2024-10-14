@@ -12,7 +12,10 @@ import { authService } from '@/services';
 import { Client } from '@/interfaces/Client';
 import NavbarRegister from '../(register)/Navbar';
 import Footer from '../(general)/Footer';
-
+import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-with-collision";
+import { AuroraBackground } from "@/components/ui/aurora-background";
+import { motion } from "framer-motion";
+import { BackgroundBeams } from "@/components/ui/background-beams";
 
 function Login() {
 
@@ -56,7 +59,10 @@ function Login() {
           <h2 className="text-white text-2xl font-bold">Easy Job</h2>
         </Link>
       </nav>
-      <div className="w-screen h-[90vh] flex items-center justify-center bg-slate-100">
+      
+      
+      <div className="w-screen h-[90vh] flex items-center justify-center bg-slate-100 bg-gray-300">
+      <BackgroundBeams />
         <div className="flex flex-col border w-full max-w-md px-10 pb-10 pt-7 rounded-md shadow-md bg-white">
           <div className="font-bold flex mb-5 text-center justify-center items-center" style={{ fontSize: "1.8rem" }}><p>Iniciar Sesión</p></div>
           <label className=' text-left mb-2 font-medium'>Email</label>
@@ -92,6 +98,7 @@ function Login() {
           </div>
         </div>
       </div>
+    
       <Footer/>
     </>
   );

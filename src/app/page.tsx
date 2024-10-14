@@ -20,6 +20,7 @@ import { ChangeEvent } from 'react';
 import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { useRouter } from "next/navigation";
+import { FlipWords } from "../components/ui/flip-words";
 
 
 const DummyContent = () => {
@@ -49,7 +50,7 @@ const DummyContent = () => {
   );
 };
 
-const words = `¡Conoce lo que hacemos!`;
+const words = [`¡Conoce lo que hacemos!`, '¡Ven y disfruta la experiencia!', '¡Estamos para ayudarte!', '¡No dudes en contactarnos!', '¡Estamos para servirte!'];
 
 export default function Home() {
 
@@ -165,7 +166,9 @@ export default function Home() {
         </div>
       </div>
       <div className='items-center flex flex-col'>
-        <TextGenerateEffect words={words} />
+        <div className=" dark:text-white text-black text-3xl leading-snug tracking-wide font-bold">
+          <FlipWords words={words} /> <br/>
+        </div>
         <Carousel items={cards} />
       </div>
       <div className='w-full'> {/* Añadido w-full */}
