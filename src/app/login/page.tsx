@@ -66,12 +66,12 @@ function Login() {
             className="w-full h-9 px-3 border border-solid border-black rounded"
             placeholder="Email"
           />
-          <label className="mt-4 text-left mb-2 font-medium">Constraseña</label>
+          <label className="mt-4 text-left mb-2 font-medium">Contraseña</label>
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             className="w-full h-9 px-2 border border-solid border-black rounded"
-            placeholder="Constraseña"
+            placeholder="Contraseña"
             type="password"
           />
           <button
@@ -86,6 +86,12 @@ function Login() {
           >
             <FaGoogle className='mr-2' /><p>Conectate con Google</p>
           </button>
+
+          <div className="flex items-center justify-center">
+            <Link href={"/password-change"} className='text-sm font-normal mt-4 text-center text-blue-700 hover:underline'>¿Olvidaste tu contraseña?</Link>
+          </div>
+
+          <div className='mt-10 h-[2px] bg-slate-200 w-full'></div>
           <div className="flex items-center justify-center">
             <p className='text-sm font-light mt-4 mr-1'>¿No tienes cuenta?</p>
             <Link href={"/register-client"} className='text-sm font-normal mt-4 text-center text-blue-700 hover:underline'> Registrate</Link>
