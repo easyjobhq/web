@@ -1,3 +1,4 @@
+'use client'
 import React, { useEffect, useState } from 'react'
 import Image from 'next/image';
 import { Professional } from '@/interfaces/professional';
@@ -10,6 +11,7 @@ import { City } from '@/interfaces/city';
 import Link from "next/link";
 import { SlArrowRight } from "react-icons/sl";
 import { Speciality } from '@/interfaces/speciality';
+import { Rating } from '@mui/material';
 
 interface ProfessionalProps {
   professional: Professional;
@@ -22,8 +24,10 @@ function ProfessionalCard(props: ProfessionalProps) {
   const [services, setServices] = useState<Service[]>([]);
   const [cities, setCities] = useState<City[]>([]);
   const [specialities, setSpecialities] = useState<Speciality[]>([]);
-
-
+  const [formsRating, setFormsRating] = useState<number>(0.0);
+  
+  const displayValue = isNaN(formsRating) ? 0 : formsRating;
+  
   useEffect(() => {
     const fetchData = async () => {
       const responseServices = await authService.getServicesOfProfessional(props.professional.id);
@@ -35,11 +39,20 @@ function ProfessionalCard(props: ProfessionalProps) {
       const responseSpecialities = await authService.getSpecialitiesOfProfessional(props.professional.id);
       setSpecialities(responseSpecialities);
 
+      const responseRating = await authService.getTotalReview(props.professional.id);
+      console.log(responseRating)
+      setFormsRating(responseRating);
+
+      
+
     }
 
-    fetchData();
-  }, [])
+   
 
+
+    fetchData();
+    
+  }, [])
 
   return (
     <div className=" bg-white mb-3 rounded-lg px-8 py-5 shadow-md flex">
@@ -73,12 +86,13 @@ function ProfessionalCard(props: ProfessionalProps) {
               </p>
 
               <div className='hidden sm:flex justify-left items-center'>
-                <div className='stars-outer'>
-                  <div className='stars-inner' style={{ width: `${starRating}` }}>
-                    ★ ★ ★ ★ ★
-                  </div>
-                </div>
-                <div className="ml-2 text-sm font-light">{`(${props.professional.score})`}</div>
+                <Rating 
+                name="read-only" 
+                value={formsRating} 
+                readOnly 
+                precision={0.1} 
+                size='small' />
+                <div className="ml-2 text-sm font-light">{`(${displayValue})`}</div>
               </div>
             </div>
           </div>
@@ -88,7 +102,7 @@ function ProfessionalCard(props: ProfessionalProps) {
                     ★ ★ ★ ★ ★
                   </div>
                 </div>
-                <div className="ml-2 text-sm font-light">{`(${props.professional.score})`}</div>
+                <div className="ml-2 text-sm font-light">{`(${displayValue})`}</div>
               </div>
           <div className='bg-gray-300 w-full pr-3' style={{ height: "0.25px" }}></div>
           <div className="medium-section pt-3 pl-3 flex items-center">

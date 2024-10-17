@@ -27,6 +27,7 @@ import { useGlobalContext } from '@/context/store';
 import { CreateQuestionDto } from '@/interfaces/create-question.dto'
 import { useRouter } from 'next/navigation'
 import { CreateReviewDto } from '@/interfaces/create-review.dto'
+import { Rating } from '@mui/material'
 
 interface Props {
   params: { id: string }
@@ -44,6 +45,7 @@ const ProfessionalPage = ({ params }: Props) => {
   const [specialities, setSpecialities] = useState<Speciality[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [questions, setQuestions] = useState<Question[]>([]);
+  const [reviewsCount, setReviewsCount] = useState<number | null>(0);
 
   // Styles
   const [starRating, setStarRating] = useState("");
@@ -59,7 +61,7 @@ const ProfessionalPage = ({ params }: Props) => {
   const [formReviewComment, setFormReviewComment] = useState('');
 
   //Form Rating
-  const [formsRating, setFormsRating] = useState<number>(0);
+  const [formsRating, setFormsRating] = useState<number>(0.0);
   const [hover, setHover] = useState<number>(0);
 
   // States for scheduling
@@ -91,7 +93,7 @@ const ProfessionalPage = ({ params }: Props) => {
   async function handleSubmitReview() {
 
     const review: CreateReviewDto = {
-      score: formsRating,
+      score: reviewsCount || 0,
       comment: formReviewComment
     }
 
@@ -118,6 +120,10 @@ const ProfessionalPage = ({ params }: Props) => {
   const handlePaymentMethodChange = (event: SelectChangeEvent<string>) => {
     setSelectedPaymentMethod(event.target.value as string);
   };
+
+  const onChangeReview = (value: number | null) => {
+    setReviewsCount(value);
+  }
 
   const handleAppointmentCreation = async () => {
     if (!selectedDate || !selectedLocation || !selectedTime || !selectedService ) {
@@ -157,6 +163,9 @@ const ProfessionalPage = ({ params }: Props) => {
       const responseProfessional = await authService.getProfessional(params.id);
       setProfessional(responseProfessional);
 
+      const responseRating = await authService.getTotalReview(params.id);
+      console.log(responseRating)
+      setFormsRating(responseRating);
       const responseServices = await authService.getServicesOfProfessional(params.id);
       setServices(responseServices);
 
@@ -214,13 +223,12 @@ const ProfessionalPage = ({ params }: Props) => {
                 }
               </div>
               <div className="items-center mb-2 hidden sm:flex">
-                <div className='stars-outer'>
-                  <div className='stars-inner' style={{ width: `${starRating}` }}>
-                    ★ ★ ★ ★ ★
-                  </div>
-                </div>
-
-                <div className="ml-2 text-sm font-light">{`(${professional?.score})`}</div>
+                <Rating
+                  value = {formsRating}
+                  readOnly
+                  precision={0.1}
+                />
+              <div className="ml-2 text-sm font-light">{`(${formsRating})`}</div>
               </div>
               {isClient && (
                 <div className="hidden md:flex">
@@ -237,9 +245,12 @@ const ProfessionalPage = ({ params }: Props) => {
 
           <div className="items-center mt-3 mb-2 flex sm:hidden">
             <div className='stars-outer'>
-              <div className='stars-inner' style={{ width: `${starRating}` }}>
-                ★ ★ ★ ★ ★
-              </div>
+            <div className='stars-inner'>
+                    <Rating
+                      value = {formsRating}
+                      readOnly
+                    />
+                  </div>
             </div>
             <div className="ml-2 text-sm font-light">{`(${professional?.score})`}</div>
           </div>
@@ -337,11 +348,12 @@ const ProfessionalPage = ({ params }: Props) => {
           </div>
 
           <div className="items-center mb-5">
-            <div className='stars-outer-opinions text-lg'>
-              <div className='stars-inner-opinions text-lg' style={{ width: `${starRating}` }}>
-                ★ ★ ★ ★ ★
-              </div>
-            </div>
+                    <Rating
+                      value = {formsRating}
+                      readOnly
+                      precision= {0.1}
+
+                    />
             <p className='text-sm font-light'>Valoracion global</p>
           </div>
 
@@ -357,35 +369,13 @@ const ProfessionalPage = ({ params }: Props) => {
               <div className="bg-gray-300 mt-4" style={{ height: "0.5px" }}></div>
               <div className='mb-3 mt-3'>
                 <p className='text-sm font-light mb-1'>{usernameContext}</p>
-                <div className="flex">
-                  <div className='mb-3 flex mr-3'>
-                    {[...Array(5)].map((star, index) => {
-
-                      const currentRating = index + 1;
-
-                      return (
-                        <label className='flex' key={index}>
-                          <input
-                            className='hidden'
-                            type="radio"
-                            name='rating'
-                            value={currentRating}
-                            onClick={() => setFormsRating(currentRating)}
-                          />
-                          <FaStar
-                            size={20}
-                            className='cursor-pointer'
-                            color={currentRating <= (hover || formsRating) ? "#ffc107" : "e4e5e9"}
-                            onMouseEnter={() => setHover(currentRating)}
-                            onMouseLeave={() => setHover(0)}
-                          />
-                        </label>
-                      )
-                    })}
-
-                  </div>
-                  <p className='font-light text-sm'>( {formsRating}.0 )</p>
-                </div>
+                <Rating
+                  value={reviewsCount}
+                  precision={0.125}
+                  onChange={(event, newValue) => {
+                    onChangeReview(newValue);
+                  }}
+                />
                 <TextField
                   className='mb-3'
                   sx={{ width: "100%", '& .MuiInputBase-root': { fontSize: "0.875rem" }, '& .MuiInputLabel-root': { fontSize: "0.875rem" } }}
