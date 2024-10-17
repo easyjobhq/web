@@ -361,4 +361,11 @@ export class AuthService {
 
     }
 
+  getTotalReview = async (id_professional: string) => {
+    const res = await this.instance
+    .get(`/professionals/totalreviews/${id_professional}`);
+
+    return res.data
+  }
+
 }
