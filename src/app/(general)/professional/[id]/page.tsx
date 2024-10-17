@@ -61,7 +61,7 @@ const ProfessionalPage = ({ params }: Props) => {
   const [formReviewComment, setFormReviewComment] = useState('');
 
   //Form Rating
-  const [formsRating, setFormsRating] = useState<number>(0);
+  const [formsRating, setFormsRating] = useState<number>(0.0);
   const [hover, setHover] = useState<number>(0);
 
   // States for scheduling

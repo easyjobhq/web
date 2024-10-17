@@ -30,11 +30,7 @@ function ReviewCard(props: Props) {
       </div>
       <div className="mb-4">
         <p className='font-medium mt-1'>{props.review.client.name} {props.review.client.last_name}</p>
-        <div className='stars-outer-review'>
-          <div className='stars-inner-review' style={{width: `${starRating}`}}>
-          ★ ★ ★ ★ ★
-          </div>
-        </div>
+        <Rating name="read-only" value={props.review.score} readOnly precision={0.1} size='small'/>
         <p className='font-light text-sm'>{props.review.comment}</p>
         
       </div>
