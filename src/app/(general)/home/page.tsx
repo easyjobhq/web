@@ -8,6 +8,9 @@ import ProfessionalCard from './professionalCard';
 import { Pagination } from '@mui/material';
 import { useGlobalContext } from '@/context/store';
 import { useSearchParams } from 'next/navigation';
+import { Metadata } from 'next';
+
+
 
 function HomePage() {
 

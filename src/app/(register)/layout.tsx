@@ -1,6 +1,12 @@
 import Footer from "../(general)/Footer";
 import Navbar from "../(general)/navbar";
 import NavbarRegister from "./Navbar";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Registrarse",
+  description: "Pagina de registro",
+}
 
 export default function RegisterLayout({
   children,
