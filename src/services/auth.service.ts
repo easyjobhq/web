@@ -363,26 +363,26 @@ export class AuthService {
 
   restorePassword = async (email_client: string): Promise<boolean> => {
     try {
-      const res = await this.instance.post(`/auth/client/reset-password/${email_client}`);
+      const res = await this.instance.post(`/auth/user/reset-password/${email_client}`);
       return true
     } catch (error) {
       // Ensure TypeScript recognizes the error as an AxiosError
-    if (axios.isAxiosError(error)) {
-      // Handle Axios-specific error details
-      if (error.response) {
-        console.error("Server error response:", error.response.data);
-      } else if (error.request) {
-        console.error("No response received:", error.request);
+      if (axios.isAxiosError(error)) {
+        // Handle Axios-specific error details
+        if (error.response) {
+          console.error("Server error response:", error.response.data);
+        } else if (error.request) {
+          console.error("No response received:", error.request);
+        } else {
+          console.error("Axios error message:", error.message);
+        }
       } else {
-        console.error("Axios error message:", error.message);
+        // Handle any non-Axios errors (if applicable)
+        console.error("Unexpected error:", (error as Error).message);
       }
-    } else {
-      // Handle any non-Axios errors (if applicable)
-      console.error("Unexpected error:", (error as Error).message);
-    }
 
-    // Return false to indicate failure
-    return false;
+      // Return false to indicate failure
+      return false;
     }
   }
 
