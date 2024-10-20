@@ -15,35 +15,35 @@ export class AuthService {
       headers: {
         'Access-Control-Allow-Origin': '*', // Allow all origins
       },
-      
+
     });
   }
 
   login = async (email: string, password: string) => {
-    try{
+    try {
       const res = await this.instance
-      .post("/auth/client/login", {
-        email,
-        password,
-      });
+        .post("/auth/client/login", {
+          email,
+          password,
+        });
 
       return res
-    }catch(error){
+    } catch (error) {
       const res = await this.instance
-        .post("/auth/professional/login",{
+        .post("/auth/professional/login", {
           email,
           password
         });
 
-        return res;
+      return res;
     }
   };
 
 
-  register = async (name:string, last_name:string, email:string, phone_number:string, password:string, photo:File, service_id: string, language_id:string, city_id:string, speciality_id:string, selectedOption: string) =>{
-    
-    if(selectedOption == 'Prof'){
-      
+  register = async (name: string, last_name: string, email: string, phone_number: string, password: string, photo: File, service_id: string, language_id: string, city_id: string, speciality_id: string, selectedOption: string) => {
+
+    if (selectedOption == 'Prof') {
+
       //Fix this to the Form form xd
 
       const formData = new FormData();
@@ -54,7 +54,7 @@ export class AuthService {
       formData.append('email', email);
       formData.append('phone_number', phone_number);
       formData.append('password', password);
-      formData.append('professional_image', photo); 
+      formData.append('professional_image', photo);
       formData.append('service_id', service_id);
       formData.append('language_id', language_id);
       formData.append('city_id', city_id);
@@ -62,18 +62,18 @@ export class AuthService {
 
 
       // Send the POST request with FormData
-    const res = await this.instance.post("/auth/professional/register", formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',  // Ensure proper content type for file upload
-      },
-    });
+      const res = await this.instance.post("/auth/professional/register", formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',  // Ensure proper content type for file upload
+        },
+      });
 
-    return res;
-      
-    }else{
+      return res;
+
+    } else {
       // Create a FormData object to handle file uploads
       const formData = new FormData();
-      
+
       // Append form fields to FormData
       formData.append('name', name);
       formData.append('last_name', last_name);
@@ -82,7 +82,7 @@ export class AuthService {
       formData.append('password', password);
       formData.append('client_image', photo);  // Append the file as 'photo'
 
-      
+
       // Send the POST request with FormData
       const res = await this.instance.post("/auth/client/register", formData, {
         headers: {
@@ -97,128 +97,128 @@ export class AuthService {
         accessToken: "test",
         expiredAt: Date.now() + 60 * 60 * 24 * 7,  // Expires in 1 week
       };
-    }  
+    }
 
   }
 
   getMe = async (userId: string) => {
     try {
       const res = await this.instance
-      .get(`/clients/${userId}`, {
-        headers: getAuthorizationHeader(),
-      });
-    
+        .get(`/clients/${userId}`, {
+          headers: getAuthorizationHeader(),
+        });
+
       return res.data;
 
-    } catch (error ) {
+    } catch (error) {
       const res = await this.instance
-      .get(`/professionals/${userId}`, {
-        headers: getAuthorizationHeader(),
-      });
-    
+        .get(`/professionals/${userId}`, {
+          headers: getAuthorizationHeader(),
+        });
+
       return res.data;
     }
   };
 
   getProfessionals = async (page: number = 1, limit: number = 10) => {
     const res = await this.instance
-    .get(`/professionals?page=${page}&limit=${limit}`, {
-      headers: getAuthorizationHeader(),
-    });
+      .get(`/professionals?page=${page}&limit=${limit}`, {
+        headers: getAuthorizationHeader(),
+      });
     return res.data;
   };
 
-  searchProfessionalsByQuery = async (city: string, speciality: string, page: number = 1, limit: number = 10 ) => {
+  searchProfessionalsByQuery = async (city: string, speciality: string, page: number = 1, limit: number = 10) => {
     const res = await this.instance
-    .get(`/professionals/city/${city}/speciality/${speciality}?page=${page}&limit=${limit}`, {
-      headers: getAuthorizationHeader(),
-    });
+      .get(`/professionals/city/${city}/speciality/${speciality}?page=${page}&limit=${limit}`, {
+        headers: getAuthorizationHeader(),
+      });
     return res.data;
   };
 
   getServicesOfProfessional = async (id: string) => {
 
     const res = await this.instance
-    .get(`/professionals/services/${id}`, {
-      headers: getAuthorizationHeader(),
-    })
+      .get(`/professionals/services/${id}`, {
+        headers: getAuthorizationHeader(),
+      })
     return res.data
   }
 
   getCitiesOfProfessional = async (id: string) => {
     const res = await this.instance
-    .get(`/professionals/cities/${id}`, {
-      headers: getAuthorizationHeader(),
-    })
+      .get(`/professionals/cities/${id}`, {
+        headers: getAuthorizationHeader(),
+      })
     return res.data
   }
 
-  getServices = async ()=>{
+  getServices = async () => {
     const res = await this.instance
-    .get('/services',{
-      headers: getAuthorizationHeader(),
-    })
+      .get('/services', {
+        headers: getAuthorizationHeader(),
+      })
 
     return res.data
   }
 
-  getSpeciality = async () =>{
+  getSpeciality = async () => {
     const res = await this.instance
-    .get('/specialities',{
-      headers: getAuthorizationHeader(),
-    })
+      .get('/specialities', {
+        headers: getAuthorizationHeader(),
+      })
 
     return res.data
   }
-  
-  addServiceToProfessional=  async (professional_id:string, service_id:string) =>{
+
+  addServiceToProfessional = async (professional_id: string, service_id: string) => {
     const res = await this.instance
-    .get(`/professionals/service/${professional_id}/${service_id}`,{
+      .get(`/professionals/service/${professional_id}/${service_id}`, {
         headers: getAuthorizationHeader(),
       }
-    )
+      )
 
     return res.status
   }
 
-  addSpecialityToProfessional = async (Professional_id:string, speciality_id_id:string) =>{
+  addSpecialityToProfessional = async (Professional_id: string, speciality_id_id: string) => {
     const res = await this.instance
-    .get(`/professionals/specialities/${Professional_id}/${speciality_id_id}`,{
-      headers: getAuthorizationHeader()
-    })
+      .get(`/professionals/specialities/${Professional_id}/${speciality_id_id}`, {
+        headers: getAuthorizationHeader()
+      })
   }
 
-  getCity = async () =>{
+  getCity = async () => {
     const res = await this.instance
-    .get('/city',{
-      headers:getAuthorizationHeader(),
-    })
+      .get('/city', {
+        headers: getAuthorizationHeader(),
+      })
 
     return res.data
   }
 
   getProfessional = async (id: string) => {
     const res = await this.instance
-    .get(`/professionals/${id}`, {
-      headers: getAuthorizationHeader(),
-    })
+      .get(`/professionals/${id}`, {
+        headers: getAuthorizationHeader(),
+      })
     return res.data
   }
 
-  getAppoimentsToProfessional = async (id_professional:string) =>{
+  getAppoimentsToProfessional = async (id_professional: string) => {
     const res = await this.instance
       .get(`professionals/appoiments/${id_professional}`, {
         headers: getAuthorizationHeader(),
       })
 
-      return res.data
+    return res.data
   }
 
   getSpecialitiesOfProfessional = async (id: string) => {
     const res = await this.instance
-    .get(`/professionals/specialities/${id}`, {
-      headers: getAuthorizationHeader(),
-    })
+      .get(`/professionals/specialities/${id}`, {
+        headers: getAuthorizationHeader(),
+      })
 
     return res.data
   }
@@ -230,48 +230,48 @@ export class AuthService {
     return res.data;
   };
 
-  getLanguage = async () =>{
+  getLanguage = async () => {
     const res = await this.instance
-    .get('/language',{
-      headers:getAuthorizationHeader(),
-    })
+      .get('/language', {
+        headers: getAuthorizationHeader(),
+      })
 
     return res.data
   }
 
-  getReviewsOfProfessional = async (id: string) =>{
+  getReviewsOfProfessional = async (id: string) => {
     const res = await this.instance
-    .get(`/reviews/professional/${id}`,{
-      headers:getAuthorizationHeader(),
-    })
+      .get(`/reviews/professional/${id}`, {
+        headers: getAuthorizationHeader(),
+      })
 
     return res.data
   }
 
-  getQuestionsOfProfessional = async (id: string) =>{
+  getQuestionsOfProfessional = async (id: string) => {
     const res = await this.instance
-    .get(`/questions/professional/${id}`,{
-      headers:getAuthorizationHeader(),
-    })
+      .get(`/questions/professional/${id}`, {
+        headers: getAuthorizationHeader(),
+      })
 
     return res.data
   }
 
-  deleteAppoiment = async (id:string) =>{
+  deleteAppoiment = async (id: string) => {
     const res = await this.instance
-    .delete(`/appointment/${id}`,{
-      headers: getAuthorizationHeader()
-    }
-    )
+      .delete(`/appointment/${id}`, {
+        headers: getAuthorizationHeader()
+      }
+      )
   }
 
 
-  updateProfessional = async (id:string| undefined, name:string | undefined, last_name:string | undefined, email:string | undefined, phone_number:string | undefined, photo:File | null)=>{
+  updateProfessional = async (id: string | undefined, name: string | undefined, last_name: string | undefined, email: string | undefined, phone_number: string | undefined, photo: File | null) => {
     try {
 
       // Create a FormData object to handle file uploads
       const formData = new FormData();
-      
+
       // Append fields to FormData
       if (name) formData.append('name', name);
       if (last_name) formData.append('last_name', last_name);
@@ -290,48 +290,48 @@ export class AuthService {
           },
         }
       );
-  
+
       return res.data; // Return the data from the response
     } catch (error) {
-        console.error('Error updating professional:', error);
+      console.error('Error updating professional:', error);
       throw error; // Rethrow the error for further handling
     }
   }
 
   getAllCities = async () => {
     const res = await this.instance
-    .get('/city',{
-      headers:getAuthorizationHeader(),
-    })
+      .get('/city', {
+        headers: getAuthorizationHeader(),
+      })
 
     return res.data
   }
 
   getAllSpecialities = async () => {
     const res = await this.instance
-    .get('/specialities',{
-      headers:getAuthorizationHeader(),
-    })
+      .get('/specialities', {
+        headers: getAuthorizationHeader(),
+      })
 
     return res.data
   }
 
 
-  deleteServiceToProfessional = async (id_professional:string, id_service:string) =>{
+  deleteServiceToProfessional = async (id_professional: string, id_service: string) => {
     const res = await this.instance
-    .delete(`/professionals/oneservice/${id_professional}/${id_service}`,{
-      headers: getAuthorizationHeader(),
-    })
+      .delete(`/professionals/oneservice/${id_professional}/${id_service}`, {
+        headers: getAuthorizationHeader(),
+      })
 
     return res.status
 
   }
 
-  deleteSpecialityToProfessional = async (id_professional:string, id_speciality:string) =>{
-    const res= await this.instance
-    .delete(`/professionals/onespeaciality/${id_professional}/${id_speciality}`,{
-      headers: getAuthorizationHeader(),
-    })
+  deleteSpecialityToProfessional = async (id_professional: string, id_speciality: string) => {
+    const res = await this.instance
+      .delete(`/professionals/onespeaciality/${id_professional}/${id_speciality}`, {
+        headers: getAuthorizationHeader(),
+      })
 
     return res.status
 
@@ -340,26 +340,51 @@ export class AuthService {
 
   createQuestion = async (id_client: string, id_professional: string, question: CreateQuestionDto) => {
     const res = await this.instance
-    .post(`/questions/${id_client}/${id_professional}`, 
+      .post(`/questions/${id_client}/${id_professional}`,
         question
         ,
         {
           headers: getAuthorizationHeader(),
-        } 
-     );
+        }
+      );
   }
 
   createReview = async (id_client: string, id_professional: string, review: CreateReviewDto) => {
     const res = await this.instance
-    .post(`reviews/client/${id_client}/profesional/${id_professional}`, 
+      .post(`/reviews/client/${id_client}/profesional/${id_professional}`,
         review
         ,
         {
           headers: getAuthorizationHeader(),
-        } 
-     );
+        }
+      );
 
+  }
+
+  restorePassword = async (email_client: string): Promise<boolean> => {
+    try {
+      const res = await this.instance.post(`/auth/user/reset-password/${email_client}`);
+      return true
+    } catch (error) {
+      // Ensure TypeScript recognizes the error as an AxiosError
+      if (axios.isAxiosError(error)) {
+        // Handle Axios-specific error details
+        if (error.response) {
+          console.error("Server error response:", error.response.data);
+        } else if (error.request) {
+          console.error("No response received:", error.request);
+        } else {
+          console.error("Axios error message:", error.message);
+        }
+      } else {
+        // Handle any non-Axios errors (if applicable)
+        console.error("Unexpected error:", (error as Error).message);
+      }
+
+      // Return false to indicate failure
+      return false;
     }
+  }
 
   getTotalReview = async (id_professional: string) => {
     const res = await this.instance
