@@ -3,7 +3,7 @@
 import { authService } from '@/services';
 import React, { useState } from 'react'
 
-function page() {
+function Page() {
 
     const [email, setEmail] = useState<string>("");
     const [responseStatus, setResponseStatus] = useState(0);
@@ -57,4 +57,4 @@ function page() {
     )
 }
 
-export default page
+export default Page
