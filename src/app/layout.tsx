@@ -8,8 +8,19 @@ import { Suspense } from 'react';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Easy Job",
-  description: "Encuentra tu profesional a pocos clicks",
+  title:{
+    default: "Easy Job",
+    template: "%s | Easy Job"
+  },
+  description: "Encuentra un profesional a pocos clicks, Easy Job te ayuda a encontrar el profesional que necesitas para tu hogar",
+  openGraph:{
+    title: "Easy Job",
+    description: "Encuentra un profesional a pocos clicks, Easy Job te ayuda a encontrar el profesional que necesitas para tu hogar",
+    type: "website",
+    locale: "es_CO",
+    url: "https://easyjob.com.co",
+    siteName: "Easy Job",
+  }
 };
 
 export default function RootLayout({
