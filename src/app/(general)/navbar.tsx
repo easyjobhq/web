@@ -24,6 +24,7 @@ import { useParams, useRouter, useSearchParams, usePathname } from "next/navigat
 import Image from "next/image";
 import ResponsiveNavbar from "@/components/ui/ResponsiveNavbar";
 import { FaBars } from "react-icons/fa";
+import { set } from "date-fns";
 
 const ITEM_HEIGHT = 80;
 const ITEM_PADDING_TOP = 8;
@@ -57,6 +58,8 @@ export default function Navbar(props: Props) {
   const [selectedCity, setSelectedCity] = useState('');
   const [selectedSpeciality, setSelectedSpeciality] = useState('');
 
+  const [isClient, setIsClient] = useState<number | null>(null);
+
 
   const [isNavVisible, setIsNavVisible] = useState(false);
 
@@ -72,6 +75,9 @@ export default function Navbar(props: Props) {
       } else {
         const response = await checkService.checkIsProfessional(props.id);
         setIsProfessional(response)
+        const client = await checkService.checkIsClient(props.id);
+        setIsClient(client)
+        
       }
 
       const responseCities = await authService.getAllCities();
@@ -202,6 +208,13 @@ export default function Navbar(props: Props) {
       <div className="hidden md:flex text-3xl text-white">
         {isProfessional != null && (
           <Link href={`/profile/${props.id}`}>
+            <button className="mr-3" type="button">
+              <CgProfile />
+            </button>
+          </Link>
+        )}
+        {isClient != null && (
+          <Link href={`/profile/client/${props.id}`}>
             <button className="mr-3" type="button">
               <CgProfile />
             </button>
