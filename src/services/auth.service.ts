@@ -298,6 +298,27 @@ export class AuthService {
     }
   }
 
+  updateClients = async (id: string | undefined, name: string | undefined, last_name: string | undefined, email: string | undefined, phone_number: string | undefined, photo: File | null) => {
+    const formData = new FormData();
+
+    if (name) formData.append('name', name);
+    if (last_name) formData.append('last_name', last_name);
+    if (email) formData.append('email', email);
+    if (phone_number) formData.append('phone_number', phone_number);
+    if (photo) formData.append('client_image', photo);
+
+    const res = await this.instance.patch(
+      `/clients/${id}`,
+      formData,
+      {
+        headers: {
+          ...getAuthorizationHeader(),
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+  }
+
   getAllCities = async () => {
     const res = await this.instance
       .get('/city', {
