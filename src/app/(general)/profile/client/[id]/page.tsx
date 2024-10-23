@@ -151,7 +151,11 @@ function ProfileCPage({params}: Props) {
                 <div className="bg-white mb-3 rounded-lg px-3 shadow-md w-full h-1/3 space-y-4">
                     <h2 className="text-lg font-medium">Ultimas citas agendadas</h2>
                     { client?.appointments.length !== 0 ? (
-                        client?.appointments.map((appointment, index) => (
+                        client?.appointments
+                        .filter(appoiment => new Date(appoiment.date) >= new Date())
+                        .sort((a,b) => new Date(a.date) > new Date(b.date) ? 1 : -1)
+                        .slice(0,10)
+                        .map((appointment, index) => (
                             <div className="bg-white mb-3 rounded-lg px-3 shadow-md w-full border border-gray-400 space-y-2">
                                 <User className="h-5 w-5 text-blue-500" />
                                 <div>
@@ -187,7 +191,7 @@ function ProfileCPage({params}: Props) {
                 <div className="bg-white mb-3 rounded-lg px-3 shadow-md w-full h-1/3 space-y-4">
                     <h2 className="text-lg font-medium">Reseñas</h2>
                     { client?.reviews.length !== 0 ? (
-                        client?.reviews.map((review, index) => (
+                        client?.reviews.slice(-10).map((review, index) => (
                             <div className="bg-white mb-3 rounded-lg px-3 shadow-md w-full border border-gray-400 space-y-2">
                                 <div>
                                     <p className="text-sm text-gray-500">puntaje</p>
