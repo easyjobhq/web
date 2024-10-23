@@ -156,7 +156,7 @@ function ProfileCPage({params}: Props) {
                         .sort((a,b) => new Date(a.date) > new Date(b.date) ? 1 : -1)
                         .slice(0,10)
                         .map((appointment, index) => (
-                            <div className="bg-white mb-3 rounded-lg px-3 shadow-md w-full border border-gray-400 space-y-2">
+                            <div key={index} className="bg-white mb-3 rounded-lg px-3 shadow-md w-full border border-gray-400 space-y-2">
                                 <User className="h-5 w-5 text-blue-500" />
                                 <div>
                                     <p className="text-sm text-gray-500">professional</p>
@@ -192,7 +192,7 @@ function ProfileCPage({params}: Props) {
                     <h2 className="text-lg font-medium">Reseñas</h2>
                     { client?.reviews.length !== 0 ? (
                         client?.reviews.slice(-10).map((review, index) => (
-                            <div className="bg-white mb-3 rounded-lg px-3 shadow-md w-full border border-gray-400 space-y-2">
+                            <div key={index} className="bg-white mb-3 rounded-lg px-3 shadow-md w-full border border-gray-400 space-y-2">
                                 <div>
                                     <p className="text-sm text-gray-500">puntaje</p>
                                     <Rating precision={0.1} name="read-only" value={review.score} readOnly size="small"/>
