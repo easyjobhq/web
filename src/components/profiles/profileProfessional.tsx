@@ -37,7 +37,7 @@ interface professionalInformation {
     id: string
 }
 
-const profileProfessional : React.FC<professionalInformation> = ({id}) => {
+const ProfileProfessional : React.FC<professionalInformation> = ({id}) => {
 
     const [professional, setProfessional] = useState<Professional>();
     const [services, setServices] = useState<Service[]>([]);
@@ -454,4 +454,4 @@ const profileProfessional : React.FC<professionalInformation> = ({id}) => {
     )
 }
 
-export default profileProfessional
+export default ProfileProfessional
