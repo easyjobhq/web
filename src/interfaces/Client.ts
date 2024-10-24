@@ -1,3 +1,5 @@
+import { Appoiment } from './appoiment';
+import { Review } from './review';
 export interface Client { 
     email: string;
     id: string;
@@ -6,4 +8,6 @@ export interface Client {
     phone_number: string;
     photo_url: string;
     roles: string[];
+    reviews: Review[];
+    appointments: Appoiment[];
 }
