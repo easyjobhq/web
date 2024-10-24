@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { authService } from "@/services"
 import Image from "next/image"
 import { MdOutlineAddAPhoto } from "react-icons/md"
-import '../../../home/professionalCard.css'
+ //import '../../../home/professionalCard.css'
 import { FaSave } from "react-icons/fa"
 import { Rating } from "@mui/material"
 import { 
