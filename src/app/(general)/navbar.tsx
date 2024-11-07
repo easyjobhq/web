@@ -70,6 +70,9 @@ export default function Navbar(props: Props) {
 
     const fetchData = async () => {
 
+      console.log("Estos son los props")
+      console.log(props);
+
       if (props.id === undefined) {
         setIsProfessional(null)
       } else {
