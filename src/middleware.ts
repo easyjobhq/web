@@ -41,7 +41,8 @@ export async function middleware(req: NextRequest) {
     */
 
   
- 
+  
+  /*
 
   if(req.nextUrl.pathname.startsWith('/profile')){
     const currentUser =  JSON.parse(JSON.stringify( tokenFromOauth)) as current
@@ -50,6 +51,7 @@ export async function middleware(req: NextRequest) {
     if(isClient)
       return NextResponse.redirect(new URL('/home', req.url))
   }
+    */
 
   if (req.nextUrl.pathname.startsWith("/oauth")) {
     const oAuthToken = req.nextUrl.searchParams.get("token") || "";
