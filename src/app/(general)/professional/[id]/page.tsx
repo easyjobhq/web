@@ -458,7 +458,7 @@ const ProfessionalPage = ({ params }: Props) => {
                 </Select>
               </FormControl>
 
-              <FormControl className='mb-4'>
+              {/* <FormControl className='mb-4'>
                 <Select
                   sx={{ height: 45, fontSize: '16px' }}
                   displayEmpty
@@ -478,7 +478,7 @@ const ProfessionalPage = ({ params }: Props) => {
                     </MenuItem>
                   ))}
                 </Select>
-              </FormControl>
+              </FormControl> */}
 
               <>
                 <button onClick={handleAppointmentCreation} className="bg-blue-500 text-white p-2 mb-3 rounded hover:bg-blue-600 font-medium">
