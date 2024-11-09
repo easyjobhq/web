@@ -16,6 +16,7 @@ import { BackgroundBeamsWithCollision } from "@/components/ui/background-beams-w
 import { AuroraBackground } from "@/components/ui/aurora-background";
 import { motion } from "framer-motion";
 import { BackgroundBeams } from "@/components/ui/background-beams";
+import Modal from '@/components/ui/Modal';
 
 function Login() {
 
@@ -33,13 +34,20 @@ function Login() {
 
   };
 
+  const [hasLoginFailed, setHasLoginFailed] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+
   const onSubmit = async () => {
     if (!email || !password) {
-      alert("Please enter information");
+      setHasLoginFailed(true);
+      setErrorMessage("Tienes que llenar todos los campos");
     } else {
 
       const loginResponse = await login(email, password)
-        .catch((e: Error) => alert(e));
+        .catch((e: Error) => {
+          setHasLoginFailed(true)
+          setErrorMessage("⚠️ Las credenciales ingresadas no son correctas. Por favor, verifica tu usuario y contraseña e inténtalo nuevamente 🔄");
+        });
 
       setUserIdContext(loginResponse.id);
       setEmailContext(loginResponse.email);
@@ -104,6 +112,22 @@ function Login() {
             </div>
 
           </div>
+          <Modal isOpen={hasLoginFailed} onClose={() => {
+            setEmail('')
+            setPassword('')
+            setHasLoginFailed(false)
+          } } >
+            <p>{errorMessage}</p>
+            <button
+            onClick={() => {
+              setEmail('')
+              setPassword('')
+              setHasLoginFailed(false)}}
+            className="z-10 h-10 w-full mt-8 bg-blue-500 rounded border-blue-600 border text-white font-medium text-lg"
+          >
+            Aceptar
+          </button>
+          </Modal>
         
           <Footer/>
         </div>

@@ -40,7 +40,7 @@ function ProfessionalCard(props: ProfessionalProps) {
       setSpecialities(responseSpecialities);
 
       const responseRating = await authService.getTotalReview(props.professional.id);
-      console.log(responseRating)
+      
       setFormsRating(responseRating);
 
       

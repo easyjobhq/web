@@ -15,7 +15,7 @@ import { Question } from '@/interfaces/question'
 import { Review } from '@/interfaces/review'
 import ReviewCard from '../../app/(general)/professional/[id]/ReviewCard'
 import { FaEnvelope, FaPhone } from 'react-icons/fa';
-import { Appoiment } from '@/interfaces/appoiment'
+import { Appointment } from '@/interfaces/appoiment'
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
@@ -47,7 +47,7 @@ const ProfileProfessional : React.FC<professionalInformation> = ({id}) => {
     const [specialities, setSpecialities] = useState<Speciality[]>([]);
     const [starRating, setStarRating] = useState("");
     const [questions, setQuestions] = useState<Question[]>([]);
-    const [appointment, setAppoiment] = useState<Appoiment[]>([])
+    const [appointment, setAppoiment] = useState<Appointment[]>([])
     const [reviews, setReviews] = useState<Review[]>([]);
     const [photo, setPhoto] = useState<File | null>(null)
     const [photo_url,setPhotoUrl]= useState<string |void>(professional?.photo_url || "")
@@ -436,7 +436,7 @@ const ProfileProfessional : React.FC<professionalInformation> = ({id}) => {
                     </>
                   }
                   title={appointment.service}
-                  subheader={appointment.date}
+                  subheader={appointment.date.toLocaleDateString('es-ES', { month: 'long', day: 'numeric', year: 'numeric' })}
                 />
               </Card>
             ))

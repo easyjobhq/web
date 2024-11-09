@@ -1,4 +1,4 @@
-import { Appoiment } from './appoiment';
+import { Appointment } from './appoiment';
 import { Review } from './review';
 export interface Client { 
     email: string;
@@ -9,5 +9,5 @@ export interface Client {
     photo_url: string;
     roles: string[];
     reviews: Review[];
-    appointments: Appoiment[];
+    appointments: Appointment[];
 }
