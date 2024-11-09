@@ -51,11 +51,8 @@ export default function RootLayout({
   if (cookieStore.get('currentUser') === undefined) {
     id = ''
   } else {
-    console.log("AAAAAAA")
     const theme = JSON.parse(JSON.stringify(cookieStore.get('currentUser'))) as current;
-    console.log(theme)
     const tokenn = JSON.parse(theme.value) as user;
-    console.log(tokenn)
     id = tokenn.id
   }
 

@@ -166,7 +166,7 @@ const ProPage : React.FC<professionalInformation> = ({id}) => {
       setProfessional(responseProfessional);
 
       const responseRating = await authService.getTotalReview(id);
-      console.log(responseRating)
+      
       setFormsRating(responseRating);
       const responseServices = await authService.getServicesOfProfessional(id);
       setServices(responseServices);
@@ -461,7 +461,7 @@ const ProPage : React.FC<professionalInformation> = ({id}) => {
                             </Select>
                         </FormControl>
 
-                        <FormControl className='mb-4'>
+                        {/* <FormControl className='mb-4'>
                             <Select
                             sx={{ height: 45, fontSize: '16px' }}
                             displayEmpty
@@ -481,7 +481,7 @@ const ProPage : React.FC<professionalInformation> = ({id}) => {
                                 </MenuItem>
                             ))}
                             </Select>
-                        </FormControl>
+                        </FormControl> */}
 
                         <>
                             <button onClick={handleAppointmentCreation} className="bg-blue-500 text-white p-2 mb-3 rounded hover:bg-blue-600 font-medium">

@@ -3,9 +3,9 @@ import { PaymentMethod } from "./payment_method";
 import { Professional } from "./professional";
 
 
-export interface Appoiment{
+export interface Appointment {
     id:string,
-    date:string,
+    date:Date,
     location:string,
     hour:string,
     service:string,

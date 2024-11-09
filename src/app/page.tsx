@@ -125,7 +125,7 @@ export default function Home() {
         <div className="flex flex-wrap lg:flex-nowrap items-center justify-between flex-grow mt-20 lg:mt-0">
           <nav className="flex-col items-end space-y-4 w-full lg:w-[40%]">
             <h1 className='text-white text-3xl font-bold'>Encuentra un profesional en solo unos clicks</h1>
-            <h4 className='text-gray-300 text-l'>Mas de * profesionales estan aqui para ayudarte</h4>
+            <h4 className='text-gray-300 text-l'>Cientos de especialistas estan aqui para ayudarte</h4>
             <div id='selects' className='w-full  flex-wrap space-y-2 bg-[#377AE7] p-3 rounded-lg'>
 
               <select className="bg-white font-light rounded-md p-4 flex-grow w-full"
@@ -168,7 +168,7 @@ export default function Home() {
       </div>
       <div className='items-center flex flex-col'>
         <div className=" dark:text-white text-black text-3xl leading-snug tracking-wide font-bold">
-          <FlipWords words={words} /> <br/>
+          <FlipWords className="mt-20" words={words} /> <br/>
         </div>
         <Carousel items={cards} />
       </div>
