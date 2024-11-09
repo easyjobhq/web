@@ -436,7 +436,7 @@ const ProfileProfessional : React.FC<professionalInformation> = ({id}) => {
                     </>
                   }
                   title={appointment.service}
-                  subheader={appointment.date}
+                  subheader={appointment.date.toLocaleDateString('es-ES', { month: 'long', day: 'numeric', year: 'numeric' })}
                 />
               </Card>
             ))
