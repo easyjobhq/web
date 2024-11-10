@@ -10,22 +10,19 @@ interface Props {
 
 function ReviewCard(props: Props) {
 
-  const [starRating, setStarRating] = useState(""); 
+  const [imageError, setImageError] = useState(false);
 
-  useEffect(()=>{
-    const starPercentage = (props.review.score /5) * 100;
-    setStarRating(`${Math.round(starPercentage/10) *10}%`);
-  }, [])
 
   return (
     <div className='flex py-3'>
       <div>
         <Image
-        className='rounded-full mr-4' 
-        src={"/profile-picture.jpg"} 
-        alt={'Profile picture'}
+        className='rounded-full mr-4 w-10 h-10 object-fill' 
+        src={ imageError ? '/profile-picture.jpg': props.review.client.photo_url } 
+        alt={props.review.client.name}
         width={30}
         height={30}
+        onError={() => setImageError(true)}
         />
       </div>
       <div className="mb-4">

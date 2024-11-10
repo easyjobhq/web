@@ -19,39 +19,22 @@ interface ProfessionalProps {
 
 function ProfessionalCard(props: ProfessionalProps) {
 
-  const starPercentage = (props.professional.score / 5) * 100;
-  const starRating = `${Math.round(starPercentage / 10) * 10}%`;
-  const [services, setServices] = useState<Service[]>([]);
-  const [cities, setCities] = useState<City[]>([]);
-  const [specialities, setSpecialities] = useState<Speciality[]>([]);
   const [formsRating, setFormsRating] = useState<number>(0.0);
-  
+  const [imageError, setImageError] = useState(false);
+
   const displayValue = isNaN(formsRating) ? 0 : formsRating;
-  
+
   useEffect(() => {
     const fetchData = async () => {
-      const responseServices = await authService.getServicesOfProfessional(props.professional.id);
-      setServices(responseServices);
-
-      const responseCities = await authService.getCitiesOfProfessional(props.professional.id);
-      setCities(responseCities);
-
-      const responseSpecialities = await authService.getSpecialitiesOfProfessional(props.professional.id);
-      setSpecialities(responseSpecialities);
 
       const responseRating = await authService.getTotalReview(props.professional.id);
-      
-      setFormsRating(responseRating);
 
-      
+      setFormsRating(responseRating);
 
     }
 
-   
-
-
     fetchData();
-    
+
   }, [])
 
   return (
@@ -60,11 +43,12 @@ function ProfessionalCard(props: ProfessionalProps) {
         <div className="left-section-card w-full lg:w-6/12 pr-5">
           <div className="upper-section flex mb-2">
             <Image
-              src={props.professional.photo_url || ""}
+              src={imageError? '/profile-picture.jpg' :props.professional.photo_url }
               alt=""
               width={200}
               height={200}
               className='object-cover rounded-full m-1 w-24 h-24'
+              onError={() => setImageError(true)}
             />
             <div className='p-5'>
               <h2 className="font-semibold text-xl hover:underline">
@@ -74,10 +58,10 @@ function ProfessionalCard(props: ProfessionalProps) {
                 </Link>
               </h2>
               <p className='text-sm font-light'>
-                {specialities && specialities.length > 0 ? (
-                  specialities.map((speciality, index) => (
+                {props.professional.specialities && props.professional.specialities.length > 0 ? (
+                  props.professional.specialities.map((speciality, index) => (
                     <>
-                      {speciality.speciality_name} {index < specialities.length - 1 ? ', ' : ''}
+                      {speciality.speciality_name} {index < props.professional.specialities.length - 1 ? ', ' : ''}
                     </>
                   ))
                 ) : (
@@ -86,24 +70,25 @@ function ProfessionalCard(props: ProfessionalProps) {
               </p>
 
               <div className='hidden sm:flex justify-left items-center'>
-                <Rating 
-                name="read-only" 
-                value={formsRating} 
-                readOnly 
-                precision={0.1} 
-                size='small' />
+                <Rating
+                  name="read-only"
+                  value={formsRating}
+                  readOnly
+                  precision={0.1}
+                  size='small' />
                 <div className="ml-2 text-sm font-light">{`(${displayValue})`}</div>
               </div>
             </div>
           </div>
           <div className='flex sm:hidden justify-left items-center mb-3'>
-                <div className='stars-outer'>
-                  <div className='stars-inner' style={{ width: `${starRating}` }}>
-                    ★ ★ ★ ★ ★
-                  </div>
-                </div>
-                <div className="ml-2 text-sm font-light">{`(${displayValue})`}</div>
-              </div>
+            <Rating
+              name="read-only"
+              value={formsRating}
+              readOnly
+              precision={0.1}
+              size='small' />
+            <div className="ml-2 text-sm font-light">{`(${displayValue})`}</div>
+          </div>
           <div className='bg-gray-300 w-full pr-3' style={{ height: "0.25px" }}></div>
           <div className="medium-section pt-3 pl-3 flex items-center">
             <FaPhoneAlt className='mr-2 h-3' />
@@ -113,8 +98,8 @@ function ProfessionalCard(props: ProfessionalProps) {
             <FaMapMarkerAlt className='mr-2 h-3' />
             <p className='text-sm font-light'  >
               {
-                cities.map((city, index) => (
-                  index < cities.length - 1 ? (`${city.city_name}, `) : (`${city.city_name}`)
+                props.professional.cities.map((city, index) => (
+                  index < props.professional.cities.length - 1 ? (`${city.city_name}, `) : (`${city.city_name}`)
                 ))
               }
             </p>
@@ -127,10 +112,10 @@ function ProfessionalCard(props: ProfessionalProps) {
           <div className='pl-5 sm:pl-7 pt-2'>
             <div>
               {
-                services.length === 0 ? (
+                props.professional.services.length === 0 ? (
                   <p className='text-sm font-light'>Este profesional no tiene servicios :(</p>
                 ) : (
-                  services.slice(0, 2).map((service) =>
+                  props.professional.services.slice(0, 2).map((service) =>
                     <div className='mb-3' key={service.id}>
                       <h4 className='mb-0.5 font-semibold'>{service.title}</h4>
                       <p className='text-sm font-light'>{service.description}</p>
