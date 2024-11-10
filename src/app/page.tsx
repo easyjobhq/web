@@ -168,7 +168,7 @@ export default function Home() {
       </div>
       <div className='items-center flex flex-col'>
         <div className=" dark:text-white text-black text-3xl leading-snug tracking-wide font-bold">
-          <FlipWords className="mt-20" words={words} /> <br/>
+          <FlipWords className="mt-20 mb-20 md:mb-0" words={words} /> <br/>
         </div>
         <Carousel items={cards} />
       </div>

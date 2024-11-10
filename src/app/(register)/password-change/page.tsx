@@ -1,6 +1,7 @@
 "use client"
 
 import { authService } from '@/services';
+import { FormControl, TextField } from '@mui/material';
 import React, { useState } from 'react'
 
 function Page() {
@@ -22,13 +23,15 @@ function Page() {
                 </div>
 
                 <p className='font-light text-sm mb-5' >Te enviaremos un mensaje a tu correo registrado para que puedas volver a acceder a tu cuenta</p>
-                <label className=' text-left mb-2 font-medium'>Email</label>
-                <input
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="w-full h-9 px-3 border border-solid border-black rounded"
-                    placeholder="Email"
-                />
+                <FormControl fullWidth margin='normal'>
+                    <label className='text-sm mb-2'>Correo Electronico</label>
+                    <TextField
+                        id="outlined-username"
+                        placeholder='juan@gmail.com'
+                        value={email} // Controlled input
+                        onChange={(event) => setEmail(event.target.value)} // Update state on input change
+                    />
+                </FormControl>
 
                 <button
                     onClick={handleSubmit}
@@ -38,19 +41,19 @@ function Page() {
                 </button>
 
                 <div className="flex mt-8 items-center justify-center ">
-                {
-                    responseStatus === 1 ? (
-                        <div>
-                            <p className='text-green-500'>Correo enviado correctamente :)</p>
-                        </div>
-                    ) : responseStatus === 2 ? (
-                        <div>
-                            <p className='text-red-500'>El correo no pudo ser enviado correctamente :(</p>
-                        </div>
-                    ): (
-                        <></>
-                    )
-                }
+                    {
+                        responseStatus === 1 ? (
+                            <div>
+                                <p className='text-green-500'>Correo enviado correctamente :)</p>
+                            </div>
+                        ) : responseStatus === 2 ? (
+                            <div>
+                                <p className='text-red-500'>El correo no pudo ser enviado correctamente :(</p>
+                            </div>
+                        ) : (
+                            <></>
+                        )
+                    }
                 </div>
             </div>
         </div>
