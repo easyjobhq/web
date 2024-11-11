@@ -14,7 +14,7 @@ import { Metadata } from 'next';
 
 function HomePage() {
 
-  const { searchSpeciality, setSearchSpeciality, searchCity, setSearchCity} = useGlobalContext(); 
+  const { searchSpeciality, setSearchSpeciality, searchCity, setSearchCity } = useGlobalContext();
 
   const [professionals, setProfessionals] = useState<Professional[]>([]);
   const [totalProfessionals, setTotalProfessionals] = useState<number>(0);
@@ -25,19 +25,19 @@ function HomePage() {
   const searchParams = useSearchParams();
 
   useEffect(() => {
-    
+
     const specialityParam = searchParams.get('speciality');
     const cityParam = searchParams.get('city');
 
-    if(cityParam && specialityParam) {
+    if (cityParam && specialityParam) {
       fetchProfessionalsWithFilter(cityParam, specialityParam);
     } else {
       fetchProfessionalsWithNoFilter()
     }
 
   }, [currentPage, searchParams]);
-  
-  
+
+
   const fetchProfessionalsWithFilter = async (cityParam: string, specialityParam: string) => {
 
     if (cityParam && specialityParam) {
@@ -54,7 +54,7 @@ function HomePage() {
     setProfessionals(response.data);
     setTotalProfessionals(response.total);
   }
-  
+
   const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
     setCurrentPage(newPage);
   };
@@ -64,7 +64,23 @@ function HomePage() {
   return (
     <div>
       <div className="mb-3">
-        <h1 className="text-xl font-semibold w-full mb-2">Resultados de la búsqueda</h1>
+        <h1 className='flex font-medium text-2xl'>
+          {
+            searchParams.get('speciality') ? (
+              searchParams.get('speciality')
+            ) : (
+              <>Especialistas</>
+            )
+          }
+
+          {
+            searchParams.get('city') ? (
+              <> en {searchParams.get('city')}</>
+            ) : (
+              <> en Colombia</>
+            )
+          }
+        </h1>
         <p className='font-light'>Reserva por internet, nunca pagarás de mas :)</p>
       </div>
       <div className="flex flex-wrap min-h-screen justify-between">
@@ -76,7 +92,7 @@ function HomePage() {
           ) : (
             <p>No hay profesionales disponibles.</p>
           )}
-        </section>  
+        </section>
         <section className='flex w-full sm:w-[20%] bg-blue-300 rounded-lg min-h-60'>
           {/* TODO -- Maps API */}
         </section>

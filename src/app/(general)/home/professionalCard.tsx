@@ -111,6 +111,7 @@ function ProfessionalCard(props: ProfessionalProps) {
           <div className='bg-gray-300 h-full hidden lg:block' style={{ width: "0.25px" }}></div>
           <div className='pl-5 sm:pl-7 pt-2'>
             <div>
+              {/* {JSON.stringify(props.professional)} */}
               {
                 props.professional.services.length === 0 ? (
                   <p className='text-sm font-light'>Este profesional no tiene servicios :(</p>
