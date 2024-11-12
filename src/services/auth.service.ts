@@ -414,4 +414,11 @@ export class AuthService {
     return res.data
   }
 
+  getChatsClientProfessional = async (id_client: string, id_professional: string) => {
+    const res = await this.instance
+    .get(`/chats/${id_client}/${id_professional}`);
+
+    return res.data
+  }
+
 }
