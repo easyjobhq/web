@@ -37,9 +37,9 @@ export async function generateMetadata({params}: Props): Promise<Metadata | unde
     }
   }
 }
-function ProfilePage({ params }: Props) {
 
-  
+
+function ProfilePage({ params }: Props) {
 
   return (
     <div className='flex'>
