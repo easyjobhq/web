@@ -200,13 +200,14 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
             setSpecialities(responseSpeciality);
 
 
-            const responsePaymentMethods = await authService.getPaymentMethods();
-            setPaymentMethods(responsePaymentMethods);
+            // const responsePaymentMethods = await authService.getPaymentMethods();
+            // setPaymentMethods(responsePaymentMethods);
 
             const starPercentage = (responseProfessional.score / 5) * 100;
             setStarRating(`${Math.round(starPercentage / 10) * 10}%`);
 
             const response = await checkService.checkIsClient(userIdContext);
+            console.log("response", response)
             setIsClient(response);
         }
 
@@ -409,6 +410,7 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                 </div>
 
                 <div className="w-full md:w-[38%] bg-white mb-3 rounded-lg shadow-md flex-grow-0 self-start">
+                    
                     {isClient && (
                         <>
                             <div id='agendar-cita' className="bg-blue-500 text-white rounded-tr-md rounded-tl-md px-3 py-3 text-lg font-semibold">
