@@ -19,7 +19,6 @@ import { Question } from '@/interfaces/question'
 import TextField from '@mui/material/TextField';
 import { IoSend } from "react-icons/io5";
 import { FaStar } from 'react-icons/fa';
-import DatePicker from "react-datepicker";
 import 'react-datepicker/dist/react-datepicker.css';
 import { Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import { SelectChangeEvent } from '@mui/material/Select';
@@ -30,6 +29,11 @@ import { CreateReviewDto } from '@/interfaces/create-review.dto'
 import { Rating } from '@mui/material'
 import Link from 'next/link';
 import Modal from '../ui/Modal';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import dayjs, { Dayjs } from 'dayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider/LocalizationProvider';
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 
 
 interface professionalInformation {
@@ -70,6 +74,7 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
 
     // States for scheduling
     const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
+    const [selectedDateJs, setselectedDateJs] = React.useState<Dayjs | null>(dayjs());
     const [selectedDate, setSelectedDate] = useState<Date | null>(null);
     const [selectedTime, setSelectedTime] = useState<string | null>(null);
     const [selectedService, setSelectedService] = useState<string | null>(null);
@@ -182,8 +187,9 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
             setProfessional(responseProfessional);
 
             const responseRating = await authService.getTotalReview(id);
-
             setFormsRating(responseRating);
+            console.log("responseRating", responseRating)
+
             const responseServices = await authService.getServicesOfProfessional(id);
             setServices(responseServices);
 
@@ -244,7 +250,7 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                                 </div>
                                 <div className="items-center mb-2 hidden sm:flex">
                                     <Rating
-                                        value={formsRating}
+                                        value={Number.isNaN(formsRating) ? 0 : formsRating}
                                         readOnly
                                         precision={0.1}
                                     />
@@ -283,25 +289,44 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                     </div>
                     <div className="main-professional-card bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
                         <h3 className='font-semibold text-xl'>Servicios y precios</h3>
-                        <p className='mt-2 text-sm font-light mb-3'>Servicios populares</p>
-                        <div className="services">
-                            {
-                                services.map((service: Service) => (
-                                    <React.Fragment key={service.id}>
-                                        <li className='flex items-center text-gray-700 mt-2 mb-2'>
-                                            <div className="flex justify-between w-full">
-                                                <div className='flex items-center'>
-                                                    <IoIosArrowForward className='text-xs mr-2 font-medium' /> {service.title}
-                                                </div>
-                                                <p className='font-light flex'><BiDollar className='h-6' /> {Math.round(service.price).toLocaleString('es-ES')}</p>
-                                            </div>
-                                        </li>
-                                        <p className='text-gray-700 text-sm font-light mb-3' style={{ textIndent: "1rem" }}>{service.description}</p>
-                                        <div className="bg-gray-200" style={{ height: "0.5px" }}></div>
-                                    </React.Fragment>
-                                ))
-                            }
-                        </div>
+                        {
+                            services.length == 0 ? (
+                                <div className='flex flex-col items-center justify-center p-10'>
+                                    {/* <Image 
+                                    src={'/icons/backpack_icon.png'} 
+                                    alt={''} 
+                                    width={100} 
+                                    height={100}
+                                    objectFit='cover'
+                                    className='opacity-25 mb-3'
+                                    >
+                                    </Image> */}
+                                    <p className='text-sm text-gray-400'>Este profesional no tiene servicios registrados :(</p>
+                                </div>
+                            ) : (
+                                <div>
+                                    <p className='mt-2 text-sm font-light mb-3'>Servicios populares</p>
+                                    <div className="services">
+                                        {
+                                            services.map((service: Service) => (
+                                                <React.Fragment key={service.id}>
+                                                    <li className='flex items-center text-gray-700 mt-2 mb-2'>
+                                                        <div className="flex justify-between w-full">
+                                                            <div className='flex items-center'>
+                                                                <IoIosArrowForward className='text-xs mr-2 font-medium' /> {service.title}
+                                                            </div>
+                                                            <p className='font-light flex'><BiDollar className='h-6' /> {Math.round(service.price).toLocaleString('es-ES')}</p>
+                                                        </div>
+                                                    </li>
+                                                    <p className='text-gray-700 text-sm font-light mb-3' style={{ textIndent: "1rem" }}>{service.description}</p>
+                                                    <div className="bg-gray-200" style={{ height: "0.5px" }}></div>
+                                                </React.Fragment>
+                                            ))
+                                        }
+                                    </div>
+                                </div>
+                            )
+                        }
                     </div>
                     <div className='main-professional-card bg-white mb-3 rounded-lg px-8 pt-5 pb-7 shadow-md w-full'>
                         <div className="flex justify-between">
@@ -407,10 +432,10 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                             </>
                         )}
                     </div>
-                </div>
+                </div >
 
                 <div className="w-full md:w-[38%] bg-white mb-3 rounded-lg shadow-md flex-grow-0 self-start">
-                    
+
                     {isClient && (
                         <>
                             <div id='agendar-cita' className="bg-blue-500 text-white rounded-tr-md rounded-tl-md px-3 py-3 text-lg font-semibold">
@@ -418,20 +443,32 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                             </div>
 
                             <div className="flex flex-col px-8 py-5">
-                                <FormControl className="mb-4 text-gray-950">
-                                    <DatePicker
+                                <FormControl className="mb-4 text-gray-950 w-full">
+                                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                        <DemoContainer components={['DatePicker']}>
+                                            <DatePicker
+                                                label="Elije la fecha del servicio"
+                                                value={selectedDateJs}
+                                                onChange={(newValue) => setselectedDateJs(newValue)}
+                                                disablePast
+                                                sx={{ width: '100%' }}
+                                            />
+                                        </DemoContainer>
+                                    </LocalizationProvider>
+
+                                    {/* <DatePicker
 
                                         selected={selectedDate}
                                         onChange={handleDateChange}
                                         className="p-2 border border-gray-400 rounded w-full "
                                         dateFormat="MMMM d, yyyy"
                                         placeholderText="Seleccionar Fecha"
-                                    />
+                                    /> */}
                                 </FormControl>
                                 <FormControl className="mb-4">
 
                                     <Select
-                                        sx={{ height: 45, fontSize: '16px' }}
+                                        sx={{ fontSize: '16px' }}
                                         displayEmpty
                                         value={selectedLocation || ''}
                                         onChange={handleLocationChange}>
@@ -446,7 +483,7 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
 
                                 <FormControl className="mb-4">
                                     <Select
-                                        sx={{ height: 45, fontSize: '16px' }}
+                                        sx={{ fontSize: '16px' }}
                                         value={selectedTime || ''}
                                         onChange={handleTimeChange}
                                         displayEmpty
@@ -462,7 +499,7 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
 
                                 <FormControl className="mb-4">
                                     <Select
-                                        sx={{ height: 45, fontSize: '16px' }}
+                                        sx={{ fontSize: '16px' }}
                                         value={selectedService || ''}
                                         onChange={handleServiceChange}
                                         displayEmpty
@@ -477,7 +514,7 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                                 </FormControl>
 
                                 <>
-                                    <button onClick={handleAppointmentCreation} className="bg-blue-500 text-white p-2 mb-3 rounded hover:bg-blue-600 font-medium">
+                                    <button onClick={handleAppointmentCreation} className="bg-blue-500 text-white p-3 mb-3 rounded hover:bg-blue-600 font-medium">
                                         Agendar Cita
                                     </button>
                                 </>
@@ -488,9 +525,9 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                     )}
 
                 </div>
-            </div>
+            </div >
             {/* Modal for the sending of appointments */}
-            <Modal isOpen={modalAppointment} onClose={() => { setModalAppointment(false) }} >
+            < Modal isOpen={modalAppointment} onClose={() => { setModalAppointment(false) }} >
                 <p>{textModalAppointment}</p>
                 <button
                     onClick={() => {
@@ -500,7 +537,7 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                 >
                     Aceptar
                 </button>
-            </Modal>
+            </Modal >
         </>
     )
 }

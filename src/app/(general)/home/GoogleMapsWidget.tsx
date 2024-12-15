@@ -3,11 +3,14 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { GoogleMap, Marker, useLoadScript, Circle, StandaloneSearchBox, } from '@react-google-maps/api';
 import { Place } from '@/interfaces/place';
+import { FaExpand } from "react-icons/fa";
 
 const mapStyles = {
     width: '100%',
-    height: '60%',
+    height: '100%',
 };
+
+const libraries = ['places']; // Define the libraries array outside of the component
 
 
 interface GoogleMapsWidgetProps {
@@ -30,11 +33,11 @@ const GoogleMapsWidget: React.FC<GoogleMapsWidgetProps> = ({ places }) => {
         fillColor: "#3b82f6",
         fillOpacity: 0.35,
     }), []);
-    
+
 
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: process.env.NEXT_PUBLIC_MAPS_API_KEY || '',
-        libraries: ['places'],
+        libraries,
     });
 
     return (
@@ -47,55 +50,71 @@ const GoogleMapsWidget: React.FC<GoogleMapsWidgetProps> = ({ places }) => {
                     </svg> */}
                 </div>
             ) : (
-                
-                <GoogleMap
-                    key={JSON.stringify(myPlaces)}
-                    clickableIcons={false}
-                    onMouseOver={() => console.log('map hovered')}
-                    mapContainerClassName='rounded-lg'
-                    mapContainerStyle={mapStyles}
-                    zoom={12}
-                    center={
-                        { lat: 3.421, lng: -76.521 }
-                    }
-                    options={{
-                        disableDefaultUI: true,
-                        streetViewControl: false,
-                        styles: [
-                            {
-                                featureType: 'poi',
-                                stylers: [{ visibility: 'off' }],
-                            },
-                            {
-                                featureType: 'transit',
-                                stylers: [{ visibility: 'off' }],
-                            },
-                        ],
-                    }}
-                    onMouseUp={
-                        () => {
-                            setIsHovered(true);
-                        }
-                    }
-                >
+                <div className="rounded-lg relative w-full">
                     <button
-                        className='z-100 flex items-center justify-center w-10 h-10 bg-white rounded-full shadow-md'
+                        className='z-20 absolute top-4 left-4 flex items-center justify-center bg-blue-500 rounded-lg shadow-md p-2'
                     >
-                        <span className='text-xs text-black'>Click Me!!</span>
+                        <span className='flex items-center text-xs text-white'> Ampliar Mapa  <FaExpand className='ml-2' /></span>
                     </button>
-                    {
-                        myPlaces.map((place, index) => (
-                            <Circle
-                                key={`${place.latitude}-${place.longitude}-${index}`} // Clave única
-                                center={{ lat: place.latitude, lng: place.longitude }}
-                                radius={200}
-                                options={circleOptions}
-                                onClick={() => alert('Circle clicked!')}
-                            >
-                            </Circle>
-                        ))
-                    }
-                </GoogleMap>
+                    {isHovered && (
+                        <div className="absolute inset-0 rounded-lg bg-gray-200 bg-opacity-50 pointer-events-none z-10 flex items-center justify-center">
+                            <span><FaExpand className='text-blue-500 text-3xl' /></span>
+                        </div>
+                    )}
+                    <GoogleMap
+                        key={JSON.stringify(myPlaces)}
+                        clickableIcons={false}
+                        mapContainerClassName='rounded-lg'
+                        mapContainerStyle={mapStyles}
+                        zoom={12}
+                        center={
+                            { lat: 3.421, lng: -76.521 }
+                        }
+                        options={{
+                            disableDefaultUI: true,
+                            streetViewControl: false,
+                            draggable: false, // Disable dragging
+                            zoomControl: false, // Disable zoom control
+                            scrollwheel: false, // Disable zooming with scroll
+                            disableDoubleClickZoom: true, // Disable zooming with double click
+                            styles: [
+                                {
+                                    featureType: 'poi',
+                                    stylers: [{ visibility: 'off' }],
+                                },
+                                {
+                                    featureType: 'transit',
+                                    stylers: [{ visibility: 'off' }],
+                                },
+                            ],
+                        }}
+
+                        onMouseOver={() => {
+                            console.log('map hovered');
+                            setIsHovered(true);
+                        }}
+                        onMouseOut={() => {
+                            console.log('map not hovered');
+                            setIsHovered(false);
+                        }}
+                        onClick={(e) => {
+                            console.log('Map clicked at: ');
+                        }}
+                    >
+                        {
+                            myPlaces.map((place, index) => (
+                                <Circle
+                                    key={`${place.latitude}-${place.longitude}-${index}`} // Clave única
+                                    center={{ lat: place.latitude, lng: place.longitude }}
+                                    radius={200}
+                                    options={circleOptions}
+                                    onClick={() => alert('Circle clicked!')}
+                                >
+                                </Circle>
+                            ))
+                        }
+                    </GoogleMap>
+                </div>
             )
             }
 

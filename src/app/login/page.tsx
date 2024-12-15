@@ -15,6 +15,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { BackgroundBeams } from "@/components/ui/background-beams";
 import Modal from '@/components/ui/Modal';
 import { FormControl, IconButton, InputAdornment, OutlinedInput, TextField } from '@mui/material';
+import DynamicIcon from '@/components/ui/icons/DynamicIcon';
 
 function Login() {
 
@@ -121,13 +122,13 @@ function Login() {
             </FormControl>
             <button
               onClick={onSubmit}
-              className="z-10 h-10 w-full mt-8 bg-blue-500 rounded border-blue-600 border text-white font-medium text-lg"
+              className="z-10 w-full mt-8 bg-blue-500 rounded border-blue-600 border text-white font-medium text-lg p-2"
             >
               Iniciar sesión
             </button>
             <button
               onClick={handleOauth}
-              className="z-10 h-10 w-full mt-5 bg-[#FDE047] rounded flex items-center justify-center text-black font-light border border-[#c9b137] text-lg"
+              className="z-10 w-full p-2 mt-5 bg-[#FDE047] rounded flex items-center justify-center text-black font-light border border-[#c9b137] text-lg"
             >
               <FaGoogle className='mr-2' /><p>Conectate con Google</p>
             </button>

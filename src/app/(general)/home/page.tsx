@@ -25,6 +25,9 @@ function HomePage() {
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
+  //Modal of the google maps API
+  //const [isModalGoogleMaps, setIsGoo]
+
 
   const searchParams = useSearchParams();
 
@@ -109,7 +112,11 @@ function HomePage() {
             </>
           )}
         </section>
-        <section className='flex w-full sm:w-[20%] rounded-lg min-h-60'>
+        <section className='flex w-full sm:w-[20%] rounded-lg h-[80vh]' onClick={
+          () => {
+            console.log("AAAAAAAAAAA")
+          }
+        }>
           <GoogleMapsWidget
           places={
              [...professionals.flatMap((professional) => professional.places)]
