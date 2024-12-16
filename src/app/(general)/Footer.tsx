@@ -3,6 +3,7 @@ import Link from "next/link";
 import { IoMdMail } from "react-icons/io";
 import { FaLocationDot } from "react-icons/fa6";
 import { FaPhoneAlt } from "react-icons/fa";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -12,7 +13,7 @@ export default function Footer() {
         <div className='mb-10 flex justify-center sm:justify-between sm:items-start font-light flex-wrap  space-y-10 sm:space-y-0'>
           <div className="w-[80%] sm:w-[25%] ">
             <div className="flex mb-4">
-              <BsTools size="30" className="mr-5" />
+              <Image src={"/easyjob-logos/easyjob_logo_black_color.png"} alt={"Easy Job Logo black"} width={50} height={50} className="w-8 h-8  mr-4" />
               <h2 className="text-2xl font-semibold">EasyJob</h2>
             </div>
             <p className="text-sm font-light">Conectando recomendaciones de confianza en el mundo digital</p>
