@@ -40,7 +40,7 @@ export class AuthService {
   };
 
 
-  register = async (name: string, last_name: string, email: string, phone_number: string, password: string, photo: File, service_id: string, language_id: string, city_id: string, speciality_id: string, selectedOption: string) => {
+  register = async (name: string, last_name: string, email: string, phone_number: string, password: string, photo: File | null, service_id: string, language_id: string, city_id: string, speciality_id: string, selectedOption: string) => {
 
     if (selectedOption == 'Prof') {
 
@@ -52,9 +52,13 @@ export class AuthService {
       formData.append('name', name);
       formData.append('last_name', last_name);
       formData.append('email', email);
-      formData.append('phone_number', phone_number);
+      if(phone_number !== "") {
+        formData.append('phone_number', phone_number);
+      }
       formData.append('password', password);
-      formData.append('professional_image', photo);
+      if (photo) {
+        formData.append('professional_image', photo);
+      }
       formData.append('service_id', service_id);
       formData.append('language_id', language_id);
       formData.append('city_id', city_id);
@@ -78,9 +82,13 @@ export class AuthService {
       formData.append('name', name);
       formData.append('last_name', last_name);
       formData.append('email', email);
-      formData.append('phone_number', phone_number);
+      if(phone_number !== "") {
+        formData.append('phone_number', phone_number);
+      }
       formData.append('password', password);
-      formData.append('client_image', photo);  // Append the file as 'photo'
+      if (photo) {
+        formData.append('client_image', photo);  // Append the file as 'photo'
+      }
 
 
       // Send the POST request with FormData

@@ -28,7 +28,6 @@
     "dotenv": "^16.4.5",
     "firebase": "^10.12.1",
     "framer-motion": "^11.9.0",
-    "google-maps-react": "^2.0.6",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "lucide-react": "^0.446.0",

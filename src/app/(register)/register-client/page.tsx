@@ -16,58 +16,31 @@ import Step3RegisterClientForm from './Step3RegisterClientForm'
 
 function Register() {
 
-    const [name, setName] = useState("")
-    const [last_name, setLastName] = useState("")
-    const [email, setEmail] = useState("")
-    const [phone_number, setPhone] = useState("")
-    const [photo, setPhoto] = useState<File | null>(null)
-    const [password, setPassword] = useState("")
-    const [services, setServices] = useState<Service[]>([]);
-    const [cities, setCities] = useState<City[]>([]);
-    const [language, setLanguage] = useState<Language[]>([]);
-    const [speciality, SetSpeciality] = useState<Speciality[]>([])
+
     const router = useRouter();
     const { register } = useRegister()
 
     //Context for the register form
-
-    const { step, nextStep, prevStep } = useRegisterClientContext();
-
-
-    useEffect(() => {
-        const fetchData = async () => {
-
-            const services = await authService.getServices();
-            setServices(services);
-
-            const language = await authService.getLanguage();
-            setLanguage(language)
-
-            const city = await authService.getCity();
-            setCities(city)
-
-            const speciality = await authService.getSpeciality();
-            SetSpeciality(speciality);
-        }
-
-        fetchData();
-
-    }, [])
-
-    const handleFileChange = async (event: ChangeEvent<HTMLInputElement>) => {
-        if (event.target.files && event.target.files.length > 0) {
-            setPhoto(event.target.files[0]);
-        }
-    };
+    const { 
+        step, 
+        nextStep, 
+        prevStep,
+        name,
+        lastName,
+        email,
+        phoneNumber,
+        password,
+        photo,
+     } = useRegisterClientContext();
+    
 
     const onSubmit = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
 
-
         event.preventDefault();
-        if (!name || !last_name || !email || !phone_number || !password || !photo) {
+        if (!name || !lastName || !email  || !password  ) {
             alert("All fields are required");
         } else {
-            await register(name, last_name, email, phone_number, password, photo, "", "", "", "", "Client")
+            await register(name, lastName, email, phoneNumber, password, photo, "", "", "", "", "Client")
                 .then(() => router.push("/login"))
                 .catch((e: Error) => alert(e));
         }
@@ -75,7 +48,7 @@ function Register() {
 
     return (
 
-        <section className=" p-16 shadow-md bg-white rounded-2xl">
+        <section className="p-16 shadow-md bg-white rounded-2xl max-w-screen-sm">
             
 
             <div className="md:flex">
@@ -84,18 +57,9 @@ function Register() {
             <form>
                 {step == 1 ? <Step1RegisterClientFrom /> : ""}
                 {step == 2 ? <Step2RegisterClientForm /> : ""}
-                {step == 3 ? <Step3RegisterClientForm /> : ""}
+                {step == 3 ? <Step3RegisterClientForm onSubmit={ onSubmit } /> : ""}
                 <div className="md:flex mb-8">
                     <div className="md:flex-1 mt-2 mb:mt-0 md:px-3">
-
-
-                        {/* <button
-                            type="submit"
-                            className="w-full mt-3 text-cream-lighter bg-brick bg-blue-500 text-white font-semibold p-3 rounded-md"
-                            onClick={onSubmit}
-                        >
-                            Crear perfil
-                        </button> */}
 
                         <div className="w-full h-[1px] bg-slate-200 my-5"></div>
 

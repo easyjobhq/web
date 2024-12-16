@@ -3,6 +3,7 @@ import { FormControl, IconButton, InputAdornment, OutlinedInput, TextField } fro
 import React from 'react'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import Modal from '@/components/ui/Modal';
 
 function Step1RegisterClientForm() {
 
@@ -20,7 +21,7 @@ function Step1RegisterClientForm() {
 
 
     const [showPassword, setShowPassword] = React.useState(false);
-
+    const [isError, setIsError] = React.useState(false);
 
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -32,6 +33,14 @@ function Step1RegisterClientForm() {
     const handleMouseUpPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
         event.preventDefault();
     };
+
+    const handleNextStep = () => {
+        if (name && lastName && email && password) {
+            nextStep();
+        } else {
+            setIsError(true);
+        }
+    }
 
     return (
         <>
@@ -46,6 +55,7 @@ function Step1RegisterClientForm() {
                             label="Nombre"
                             autoComplete="name"
                             fullWidth
+                            required
                         />
                         <TextField
                             value={lastName}
@@ -53,6 +63,7 @@ function Step1RegisterClientForm() {
                             label="Apellido"
                             autoComplete="last-name"
                             fullWidth
+                            required
                         />
                     </div>
                 </div>
@@ -62,6 +73,7 @@ function Step1RegisterClientForm() {
                         onChange={(e) => setEmail(e.target.value)}
                         label="Email"
                         fullWidth
+                        required
                         InputProps={{
                             classes: {
                                 input: 'placeholder-gray-500'
@@ -75,6 +87,8 @@ function Step1RegisterClientForm() {
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                     fullWidth
+                    required
+                    autoComplete='new-password'
                     endAdornment={
                         <InputAdornment position="end">
                             <IconButton
@@ -96,11 +110,25 @@ function Step1RegisterClientForm() {
 
                 <button
                     className='cursor-pointer min-w-40 bg-gradient-to-r from-blue-300 to-blue-600 flex justify-center p-4 rounded-md text-white font-bold'
-                    onClick={() => nextStep()}
+                    onClick={handleNextStep}
                 >
                     Siguiente
                 </button>
             </div>
+            <Modal isOpen={isError} onClose={() => setIsError(false)}>
+                <div className="p-4 text-center mb-10">
+                    <p className=" font-base">Por favor, rellena todos los campos del formulario</p>
+                </div>
+                <div className="flex items-center justify-center">
+
+                    <button
+                        className='cursor-pointer min-w-40 bg-gradient-to-r from-blue-300 to-blue-600 flex justify-center p-2 rounded-md text-white font-bold'
+                        onClick={() => setIsError(false)}
+                    >
+                        Cerrar
+                    </button>
+                </div>
+            </Modal>
         </>
     )
 }

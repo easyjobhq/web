@@ -2,7 +2,7 @@ import { useRegisterClientContext } from '@/context/RegisterClient';
 import Image from 'next/image';
 import React from 'react'
 
-function Step3RegisterClientForm() {
+function Step3RegisterClientForm({ onSubmit }: { onSubmit: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => Promise<void> }) {
 
     const {
         name,
@@ -64,7 +64,7 @@ function Step3RegisterClientForm() {
                 {/* Número de Teléfono */}
                 <div className="flex justify-between items-center">
                     <span className="font-base text-gray-600">Número de Teléfono:</span>
-                    <span className="text-gray-800">+57 {phoneNumber}</span>
+                    <span className="text-gray-800">{phoneNumber? (`+57 ${phoneNumber}`):( "")}</span>
                 </div>
 
             </div>
@@ -77,7 +77,7 @@ function Step3RegisterClientForm() {
                 </button>
                 <button
                     className='cursor-pointer min-w-40 bg-gradient-to-r from-blue-300 to-blue-600 flex justify-center p-4 rounded-md text-white font-bold'
-                    onClick={() => nextStep()}
+                    onClick={onSubmit}
                 >
                     Crear perfil
                 </button>
