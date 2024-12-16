@@ -28,6 +28,7 @@ jobs:
       run: |
         sudo docker build -t juanjodiazzz/easyjob-frontend-cicd-pipeline:latest \
         --build-arg NEXT_PUBLIC_BACKEND_URL=${{ secrets.NEXT_PUBLIC_BACKEND_URL }} \
+        --build-arg NEXT_PUBLIC_MAPS_API_KEY=${{ secrets.NEXT_PUBLIC_MAPS_API_KEY }} \
         --build-arg JWT_SECRET=${{ secrets.JWT_SECRET }} .
       
     - name: Push to Dockerhub
