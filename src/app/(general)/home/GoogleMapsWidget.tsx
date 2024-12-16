@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useMemo, useState } from 'react';
-import { GoogleMap, Marker, useLoadScript, Circle, StandaloneSearchBox, } from '@react-google-maps/api';
+import { GoogleMap, Marker, useLoadScript, Circle, StandaloneSearchBox, Libraries } from '@react-google-maps/api';
 import { Place } from '@/interfaces/place';
 import { FaExpand } from "react-icons/fa";
 
@@ -10,7 +10,7 @@ const mapStyles = {
     height: '100%',
 };
 
-const libraries = ['places']; // Define the libraries array outside of the component
+const libraries: Libraries = ['places']; // Define the libraries array outside of the component
 
 
 interface GoogleMapsWidgetProps {
@@ -44,10 +44,6 @@ const GoogleMapsWidget: React.FC<GoogleMapsWidgetProps> = ({ places }) => {
         <>
             {!isLoaded ? (
                 <div className="rounded-lg flex items-center justify-center w-full h-full bg-green-100 animate-pulse">
-                    {/* <svg className="w-6 h-6 text-white animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                    </svg> */}
                 </div>
             ) : (
                 <div className="rounded-lg relative w-full">
