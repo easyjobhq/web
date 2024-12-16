@@ -1,4 +1,5 @@
 import { City } from "./city";
+import { Place } from "./place";
 import { Service } from "./service";
 import { Speciality } from "./speciality";
 
@@ -15,4 +16,5 @@ export interface Professional {
     description: string;
     specialities: Speciality[];
     services: Service[];
+    places: Place[];
 };

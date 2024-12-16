@@ -9,6 +9,8 @@ import { Pagination } from '@mui/material';
 import { useGlobalContext } from '@/context/store';
 import { useSearchParams } from 'next/navigation';
 import { Metadata } from 'next';
+import GoogleMapsWidget from './GoogleMapsWidget';
+import ProfessionalCardSkeleton from './professionalCardSkeleton';
 
 
 
@@ -21,11 +23,16 @@ function HomePage() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize] = useState<number>(5);
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  //Modal of the google maps API
+  //const [isModalGoogleMaps, setIsGoo]
+
 
   const searchParams = useSearchParams();
 
   useEffect(() => {
-
+    setIsLoading(true);
     const specialityParam = searchParams.get('speciality');
     const cityParam = searchParams.get('city');
 
@@ -44,6 +51,7 @@ function HomePage() {
       const response = await authService.searchProfessionalsByQuery(cityParam, specialityParam, currentPage, pageSize);
       setProfessionals(response.data);
       setTotalProfessionals(response.total);
+      setIsLoading(false);
     }
 
 
@@ -53,6 +61,7 @@ function HomePage() {
     const response = await authService.getProfessionals(currentPage, pageSize);
     setProfessionals(response.data);
     setTotalProfessionals(response.total);
+    setIsLoading(false);
   }
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
@@ -85,16 +94,33 @@ function HomePage() {
       </div>
       <div className="flex flex-wrap min-h-screen justify-between">
         <section className="w-full sm:w-[78%]">
-          {professionals.length > 0 ? (
-            professionals.map((professional: Professional) => (
-              <ProfessionalCard key={professional.id} professional={professional} />
-            ))
+          {isLoading ? (
+            <>
+              <ProfessionalCardSkeleton />
+              <ProfessionalCardSkeleton />
+              <ProfessionalCardSkeleton />
+            </>
           ) : (
-            <p>No hay profesionales disponibles.</p>
+            <>
+              {professionals.length > 0 ? (
+                professionals.map((professional: Professional) => (
+                  <ProfessionalCard key={professional.id} professional={professional} />
+                ))
+              ) : (
+                <p>No hay profesionales disponibles.</p>
+              )}
+            </>
           )}
         </section>
-        <section className='flex w-full sm:w-[20%] bg-blue-300 rounded-lg min-h-60'>
-          {/* TODO -- Maps API */}
+        <section className='flex w-full sm:w-[20%] rounded-lg h-[80vh]' onClick={
+          () => {
+            console.log("AAAAAAAAAAA")
+          }
+        }>
+          <GoogleMapsWidget
+          places={
+             [...professionals.flatMap((professional) => professional.places)]
+          } />
         </section>
       </div>
       <div className="pagination flex justify-center mt-4">

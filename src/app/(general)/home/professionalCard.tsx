@@ -60,9 +60,9 @@ function ProfessionalCard(props: ProfessionalProps) {
               <p className='text-sm font-light'>
                 {props.professional.specialities && props.professional.specialities.length > 0 ? (
                   props.professional.specialities.map((speciality, index) => (
-                    <>
+                    <React.Fragment key={speciality.id}>
                       {speciality.speciality_name} {index < props.professional.specialities.length - 1 ? ', ' : ''}
-                    </>
+                    </React.Fragment>
                   ))
                 ) : (
                   "Sin profesion"

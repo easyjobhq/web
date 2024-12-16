@@ -25,6 +25,8 @@ import Image from "next/image";
 import ResponsiveNavbar from "@/components/ui/ResponsiveNavbar";
 import { FaBars } from "react-icons/fa";
 import { set } from "date-fns";
+import DynamicIcon from "@/components/ui/icons/DynamicIcon";
+import { IconKey } from "@/components/ui/icons/iconMap";
 
 const ITEM_HEIGHT = 80;
 const ITEM_PADDING_TOP = 8;
@@ -64,7 +66,9 @@ export default function Navbar(props: Props) {
   const [isNavVisible, setIsNavVisible] = useState(false);
 
   const pathName = usePathname();
-  
+
+
+
 
   useEffect(() => {
 
@@ -77,7 +81,7 @@ export default function Navbar(props: Props) {
         setIsProfessional(response)
         const client = await checkService.checkIsClient(props.id);
         setIsClient(client)
-        
+
       }
 
       const responseCities = await authService.getAllCities();
@@ -107,15 +111,15 @@ export default function Navbar(props: Props) {
   useEffect(() => {
     const cityParam = searchParams.get('city');
     const specialityParam = searchParams.get('speciality');
-    
+
     if (cityParam) {
       setSelectedCity(cityParam);
     }
-    
-    if(specialityParam) {
+
+    if (specialityParam) {
       setSelectedSpeciality(specialityParam)
     }
-    
+
   }, [useParams]);
 
   useEffect(() => {
@@ -126,7 +130,7 @@ export default function Navbar(props: Props) {
   return (
     <nav className="flex bg-blue-500 px-5 sm:px-[5%] md:px-[5%] xl:px-[15%] py-3 items-center justify-between">
       <Link href={"/"} className="flex flex-wrap">
-        <Image src="/EasyJob-logo-white.png" alt="EasyJob logo" width={25} height={25} layout="intrinsic" className="w-7 h-7 mr-3 object-fill flex-grow-0 self-center"/>
+        <Image src="/EasyJob-logo-white.png" alt="EasyJob logo" width={25} height={25} layout="intrinsic" className="w-7 h-7 mr-3 object-fill flex-grow-0 self-center" />
         <h2 className="text-white text-2xl font-bold hidden sm:block">Easy Job</h2>
       </Link>
       <div className="hidden md:flex">
@@ -157,7 +161,12 @@ export default function Navbar(props: Props) {
               <MenuItem value={''}>Sin filtro</MenuItem>
               {
                 specialities.map((speciality) => (
-                  <MenuItem key={speciality.id} value={`${speciality.speciality_name}`}>{speciality.speciality_name}</MenuItem>
+                  <MenuItem key={speciality.id} value={`${speciality.speciality_name}`}>
+                    <div className="p-2 bg-blue-200 mr-3 rounded-full">
+                      <DynamicIcon type={speciality.speciality_name} color="#3B82F6" />
+                    </div>
+                    <p>{speciality.speciality_name}</p>
+                  </MenuItem>
                 ))
               }
             </Select>
@@ -177,7 +186,6 @@ export default function Navbar(props: Props) {
               labelId="demo-simple-select-label"
               id="demo-simple-select"
               value={selectedCity}
-              label="Age"
               displayEmpty
               renderValue={(selected) => {
                 if (selected == '') {
@@ -193,7 +201,12 @@ export default function Navbar(props: Props) {
               <MenuItem value={''}>Sin filtro</MenuItem>
               {
                 cities.map((city) => (
-                  <MenuItem key={city.id} value={`${city.city_name}`}>{city.city_name}</MenuItem>
+                  <MenuItem key={city.id} value={`${city.city_name}`}>
+                    <div className="p-2 bg-blue-200 mr-3 rounded-full">
+                      <DynamicIcon type={"Casa"} color="#3B82F6" />
+                    </div>
+                    {city.city_name}
+                    </MenuItem>
                 ))
               }
             </Select>
@@ -229,7 +242,7 @@ export default function Navbar(props: Props) {
         <FaBars className="cursor-pointer" onClick={() => {
           setIsNavVisible(!isNavVisible);
         }} />
-        { isNavVisible && <ResponsiveNavbar 
+        {isNavVisible && <ResponsiveNavbar
           clickedFunction={setIsNavVisible}
           cities={cities}
           specialities={specialities}
@@ -237,8 +250,8 @@ export default function Navbar(props: Props) {
           selectedSpeciality={selectedSpeciality}
           setSelectedCity={setSelectedCity}
           setSelectedSpeciality={setSelectedSpeciality}
-          handleSearch = {handleSearch}
-          />}
+          handleSearch={handleSearch}
+        />}
       </div>
 
     </nav>

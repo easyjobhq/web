@@ -30,13 +30,14 @@ export class Check{
     }
 
     checkIsClient = async(id:string) =>{
+        console.log("llamado con el siguiente id: ",id)
         let res
         try{
             res = await this.instance
             .get(`/clients/${id}`,{
                 headers: getAuthorizationHeader(),
             })
-
+            console.log("res",res)
             return res.status
         }catch(error){
             return null
