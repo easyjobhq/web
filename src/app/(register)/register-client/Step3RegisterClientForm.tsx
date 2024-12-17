@@ -11,7 +11,6 @@ function Step3RegisterClientForm({ onSubmit }: { onSubmit: (event: React.MouseEv
         password,
         phoneNumber,
         photo,
-        nextStep,
         prevStep
     } = useRegisterClientContext();
 

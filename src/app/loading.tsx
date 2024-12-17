@@ -1,19 +1,31 @@
 //create a loading component in nextjs
 
+import Image from 'next/image';
 import React from 'react';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
 export default function Loading() {
   return (
-    <div className="bg-[#F5F5F7] dark:bg-neutral-800 p-8 md:p-14 rounded-3xl mb-4">
-      <p className="text-neutral-600 dark:text-neutral-400 text-base md:text-2xl font-sans max-w-3xl mx-auto">
-        <span className="font-bold text-neutral-700 dark:text-neutral-200">
-          <Skeleton width={200} />
-        </span>
-        <Skeleton count={5} />
-      </p>
-      <Skeleton height={500} width={500} className="md:w-1/2 md:h-1/2 h-full w-full mx-auto object-contain" />
+    <div className="bg-[#F5F5F7] dark:bg-neutral-800 w-screen h-screen flex flex-col items-center justify-center">
+      {/* Logo Animation */}
+      <div className="animate-pulse opacity-75 mb-5">
+        <Image
+          src="/easyjob-logos/easyjob_logo_main_color.webp"
+          alt="EasyJob Logo"
+          width={150}
+          height={150}
+          priority
+          className='w-24 h-24'
+        />
+      </div>
+      <h1 className='text-blue-400 font-bold text-3xl animate-pulse'>Easy Job</h1>
+      <p className='font-light'>Profesionales a tu gusto</p>
+
+      {/* Loading Spinner */}
+      <div className="mt-6">
+        <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+      </div>
     </div>
   );
 }
