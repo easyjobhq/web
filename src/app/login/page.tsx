@@ -122,13 +122,13 @@ function Login() {
             </FormControl>
             <button
               onClick={onSubmit}
-              className="z-10 w-full mt-8 bg-blue-500 rounded border-blue-600 border text-white font-medium text-lg p-2"
+              className="z-10 mt-5 cursor-pointer min-w-40 bg-gradient-to-r from-blue-300 to-blue-600 flex justify-center p-3 rounded-md text-white font-bold text-lg"
             >
               Iniciar sesión
             </button>
             <button
               onClick={handleOauth}
-              className="z-10 w-full p-2 mt-5 bg-[#FDE047] rounded flex items-center justify-center text-black font-light border border-[#c9b137] text-lg"
+              className="z-10 p-3 mt-5 bg-gradient-to-r from-yellow-300 to-yellow-500  rounded flex items-center justify-center text-black font-medium text-lg"
             >
               <FaGoogle className='mr-2' /><p>Conectate con Google</p>
             </button>

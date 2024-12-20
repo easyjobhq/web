@@ -52,7 +52,7 @@ export class AuthService {
       formData.append('name', name);
       formData.append('last_name', last_name);
       formData.append('email', email);
-      if(phone_number !== "") {
+      if (phone_number !== "") {
         formData.append('phone_number', phone_number);
       }
       formData.append('password', password);
@@ -82,7 +82,7 @@ export class AuthService {
       formData.append('name', name);
       formData.append('last_name', last_name);
       formData.append('email', email);
-      if(phone_number !== "") {
+      if (phone_number !== "") {
         formData.append('phone_number', phone_number);
       }
       formData.append('password', password);
@@ -417,7 +417,17 @@ export class AuthService {
 
   getTotalReview = async (id_professional: string) => {
     const res = await this.instance
-    .get(`/professionals/totalreviews/${id_professional}`);
+      .get(`/professionals/totalreviews/${id_professional}`);
+
+    return res.data
+  }
+
+  getAppointmentsOfClient = async (id_client: string) => {
+    const res = await this.instance
+      .get(`/appointment/client/${id_client}`,
+        {
+          headers: getAuthorizationHeader(),
+        });
 
     return res.data
   }
