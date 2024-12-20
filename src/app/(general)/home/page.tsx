@@ -21,7 +21,7 @@ function HomePage() {
   const [professionals, setProfessionals] = useState<Professional[]>([]);
   const [totalProfessionals, setTotalProfessionals] = useState<number>(0);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [pageSize] = useState<number>(5);
+  const [pageSize] = useState<number>(10);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
 

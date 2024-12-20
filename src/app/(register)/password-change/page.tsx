@@ -35,7 +35,7 @@ function Page() {
 
                 <button
                     onClick={handleSubmit}
-                    className="h-10 w-full mt-8 bg-blue-500 rounded border-blue-600 border text-white font-medium text-lg"
+                    className="mt-5 cursor-pointer min-w-40 bg-gradient-to-r from-blue-300 to-blue-600 flex justify-center p-4 rounded-md text-white font-bold"
                 >
                     Enviar correo
                 </button>

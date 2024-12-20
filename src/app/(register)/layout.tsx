@@ -17,7 +17,7 @@ export default function RegisterLayout({
   return (
     <div>
       <NavbarRegister/>
-            <div className="py-20 px-[3%] sm:px-[10%] lg:px-[35%] bg-slate-100 ">
+            <div className="py-20 min-w-96 bg-slate-100 flex justify-center">
               {children}
             </div>
         <Footer/>

@@ -4,8 +4,9 @@ import React from 'react'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Modal from '@/components/ui/Modal';
+import { useRegisterProfessionalContext } from '@/context/RegisterProfessional';
 
-function Step1RegisterClientForm() {
+function Step1RegisterProfessionalForm() {
 
     const {
         nextStep,
@@ -17,7 +18,7 @@ function Step1RegisterClientForm() {
         setEmail,
         password,
         setPassword
-    } = useRegisterClientContext();
+    } = useRegisterProfessionalContext();
 
 
     const [showPassword, setShowPassword] = React.useState(false);
@@ -133,4 +134,4 @@ function Step1RegisterClientForm() {
     )
 }
 
-export default Step1RegisterClientForm
+export default Step1RegisterProfessionalForm
