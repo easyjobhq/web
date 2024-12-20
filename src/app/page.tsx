@@ -154,12 +154,12 @@ export default function Home() {
 
               <Button
                 variant="contained"
-                className='flex space-x-2 bg-yellow-300 hover:bg-yellow-400 min-h-14 w-full mt-3'
+                className='flex space-x-2 bg-gradient-to-r from-yellow-300 to-yellow-500 hover:bg-yellow-400 min-h-14 w-full mt-3'
                 style={{ textTransform: 'none', padding: '0 2rem' }}
                 onClick={handleSubmitSearch}
               >
                 <FaSearch className='text-black' />
-                <p className='text-black'>Buscar</p>
+                <p className='text-black font-medium'>Buscar</p>
               </Button>
             </div>
           </nav>

@@ -1,19 +1,18 @@
 interface ButtonProps {
-    title: string;
-    onClick: () => void;
+  title: string;
+  onClick: () => void;
+  className?: string;
 }
 
-const WhiteButton: React.FC<ButtonProps> = ({ title, onClick }) => {
+const WhiteButton: React.FC<ButtonProps> = ({ title, onClick, className = '' }) => {
+  return (
+    <div
+      className={`cursor-pointer min-w-40 flex justify-center p-3 rounded-md text-gray-500 font-semibold border border-gray-300 hover:bg-gray-100 hover:text-gray-700 transition-colors duration-300 ${className}`}
+      onClick={onClick}
+    >
+      <p className="font-semibold">{title}</p>
+    </div>
+  );
+};
 
-
-    return (
-      <div className="border cursor-pointer w-full flex justify-center p-2 rounded-md"
-        onClick={onClick}
-      >
-        <p className="text-black font-semibold">{title}</p>
-      </div>
-    );
-  };
-  
-  export default WhiteButton;
-  
+export default WhiteButton;
