@@ -248,6 +248,9 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                                         ))
                                     }
                                 </div>
+                                <div className="font-light text-sm mb-2">
+                                    <p>+57 {professional?.phone_number}</p>
+                                </div>
                                 <div className="items-center mb-2 hidden sm:flex">
                                     <Rating
                                         value={Number.isNaN(formsRating) ? 0 : formsRating}

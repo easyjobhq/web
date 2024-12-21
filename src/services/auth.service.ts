@@ -215,7 +215,7 @@ export class AuthService {
 
   getAppoimentsToProfessional = async (id_professional: string) => {
     const res = await this.instance
-      .get(`professionals/appoiments/${id_professional}`, {
+      .get(`professionals/appointments/${id_professional}`, {
         headers: getAuthorizationHeader(),
       })
 
@@ -274,7 +274,7 @@ export class AuthService {
   }
 
 
-  updateProfessional = async (id: string | undefined, name: string | undefined, last_name: string | undefined, email: string | undefined, phone_number: string | undefined, photo: File | null) => {
+  updateProfessional = async (id: string | undefined, name: string | undefined, last_name: string | undefined, email: string | undefined, phone_number: string | undefined, description: string | undefined, photo: File | null) => {
     try {
 
       // Create a FormData object to handle file uploads
@@ -285,6 +285,7 @@ export class AuthService {
       if (last_name) formData.append('last_name', last_name);
       if (email) formData.append('email', email);
       if (phone_number) formData.append('phone_number', phone_number);
+      if (description) formData.append('description', description);
       if (photo) formData.append('professional_image', photo);  // Append the file if it exists
 
       // Send the PATCH request with FormData

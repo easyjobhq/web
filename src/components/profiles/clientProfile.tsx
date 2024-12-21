@@ -222,14 +222,14 @@ const ProfileCliPage: React.FC<ClientInformation> = ({ id }) => {
                             </div>
                         )}
 
-                        <button
+                        {/* <button
                             onClick={() => {
                                 alert("TO BE DONE")
                             }}
                             className="mt-5 cursor-pointer min-w-40 w-full bg-gradient-to-r from-blue-300 to-blue-600 flex justify-center py-3 px-5 rounded-md text-white font-bold text-lg"
                         >
                             Ver Mas
-                        </button>
+                        </button> */}
                     </div>
 
                 </div>
