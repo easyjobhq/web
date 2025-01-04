@@ -1,4 +1,5 @@
 'use client'
+
 import { City } from '@/interfaces/city'
 import { Professional } from '@/interfaces/professional'
 import { Service } from '@/interfaces/service'
@@ -6,34 +7,16 @@ import { Speciality } from '@/interfaces/speciality'
 import { authService } from '@/services'
 import Image from 'next/image'
 import React, { ChangeEvent, useEffect, useState } from 'react'
-//import '../../app/(general)/home/professionalCard.css'
-import { FaRegCalendarAlt, FaUser } from "react-icons/fa";
-import { MdOutlineMessage } from "react-icons/md";
-import { IoIosArrowForward } from "react-icons/io";
-import { BiDollar } from "react-icons/bi";
 import { Question } from '@/interfaces/question'
 import { Review } from '@/interfaces/review'
 import ReviewCard from '../../app/(general)/professional/[id]/ReviewCard'
-import { FaEnvelope, FaPhone } from 'react-icons/fa';
-import { Appointment } from '@/interfaces/appoiment'
-import Card from '@mui/material/Card';
-import CardHeader from '@mui/material/CardHeader';
-import CardMedia from '@mui/material/CardMedia';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
-import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import { red } from '@mui/material/colors';
-import { FaSave } from "react-icons/fa";
-import { Button, Rating } from '@mui/material'
-import { MdDelete } from "react-icons/md";
-import { IoMdAddCircle } from "react-icons/io";
+import { Box, Button, FormControl, MenuItem, Rating, Select, SelectChangeEvent } from '@mui/material'
 import { MdOutlineAddAPhoto } from "react-icons/md";
-import { MdEdit } from "react-icons/md";
 import AppointmentCard, { AppointmentDTOClient } from '../ui/AppointmentCard'
 import AppointmentCardProfessional from '../ui/AppointmentCardProfessional'
+import ServicesSection from './ServicesSection'
+import SpecialitySection from './SpecialitySection'
+import LocationsSection from './LocationsSection'
 
 
 interface professionalInformation {
@@ -55,7 +38,7 @@ const ProfileProfessional: React.FC<professionalInformation> = ({ id }) => {
   const [photo, setPhoto] = useState<File | null>(null)
   const [photo_url, setPhotoUrl] = useState<string | void>(professional?.photo_url || "")
   const [serviceId, setServiceId] = useState('')
-  const [specialityId, SetSpecialityId] = useState('')
+  const [specialityId, SetSpecialityId] = useState<string>('')
 
 
   const [name, setName] = useState<string | undefined>(professional?.name || '')
@@ -81,24 +64,6 @@ const ProfileProfessional: React.FC<professionalInformation> = ({ id }) => {
     window.location.reload()
   }
 
-  const onDeleteService = async (id_service: string) => {
-    await authService.deleteServiceToProfessional(id, id_service)
-  }
-
-  const onDeleteSpeaciality = async () => {
-    await authService.deleteSpecialityToProfessional(id, specialityId)
-    window.location.reload()
-  }
-
-  const onAddService = async () => {
-    authService.addServiceToProfessional(id, serviceId);
-    window.location.reload();
-  }
-
-  const onAddSpeciality = async () => {
-    authService.addSpecialityToProfessional(id, specialityId);
-    window.location.reload()
-  }
   const ChangeImage = async () => {
     authService.updateProfessional(id, name, last_name, email, phoneNumber, description, photo)
     //window.location.reload();
@@ -109,10 +74,6 @@ const ProfileProfessional: React.FC<professionalInformation> = ({ id }) => {
     window.location.reload();
 
   }
-
-
-  const serviceIds = new Set(services.map(service => service.id));
-  const SpecialitiesIds = new Set(specialities.map(speciality => speciality.id))
 
   useEffect(() => {
     const fetchData = async () => {
@@ -143,14 +104,7 @@ const ProfileProfessional: React.FC<professionalInformation> = ({ id }) => {
       const starPercentage = (responseProfessional.score / 5) * 100;
       setStarRating(`${Math.round(starPercentage / 10) * 10}%`);
 
-      const all_services = await authService.getServices();
-      setAllServices(all_services)
-
-      const all_speciality = await authService.getAllSpecialities();
-      setAllSpecialities(all_speciality)
-
       const appoinments = await authService.getAppoimentsToProfessional(id);
-      console.log("Appointments: ", appoinments)
       setAppoiments(appoinments)
     }
 
@@ -239,88 +193,31 @@ const ProfileProfessional: React.FC<professionalInformation> = ({ id }) => {
           </div>
 
         </div>
-        <div className="main-professional-card bg-white mb-3 rounded-lg shadow-md w-full">
+        
+        <ServicesSection services={services} professional_id={id} />
+        <div className='bg-white mb-3 rounded-lg shadow-md w-full'>
           <div className="bg-blue-500 text-white rounded-tr-md rounded-tl-md px-3 py-3 text-lg font-semibold">
-            <h3 className="ml-3 text-xl">Servicios y Precios</h3>
+            <h3 className="ml-3 text-xl">Preguntas</h3>
           </div>
+          {/* {JSON.stringify(professional)} */}
           <div className="px-8 py-5">
-            <p className='mt-2 text-sm font-light mb-3'>Servicios populares</p>
-            <div className="services">
-              {
-                services.map((service: Service) => (
-                  <>
-                    <div className="flex">
-                      <div className="w-full">
-                        <li className='flex items-center text-gray-700 mt-2 font-light mb-2'>
-                          <div className="flex justify-between w-full">
-                            <div className='flex items-center'>
-                              <IoIosArrowForward className='text-xs mr-2' /> {service.title}
-                            </div>
-                            <p className=' font-light flex'><BiDollar className='h-6' /> {Math.round(service.price).toLocaleString('es-ES')}</p>
-                          </div>
-                        </li>
-                        <p className='text-gray-700 text-sm font-light mb-3' style={{ textIndent: "1rem" }}>{service.description}</p>
-                      </div>
-                      <button className="ml-3 px-2 py-1 text-blue-400 text-2xl ">
-                        <MdEdit />
-                      </button>
-                      <button className="ml-3 px-2 py-1 text-blue-400 text-2xl " onClick={() => onDeleteService(service.id)}>
-                        <MdDelete />
-                      </button>
-                    </div>
-                    <div className="bg-gray-200" style={{ height: "0.5px" }}></div>
-
-                  </>
-                ))
-
-              }
-
-              <label htmlFor="service" className="block mb-2 text-sm font-md w-40 mt-5">Añadir servicio</label>
-              <div className="md:flex mb-4 items-center">
-                <select
-                  id="services"
-                  className="border text-sm rounded-lg w-full p-2.5 bg-gray-100"
-                  value={serviceId}
-                  onChange={(e) => setServiceId(e.target.value)}
-                >
-                  <option value="">Elegir servicio</option>
-                  {allServices
-                    .filter(all_service => !serviceIds.has(all_service.id)) // Filtra los servicios que no están en services
-                    .map(filtered_service => (
-                      <option key={filtered_service.id} value={filtered_service.id}>
-                        {filtered_service.title}
-                      </option>
-                    ))}
-                </select>
-
-                <button className="px-2 py-1 text-gray-500 ml-2 text-2xl" onClick={onAddService}>
-                  <IoMdAddCircle />
-                </button>
-              </div>
-
-
-            </div>
-          </div>
-
-        </div>
-        <div className='main-professional-card bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full'>
-          <h3 className='font-semibold text-xl mb-2' > Preguntas sobre ti</h3>
-          {
-            questions.map((question: Question) => (
-              <div key={question.id}>
-                <p className='text-sm font-light mb-2'>{question.client.name} {question.client.last_name}</p>
-                <div className='p-2 border-gray-200 border rounded-md'>
-                  <p className='text-sm font-light'>{question.question_description}</p>
+            {
+              questions.map((question: Question) => (
+                <div key={question.id}>
+                  <p className='text-sm font-light mb-2'>{question.client.name} {question.client.last_name}</p>
+                  <div className='p-2 border-gray-200 border rounded-md'>
+                    <p className='text-sm font-light'>{question.question_description}</p>
+                  </div>
                 </div>
-              </div>
-            ))
-          }
+              ))
+            }
+          </div>
         </div>
         <div className="main-professional-card bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
           <h3 className='font-semibold text-xl mb-2' >{reviews.length} Opiniones sobre ti</h3>
 
-          <div className="items-center mb-5">
-            <Rating name="read-only" value={professional?.score} readOnly precision={0.1} size='medium' />
+          <div className="mb-5">
+            <Rating name="read-only" value={Number(professional?.score) || 0} readOnly precision={0.1} size='medium' />
             <p className='text-sm font-light'>Valoracion global</p>
           </div>
 
@@ -339,68 +236,9 @@ const ProfileProfessional: React.FC<professionalInformation> = ({ id }) => {
 
       <div className="w-2/5">
 
-        <div className="bg-white mb-3 rounded-lg shadow-md w-full">
-          <div className="bg-blue-500 text-white rounded-tr-md rounded-tl-md px-3 py-3 text-lg font-semibold">
-            <h3 className="ml-3 text-xl">Especialidades</h3>
-          </div>
-          <div className="mt-4 px-8 py-5">
-            <form>
-              <div className="">
-                <label className="font-normal" htmlFor="speciality">Especialidad</label>
-                <div className='flex align-middle justify-center items-center mt-2'>
-                  <select
-                    id="specialities"
-                    className="border text-sm rounded-lg bg-gray-100 block w-full p-2.5"
-                    value={specialityId}
-                    onChange={(e) => SetSpecialityId(e.target.value)}
-                  >
-                    <option value="">Elije tu servicio</option>
-                    {allSpeciality
-                      .filter(all_speciality => !SpecialitiesIds.has(all_speciality.id)) // Filtra los servicios que no están en services
-                      .map(filtered_service => (
-                        <option key={filtered_service.id} value={filtered_service.id}>
-                          {filtered_service.speciality_name}
-                        </option>
-                      ))}
-                  </select>
-                  <div>
-                    <button className="px-3  tracking-wide text-gray-500 text-2xl" type="submit" onClick={onAddSpeciality}><IoMdAddCircle /></button>
-                  </div>
-
-                </div>
-                <h2 className="text-lg font-medium  ">Eliminar especialidad</h2>
-          <div className="mt-2">
-            <form>
-              <div className="">
-                <label className="" htmlFor="speciality">Especialidad</label>
-                <div className='flex align-middle justify-center mt-2'>
-                  <select
-                    id="specialities"
-                    className="border text-sm rounded-lg bg-gray-100 block w-full p-2.5"
-                    value={specialityId}
-                    onChange={(e) => SetSpecialityId(e.target.value)}
-                  >
-                    <option value="">Elige tu servicio</option>
-                    {specialities.map((speciality) => (
-                      <option key={speciality.id} value={speciality.id}>
-                        {speciality.speciality_name}
-                      </option>
-                    ))}
-                  </select>
-                  <div>
-                    <button className="px-3 py-2 text-gray-500 text-2xl" type="button" onClick={onDeleteSpeaciality}><MdDelete /></button>
-                  </div>
-
-                </div>
-
-              </div>
-            </form>
-          </div>
-
-              </div>
-            </form>
-          </div>
-        </div>
+      <SpecialitySection professional={professional} />
+      {professional && <LocationsSection professional={professional} />}
+        
         <div className="bg-white mb-3 rounded-lg shadow-md w-full">
           <div className="bg-blue-500 text-white rounded-tr-md rounded-tl-md px-3 py-3 text-lg font-semibold">
             <h3 className="ml-3 text-xl">Tus citas agendadas</h3>
@@ -449,14 +287,6 @@ const ProfileProfessional: React.FC<professionalInformation> = ({ id }) => {
                 </div>
               )}
             </div>
-            {/* <button
-                            onClick={() => {
-                                alert("TO BE DONE")
-                            }}
-                            className="w-full z-10 mt-5 cursor-pointer min-w-40 bg-gradient-to-r from-blue-300 to-blue-600 flex justify-center py-3 px-5 rounded-md text-white font-bold text-lg"
-                        >
-                            Ver Mas
-                        </button> */}
           </div>
         </div>
       </div>

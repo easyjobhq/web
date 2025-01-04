@@ -4,6 +4,10 @@ import { CreateQuestionDto } from "@/interfaces/create-question.dto";
 import { CreateReviewDto } from "@/interfaces/create-review.dto";
 import { headers } from "next/headers";
 import ProfessionalCard from "@/app/(general)/home/professionalCard";
+import { Service } from "@/interfaces/service";
+import { CreateServiceDto } from "@/interfaces/createEntities/CreateServiceDto";
+import { EditServiceDTO } from "@/interfaces/editEntities/EditServiceDto";
+import { Place } from "@/interfaces/place";
 
 export class AuthService {
   protected readonly instance: AxiosInstance;
@@ -189,12 +193,12 @@ export class AuthService {
     return res.status
   }
 
-  addSpecialityToProfessional = async (Professional_id: string, speciality_id_id: string) => {
-    const res = await this.instance
-      .get(`/professionals/specialities/${Professional_id}/${speciality_id_id}`, {
-        headers: getAuthorizationHeader()
-      })
-  }
+  // addSpecialityToProfessional = async (Professional_id: string, speciality_id_id: string) => {
+  //   const res = await this.instance
+  //     .get(`/professionals/specialities/${Professional_id}/${speciality_id_id}`, {
+  //       headers: getAuthorizationHeader()
+  //     })
+  // }
 
   getCity = async () => {
     const res = await this.instance
@@ -357,6 +361,25 @@ export class AuthService {
 
   }
 
+  createServiceToProfessional = async (id_professional: string, service: CreateServiceDto) => {
+
+    const resCreationService = await this.instance
+      .post(`/services`, service, {
+        headers: getAuthorizationHeader(),
+      })
+
+      console.log("resCreationService", resCreationService.data.id)
+
+
+    const res = await this.instance
+      .get(`/professionals/service/${id_professional}/${resCreationService.data.id}`, {
+        headers: getAuthorizationHeader(),
+      })
+
+    return res.status
+
+  }
+
   deleteSpecialityToProfessional = async (id_professional: string, id_speciality: string) => {
     const res = await this.instance
       .delete(`/professionals/onespeaciality/${id_professional}/${id_speciality}`, {
@@ -431,6 +454,43 @@ export class AuthService {
         });
 
     return res.data
+  }
+  editServiceToProfessional = async ( id_service: string, editServiceDTO: EditServiceDTO) => {
+    const res = await this.instance
+      .patch(`/services/${id_service}`, editServiceDTO, {
+        headers: getAuthorizationHeader(),
+      })
+
+    return res.status
+  } 
+
+  addSpecialityToProfessional = async (id_professional: string, id_speciality: string) => {
+    const res = await this.instance
+      .post(`/professionals/${id_professional}/specialities/${id_speciality}`, {
+        headers: getAuthorizationHeader(),
+      })
+
+    return res.status
+  }
+
+  // Endpoints for the place entity
+
+  deletePlace = async (id: string) => {
+    const res = await this.instance
+      .delete(`/places/${id}`, {
+        headers: getAuthorizationHeader(),
+      });
+
+    return res.status;
+  }
+
+  addPlaceToProfessional = async (id_professional: string, place: Place) => {
+    const res = await this.instance
+      .post(`/places/professionals/${id_professional}`, place, {
+        headers: getAuthorizationHeader(),
+      });
+
+    return res.status;
   }
 
 }

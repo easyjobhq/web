@@ -34,6 +34,8 @@ import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider/LocalizationProvider';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 
 
 interface professionalInformation {
@@ -188,7 +190,7 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
 
             const responseRating = await authService.getTotalReview(id);
             setFormsRating(responseRating);
-            console.log("responseRating", responseRating)
+            //console.log("responseRating", responseRating)
 
             const responseServices = await authService.getServicesOfProfessional(id);
             setServices(responseServices);
@@ -237,19 +239,28 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                             </div>
                             <div className="professional-information">
                                 <h2 className='font-semibold text-lg md:text-2xl mt-3 mb-1'>{professional?.name} {professional?.last_name} </h2>
+                                <p className='font-light text-sm'>
 
-                                {specialities.map((speciality) =>
-                                    <p className='font-light text-sm' key={speciality.id}>{speciality.speciality_name}</p>
-                                )}
+                                    {specialities.map((speciality, index) =>
+                                        <React.Fragment key={speciality.id}>
+                                            {speciality.speciality_name} {index < specialities.length - 1 ? ', ' : ''}
+                                        </React.Fragment>
+                                    )}
+
+                                </p>
                                 <div className="font-light text-sm mb-2">
-                                    {
-                                        cities.map((city, index) => (
-                                            index < cities.length - 1 ? (`${city.city_name}, `) : (`${city.city_name}`)
-                                        ))
-                                    }
+                                    <p>
+                                        <LocationOnIcon className='text-sm mr-2' />
+
+                                        {
+                                            cities.map((city, index) => (
+                                                index < cities.length - 1 ? (`${city.city_name}, `) : (`${city.city_name}`)
+                                            ))
+                                        }
+                                    </p>
                                 </div>
                                 <div className="font-light text-sm mb-2">
-                                    <p>+57 {professional?.phone_number}</p>
+                                    <p><LocalPhoneIcon className='text-sm' /> +57 {professional?.phone_number}</p>
                                 </div>
                                 <div className="items-center mb-2 hidden sm:flex">
                                     <Rating
@@ -295,15 +306,6 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                         {
                             services.length == 0 ? (
                                 <div className='flex flex-col items-center justify-center p-10'>
-                                    {/* <Image 
-                                    src={'/icons/backpack_icon.png'} 
-                                    alt={''} 
-                                    width={100} 
-                                    height={100}
-                                    objectFit='cover'
-                                    className='opacity-25 mb-3'
-                                    >
-                                    </Image> */}
                                     <p className='text-sm text-gray-400'>Este profesional no tiene servicios registrados :(</p>
                                 </div>
                             ) : (
