@@ -4,6 +4,15 @@ import React from 'react'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Modal from '@/components/ui/Modal';
+import validateSchemas from '@/app/actions/validateSchemas1';
+
+interface FormErrors {
+    name?: string[];
+    lastName?: string[];
+    email?: string[];
+    password?: string[];
+    _form?: string[];
+}
 
 function Step1RegisterClientForm() {
 
@@ -22,6 +31,7 @@ function Step1RegisterClientForm() {
 
     const [showPassword, setShowPassword] = React.useState(false);
     const [isError, setIsError] = React.useState(false);
+    const [errors, setErrors] = React.useState<FormErrors>({});
 
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
@@ -34,13 +44,26 @@ function Step1RegisterClientForm() {
         event.preventDefault();
     };
 
-    const handleNextStep = () => {
-        if (name && lastName && email && password) {
-            nextStep();
+    const handleSubmit = async () => {
+
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('lastName', lastName);
+        formData.append('email', email);
+        formData.append('password', password);
+
+        const validationResult = await validateSchemas({ errors: {} }, formData);
+
+        if (Object.keys(validationResult.errors).length > 0) {
+            setErrors(validationResult.errors);
+            if(!name || !lastName || !email || !password){
+                setIsError(true);
+            }
         } else {
-            setIsError(true);
+            setErrors({});
+            nextStep();
         }
-    }
+    };
 
     return (
         <>
@@ -56,6 +79,8 @@ function Step1RegisterClientForm() {
                             autoComplete="name"
                             fullWidth
                             required
+                            error={Boolean(errors.name)}
+                            helperText= {errors.name?.join(", ")}
                         />
                         <TextField
                             value={lastName}
@@ -64,6 +89,8 @@ function Step1RegisterClientForm() {
                             autoComplete="last-name"
                             fullWidth
                             required
+                            error={Boolean(errors.lastName)}
+                            helperText= {errors.lastName?.join(", ")}
                         />
                     </div>
                 </div>
@@ -79,6 +106,8 @@ function Step1RegisterClientForm() {
                                 input: 'placeholder-gray-500'
                             }
                         }}
+                        error={Boolean(errors.email)}
+                        helperText= {errors.email?.join(", ")}
                     />
                 </div>
                 <OutlinedInput
@@ -104,13 +133,17 @@ function Step1RegisterClientForm() {
                             </IconButton>
                         </InputAdornment>
                     }
+                    error={Boolean(errors.password)}
+                    
                 />
+                {errors.password && <p className="text-red-500 text-sm">{errors.password.join(", ")}</p>}
             </div>
             <div className="w-full flex justify-end">
 
                 <button
                     className='cursor-pointer min-w-40 bg-gradient-to-r from-blue-300 to-blue-600 flex justify-center p-4 rounded-md text-white font-bold'
-                    onClick={handleNextStep}
+                    onClick={handleSubmit}
+                    type='button'
                 >
                     Siguiente
                 </button>
@@ -124,6 +157,7 @@ function Step1RegisterClientForm() {
                     <button
                         className='cursor-pointer min-w-40 bg-gradient-to-r from-blue-300 to-blue-600 flex justify-center p-2 rounded-md text-white font-bold'
                         onClick={() => setIsError(false)}
+                        
                     >
                         Cerrar
                     </button>

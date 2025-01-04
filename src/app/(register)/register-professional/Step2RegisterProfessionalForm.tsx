@@ -9,6 +9,12 @@ import Input from '@mui/material/Input';
 import InputAdornment from '@mui/material/InputAdornment';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { useRegisterProfessionalContext } from '@/context/RegisterProfessional';
+import validateSchemas from '@/app/actions/validateSchemas2';
+
+interface FormErrors {
+    phoneNumber?: string[];
+    _form?: string[];
+}
 
 function Step2RegisterProfessionalForm() {
 
@@ -21,6 +27,8 @@ function Step2RegisterProfessionalForm() {
         photo,
         setPhoto
     } = useRegisterProfessionalContext();
+
+    const [errors, setErrors] = React.useState<FormErrors>({});
 
 
     useEffect(() => {
@@ -46,6 +54,24 @@ function Step2RegisterProfessionalForm() {
     };
 
     const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+    const handleSubmit = async () =>{
+        const formData = new FormData()
+        formData.append('phoneNumber', phoneNumber)
+        console.log(phoneNumber)
+
+        const validationResult = await validateSchemas({ errors: {} }, formData);
+        console.log(validationResult)
+        if (Object.keys(validationResult.errors).length > 0) {
+            setErrors(validationResult.errors);
+        } else {
+            setErrors({});
+            nextStep();
+        }
+
+        
+
+    }
 
 
     return (
@@ -101,11 +127,13 @@ function Step2RegisterProfessionalForm() {
                         fullWidth
                         type="tel"
                         value={phoneNumber}
-                        onChange={(e: ChangeEvent<HTMLInputElement>) => setPhoneNumber(e.target.value.replace(/\D/g, ''))}
+                        onChange={(e) => setPhoneNumber(e.target.value)}
                         id="outlined-start-adornment"
                         InputProps={{
                             startAdornment: <InputAdornment position="start">+57</InputAdornment>,
                         }}
+                        error= {Boolean(errors.phoneNumber)}
+                        helperText = {errors.phoneNumber?.join(", ")}
                     />
                 </div>
             </div>
@@ -118,7 +146,8 @@ function Step2RegisterProfessionalForm() {
                 </button>
                 <button
                     className='cursor-pointer min-w-40 bg-gradient-to-r from-blue-300 to-blue-600 flex justify-center p-4 rounded-md text-white font-bold'
-                    onClick={() => nextStep()}
+                    onClick={handleSubmit}
+                    type='button'
                 >
                     Siguiente
                 </button>
