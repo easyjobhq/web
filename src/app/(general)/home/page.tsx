@@ -11,6 +11,7 @@ import { useSearchParams } from 'next/navigation';
 import { Metadata } from 'next';
 import GoogleMapsWidget from './GoogleMapsWidget';
 import ProfessionalCardSkeleton from './professionalCardSkeleton';
+import Image from 'next/image';
 
 
 
@@ -107,7 +108,11 @@ function HomePage() {
                   <ProfessionalCard key={professional.id} professional={professional} />
                 ))
               ) : (
-                <p>No hay profesionales disponibles.</p>
+                <div className="w-full h-full flex flex-col items-center justify-center">
+                  <Image className="opacity-50" src={'/icons/loading_icon.png'} alt="Screwdriver icon" width={300} height={300} />
+                  <p className="text-gray-500 mt-4 text-lg font-base">No tenemos {searchParams.get('speciality')} en {searchParams.get('city')}.</p>
+                  <p className='text-gray-500 mt-4 text-sm font-base'>pronto estaremos alli para ti &#128522; </p>
+                </div>
               )}
             </>
           )}
