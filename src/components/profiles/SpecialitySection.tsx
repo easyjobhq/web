@@ -66,8 +66,8 @@ function SpecialitySection({ professional }: SpecialitySectionProps) {
             </div>
             <div className="mt-4 px-8 py-5">
                 <p className='mb-2'>Tus Especialidades:</p>
-                {professional?.specialities.map((speciality) => (
-                    <div className='flex justify-between border-y py-2'>
+                {professional?.specialities.map((speciality, index) => (
+                    <div key={index} className='flex justify-between border-y py-2'>
                         <div className="flex items-center">
                             <div className="p-2 bg-blue-200 mr-3 rounded-full">
                                 <DynamicIcon type={speciality.speciality_name} color="#3B82F6" />
