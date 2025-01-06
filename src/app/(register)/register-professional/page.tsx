@@ -68,7 +68,7 @@ function RegisterProfessional() {
 
                     <div className="flex items-center justify-center">
                         <p className='text-sm font-light mt-4 mr-1'>¿Eres cliente?</p>
-                        <Link href={"/register-professional"} className='text-sm font-normal mt-4 text-center text-blue-700 hover:underline'> Registrate como cliente</Link>
+                        <Link href={"/register-client"} className='text-sm font-normal mt-4 text-center text-blue-700 hover:underline'> Registrate como cliente</Link>
                     </div>
 
                 </div>

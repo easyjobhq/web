@@ -1,13 +1,21 @@
-import { useRegisterClientContext } from '@/context/RegisterClient';
+'use client'
+import { useRegisterProfessionalContext } from '@/context/RegisterProfessional';
 import { FormControl, IconButton, InputAdornment, OutlinedInput, TextField } from '@mui/material';
-import React from 'react'
+import React, { useState } from 'react'
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Modal from '@/components/ui/Modal';
-import { useRegisterProfessionalContext } from '@/context/RegisterProfessional';
+import validateSchemas from '@/app/actions/validateSchemas1';
+
+interface FormErrors {
+    name?: string[];
+    lastName?: string[];
+    email?: string[];
+    password?: string[];
+    _form?: string[];
+}
 
 function Step1RegisterProfessionalForm() {
-
     const {
         nextStep,
         name,
@@ -20,10 +28,9 @@ function Step1RegisterProfessionalForm() {
         setPassword
     } = useRegisterProfessionalContext();
 
-
     const [showPassword, setShowPassword] = React.useState(false);
     const [isError, setIsError] = React.useState(false);
-
+    const [errors, setErrors] = React.useState<FormErrors>({});
 
     const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -31,40 +38,54 @@ function Step1RegisterProfessionalForm() {
         event.preventDefault();
     };
 
-    const handleMouseUpPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-        event.preventDefault();
-    };
+    const handleSubmit = async () => {
 
-    const handleNextStep = () => {
-        if (name && lastName && email && password) {
-            nextStep();
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('lastName', lastName);
+        formData.append('email', email);
+        formData.append('password', password);
+
+        const validationResult = await validateSchemas({ errors: {} }, formData);
+
+        if (Object.keys(validationResult.errors).length > 0) {
+            setErrors(validationResult.errors);
+            if(!name || !lastName || !email || !password){
+                setIsError(true);
+            }
         } else {
-            setIsError(true);
+            setErrors({});
+            nextStep();
         }
-    }
+    };
 
     return (
         <>
             <div className="my-10">
-
-                <p className='mb-5 text-base font-light text-gray-700'>Informacion Basica</p>
+                <p className='mb-5 text-base font-light text-gray-700'>Información Básica</p>
                 <div className="mb-4">
-                    <div className="md:flex md:space-x-4 md:space-y-0 mb-4 space-y-4 ">
+                    <div className="md:flex md:space-x-4 md:space-y-0 mb-4 space-y-4">
                         <TextField
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             label="Nombre"
                             autoComplete="name"
+                            id='name'
                             fullWidth
                             required
+                            error={Boolean(errors.name)}
+                            helperText={errors.name?.join(", ")}
                         />
                         <TextField
                             value={lastName}
                             onChange={(e) => setLastName(e.target.value)}
                             label="Apellido"
                             autoComplete="last-name"
+                            id='lastName'
                             fullWidth
                             required
+                            error={Boolean(errors.lastName)}
+                            helperText={errors.lastName?.join(", ")}
                         />
                     </div>
                 </div>
@@ -75,21 +96,20 @@ function Step1RegisterProfessionalForm() {
                         label="Email"
                         fullWidth
                         required
-                        InputProps={{
-                            classes: {
-                                input: 'placeholder-gray-500'
-                            }
-                        }}
+                        id='email'
+                        error={Boolean(errors.email)}
+                        helperText={errors.email?.join(", ")}
                     />
                 </div>
                 <OutlinedInput
                     type={showPassword ? 'text' : 'password'}
                     placeholder='Escribe tu contraseña'
+                    id='password'
                     value={password}
                     onChange={(event) => setPassword(event.target.value)}
                     fullWidth
                     required
-                    autoComplete='new-password'
+                    error={Boolean(errors.password)}
                     endAdornment={
                         <InputAdornment position="end">
                             <IconButton
@@ -98,7 +118,6 @@ function Step1RegisterProfessionalForm() {
                                 }
                                 onClick={handleClickShowPassword}
                                 onMouseDown={handleMouseDownPassword}
-                                onMouseUp={handleMouseUpPassword}
                                 edge="end"
                             >
                                 {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -106,22 +125,22 @@ function Step1RegisterProfessionalForm() {
                         </InputAdornment>
                     }
                 />
+                {errors.password && <p className="text-red-500 text-sm">{errors.password.join(", ")}</p>}
             </div>
             <div className="w-full flex justify-end">
-
                 <button
                     className='cursor-pointer min-w-40 bg-gradient-to-r from-blue-300 to-blue-600 flex justify-center p-4 rounded-md text-white font-bold'
-                    onClick={handleNextStep}
+                    type='button'
+                    onClick={handleSubmit}
                 >
                     Siguiente
                 </button>
             </div>
             <Modal isOpen={isError} onClose={() => setIsError(false)}>
                 <div className="p-4 text-center mb-10">
-                    <p className=" font-base">Por favor, rellena todos los campos del formulario</p>
+                    <p className=" font-base">Por favor, revisa los errores en el formulario.</p>
                 </div>
                 <div className="flex items-center justify-center">
-
                     <button
                         className='cursor-pointer min-w-40 bg-gradient-to-r from-blue-300 to-blue-600 flex justify-center p-2 rounded-md text-white font-bold'
                         onClick={() => setIsError(false)}
@@ -131,7 +150,8 @@ function Step1RegisterProfessionalForm() {
                 </div>
             </Modal>
         </>
-    )
+        
+    );
 }
 
-export default Step1RegisterProfessionalForm
+export default Step1RegisterProfessionalForm;
