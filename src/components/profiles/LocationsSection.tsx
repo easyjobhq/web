@@ -209,7 +209,7 @@ function LocationsSection({ professional }: {professional: Professional }) {
                 </div>
                 <button
                     onClick={() => {
-                        onDeleteLocation(selectedPlace?.id || '')
+                        onDeleteLocation('')
                         setIsOpenDeleteLocation(false)
                     }}
                     className="z-10 mt-10 cursor-pointer w-full bg-gradient-to-r from-red-300 to-red-600 flex justify-center py-3 px-5 rounded-md text-white font-bold text-lg"
