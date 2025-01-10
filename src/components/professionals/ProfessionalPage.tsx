@@ -7,7 +7,7 @@ import { Speciality } from '@/interfaces/speciality'
 import { PaymentMethod } from '@/interfaces/payment_method';
 import { authService, checkService } from '@/services'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import '../../app/(general)/home/professionalCard.css'
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { MdOutlineMessage } from "react-icons/md";
@@ -36,6 +36,16 @@ import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { Circle, GoogleMap, Libraries, Marker, useLoadScript } from '@react-google-maps/api';
+
+
+const mapStyles = {
+    width: '100%',
+    height: '100%',
+};
+
+
+const libraries: Libraries = ['places']; // Define the libraries array outside of the component
 
 
 interface professionalInformation {
@@ -44,6 +54,14 @@ interface professionalInformation {
 
 const ProPage: React.FC<professionalInformation> = ({ id }) => {
 
+    const circleOptions = useMemo(() => ({
+        strokeColor: "#3b82f6",
+        strokeOpacity: 0.8,
+        strokeWeight: 1,
+        fillColor: "#3b82f6",
+        fillOpacity: 0.35,
+    }), []);
+    
     const router = useRouter();
     //Context data
     const { userIdContext, setUserIdContext, emailContext, setEmailContext, usernameContext, setUsernameContext } = useGlobalContext();
@@ -96,6 +114,11 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
     //Modal for the error of not signin in
     const [signInError, setSignInError] = useState<boolean>(false);
 
+    const { isLoaded } = useLoadScript({
+        googleMapsApiKey: process.env.NEXT_PUBLIC_MAPS_API_KEY || '',
+        libraries,
+    });
+
 
     //Handle submit of forms
     async function handleSubmitQuestion() {
@@ -111,7 +134,7 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
 
     async function handleSubmitReview() {
 
-        if(!userIdContext){
+        if (!userIdContext) {
             setSignInError(true);
             return;
         }
@@ -151,7 +174,7 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
 
     const handleAppointmentCreation = async () => {
 
-        if(!userIdContext){
+        if (!userIdContext) {
             setSignInError(true);
             return;
         }
@@ -257,7 +280,7 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
 
                                     {specialities.map((speciality, index) =>
                                         <React.Fragment key={speciality.id}>
-                                            {speciality.speciality_name} {index < specialities.length - 1 ? ', ' : ''}
+                                            {speciality.speciality_name}{index < specialities.length - 1 ? ', ' : ''}
                                         </React.Fragment>
                                     )}
 
@@ -347,6 +370,53 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                             )
                         }
                     </div>
+                    {professional?.places && professional.places.length > 0 && (
+                        <div className="main-professional-card bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
+                            <h3 className='font-semibold text-xl mb-5'>Ubicaciones</h3>
+                            <div className="w-full h-60">
+                                {isLoaded ? (
+                                    <GoogleMap
+                                        key={JSON.stringify(professional.places)}
+                                        clickableIcons={false}
+                                        mapContainerClassName='rounded-lg'
+                                        mapContainerStyle={mapStyles}
+                                        zoom={11}
+                                        center={
+                                            { lat: 3.421, lng: -76.521 }
+                                        }
+                                        options={{
+                                            disableDefaultUI: true,
+                                            streetViewControl: false,
+                                            styles: [
+                                                {
+                                                    featureType: 'poi',
+                                                    stylers: [{ visibility: 'off' }],
+                                                },
+                                                {
+                                                    featureType: 'transit',
+                                                    stylers: [{ visibility: 'off' }],
+                                                },
+                                            ],
+                                        }}
+                                    >
+                                        {professional.places.map((place, index) => (
+                                            <Circle
+                                                key={index}
+                                                center={{ lat: place.latitude, lng: place.longitude }}
+                                                radius={500} // Adjust the radius as needed
+                                                options={circleOptions}
+                                            />
+                                        ))}
+                                    </GoogleMap>
+                                ) : (
+                                    <p>Cargando...</p>
+                                )
+
+                                }
+                            </div>
+
+                        </div>
+                    )}
                     {/* <div className='main-professional-card bg-white mb-3 rounded-lg px-8 pt-5 pb-7 shadow-md w-full'>
                         <div className="flex justify-between">
                             <h3 className='font-semibold text-xl mb-2'> Preguntas del profesional</h3>
@@ -558,7 +628,7 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                 </button>
             </Modal >
             {/* Modal for the error for not signin in */}
-            < Modal isOpen={signInError} onClose={() => {setSignInError(false) }} >
+            < Modal isOpen={signInError} onClose={() => { setSignInError(false) }} >
                 <p>Por favor, inicia sesión para realizar esta accion</p>
                 <p>:/</p>
                 <button
