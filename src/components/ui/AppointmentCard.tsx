@@ -50,7 +50,7 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({ appointment }) => {
     return (
         <>
             <div
-                className="bg-white cursor-pointer rounded-lg p-5 shadow-lg w-[48%] border border-gray-300 space-y-2 transition-transform transform hover:scale-105 hover:shadow-2xl"
+                className="bg-white cursor-pointer rounded-lg p-5 shadow-lg w-full md:w-[48%] border border-gray-300 space-y-2 transition-transform transform hover:scale-105 hover:shadow-2xl"
                 onClick={() => {
                     setOpen(true);
                 }}
