@@ -110,14 +110,25 @@ function HomePage() {
               ) : (
                 <div className="w-full h-full flex flex-col items-center justify-center">
                   <Image className="opacity-50" src={'/icons/loading_icon.png'} alt="Screwdriver icon" width={300} height={300} />
-                  <p className="text-gray-500 mt-4 text-lg font-base">No tenemos {searchParams.get('speciality')} en {searchParams.get('city')}.</p>
-                  <p className='text-gray-500 mt-4 text-sm font-base'>pronto estaremos alli para ti &#128522; </p>
+                  {
+                    !searchParams.get('speciality') ?  (<p className='text-gray-500 mt-4 text-lg font-base'>EasyJob siempre para ti &#128522; </p>):
+                    (
+                      <>
+                        <p className="text-gray-500 mt-4 text-lg font-base">No tenemos {searchParams.get('speciality')} en {searchParams.get('city')}.</p>
+                        <p className='text-gray-500 mt-4 text-sm font-base'>pronto estaremos alli para ti &#128522; </p>
+                      </>
+                    )
+                   
+
+                  }
+                  
+                  
                 </div>
               )}
             </>
           )}
         </section>
-        <section className='flex w-full sm:w-[20%] rounded-lg h-[80vh]' onClick={
+        <section className='sticky top-2 flex w-full sm:w-[20%] rounded-lg h-[80vh]' onClick={
           () => {
             console.log("AAAAAAAAAAA")
           }
@@ -125,7 +136,9 @@ function HomePage() {
           <GoogleMapsWidget
           places={
              [...professionals.flatMap((professional) => professional.places)]
-          } />
+          }
+          professionals={professionals}
+          />
         </section>
       </div>
       <div className="pagination flex justify-center mt-4">
