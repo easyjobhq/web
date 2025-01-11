@@ -27,6 +27,7 @@ import { FaBars } from "react-icons/fa";
 import { set } from "date-fns";
 import DynamicIcon from "@/components/ui/icons/DynamicIcon";
 import { IconKey } from "@/components/ui/icons/iconMap";
+import { useCurrentUser } from "@/hooks/auth/useCurrentUser";
 
 const ITEM_HEIGHT = 80;
 const ITEM_PADDING_TOP = 8;
@@ -66,6 +67,8 @@ export default function Navbar(props: Props) {
   const [isNavVisible, setIsNavVisible] = useState(false);
 
   const pathName = usePathname();
+
+  const {user } = useCurrentUser();
 
 
 
@@ -206,36 +209,47 @@ export default function Navbar(props: Props) {
                       <DynamicIcon type={"Casa"} color="#3B82F6" />
                     </div>
                     {city.city_name}
-                    </MenuItem>
+                  </MenuItem>
                 ))
               }
             </Select>
           </FormControl>
         </Box>
 
-        <button className="flex justify-center items-center" onClick={handleSearch}>
-          <IoSearchSharp color="white" size="40" style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }} className="border p-1.5 rounded-full" />
+        <button
+          className="flex justify-center items-center transition-transform transform hover:scale-110"
+          onClick={handleSearch}
+        >
+          <IoSearchSharp
+            color="white"
+            size="40"
+            style={{ backgroundColor: 'rgba(255, 255, 255, 0.1)' }}
+            className="border p-1.5 rounded-md"
+          />
         </button>
       </div>
 
       <div className="hidden md:flex text-3xl text-white">
-        {isProfessional != null && (
-          <Link href={`/profile/${props.id}`}>
-            <button className="mr-3" type="button">
+       
+        {user && (
+          <div
+          onClick={() => {
+            if (user.roles.includes('client')) {
+              router.push(`/profile/client/${user.id}`)
+            } else {
+              router.push(`/profile/${user.id}`)
+            }
+          }}>
+            <button className="mr-3 transition-transform transform hover:scale-110" type="button">
               <CgProfile />
             </button>
-          </Link>
-        )}
-        {isClient != null && (
-          <Link href={`/profile/client/${props.id}`}>
-            <button className="mr-3" type="button">
-              <CgProfile />
-            </button>
-          </Link>
+          </div>
         )}
         <Link href={"/login"} onClick={() => {
           logout();
-        }} className=" "><MdLogout /></Link>
+        }} className="transition-transform transform hover:scale-110">
+          <MdLogout />
+        </Link>
       </div>
 
       <div className="md:hidden text-2xl text-white">

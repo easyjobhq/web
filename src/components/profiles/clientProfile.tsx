@@ -155,7 +155,7 @@ const ProfileCliPage: React.FC<ClientInformation> = ({ id }) => {
                         <div className="p-8">
                             <div className="flex mb-3 space-x-4">
                                 <div
-                                    className={`px-5 py-1 rounded-full cursor-pointer ${selectedState === 'Pendiente' ? 'bg-blue-500 text-white' : 'border'}`}
+                                    className={`px-5 py-1 rounded-full cursor-pointer transition duration-300 ease-in-out transform ${selectedState === 'Pendiente' ? 'bg-blue-500 text-white' : 'border hover:bg-blue-500 hover:text-white'}`}
                                     onClick={() => setSelectedState('Pendiente')}
                                 >
                                     Pendientes
