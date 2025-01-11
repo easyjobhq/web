@@ -16,17 +16,7 @@ import { Professional } from '@/interfaces/professional';
 import Modal from './Modal';
 import { FaMoneyBill } from "react-icons/fa";
 import { CiLocationOn } from "react-icons/ci";
-
-export interface AppointmentDTOClient {
-    id: string,
-    date: Date,
-    location: string,
-    hour: string,
-    service: Service,
-    client: Client,
-    professional: Professional,
-    appointmentStatus: AppointmentStatus
-}
+import { AppointmentDTOClient } from './AppointmentCard';
 
 
 interface AppointmentCardProps {
@@ -40,7 +30,7 @@ const options: Intl.DateTimeFormatOptions = {
     hour12: true,
 };
 
-const AppointmentCard: React.FC<AppointmentCardProps> = ({ appointment }) => {
+const AppointmentCardProfessional: React.FC<AppointmentCardProps> = ({ appointment }) => {
 
     const appointmentDate = new Date(appointment.date);
 
@@ -50,18 +40,18 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({ appointment }) => {
     return (
         <>
             <div
-                className="bg-white cursor-pointer rounded-lg p-5 shadow-lg w-full md:w-[48%] border border-gray-300 space-y-2 transition-transform transform hover:scale-105 hover:shadow-2xl"
+                className="bg-white cursor-pointer rounded-lg p-5 shadow-lg w-full border border-gray-300 space-y-2 transition-transform transform hover:scale-105 hover:shadow-2xl"
                 onClick={() => {
                     setOpen(true);
                 }}
             >
                 <div className='flex items-center justify-between mb-5'>
                     <div className="">
-                        <p className="text-lg font-semibold">{appointment.professional.name} {appointment.professional.last_name}</p>
+                        <p className="text-lg font-semibold">{appointment.client.name} {appointment.client.last_name}</p>
                         <p className="text-base font-light">{appointment.service.title} </p>
                     </div>
                     <div className='w-16 h-16 mr-5 relative'>
-                        <Image className='rounded-full object-cover' src={appointment.professional.photo_url} alt={appointment.professional.name} layout='fill' />
+                        <Image className='rounded-full object-cover' src={appointment.client.photo_url} alt={appointment.client.name} layout='fill' />
                     </div>
                 </div>
                 {/* <p>{appointment.appointmentStatus.status}</p> */}
@@ -119,10 +109,10 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({ appointment }) => {
                         </div>
                     </div>
 
-                    <h3 className='font-semibold mb-3'>Te va ayudar:</h3>
+                    <h3 className='font-semibold mb-3'>Vas a atender:</h3>
                     <div className="w-full flex items-center bg-white rounded-lg p-3 shadow-lg border border-gray-300 mb-5">
-                        <Image className='w-14 h-14 rounded-full object-cover mr-5' src={appointment.professional.photo_url} alt={appointment.professional.name} width={200} height={200} />
-                        <p className='font-semibold'>{appointment.professional.name} {appointment.professional.last_name}</p>
+                        <Image className='w-14 h-14 rounded-full object-cover mr-5' src={appointment.client.photo_url} alt={appointment.professional.name} width={200} height={200} />
+                        <p className='font-semibold'>{appointment.client.name} {appointment.client.last_name}</p>
                     </div>
 
                     <h3 className='font-semibold mb-3'>Detalles del servicio</h3>
@@ -136,4 +126,4 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({ appointment }) => {
     )
 }
 
-export default AppointmentCard
+export default AppointmentCardProfessional

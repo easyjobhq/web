@@ -7,7 +7,7 @@ import { Speciality } from '@/interfaces/speciality'
 import { PaymentMethod } from '@/interfaces/payment_method';
 import { authService, checkService } from '@/services'
 import Image from 'next/image'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import '../../app/(general)/home/professionalCard.css'
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { MdOutlineMessage } from "react-icons/md";
@@ -34,6 +34,18 @@ import dayjs, { Dayjs } from 'dayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider/LocalizationProvider';
 import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { Circle, GoogleMap, Libraries, Marker, useLoadScript } from '@react-google-maps/api';
+
+
+const mapStyles = {
+    width: '100%',
+    height: '100%',
+};
+
+
+const libraries: Libraries = ['places']; // Define the libraries array outside of the component
 
 
 interface professionalInformation {
@@ -42,6 +54,14 @@ interface professionalInformation {
 
 const ProPage: React.FC<professionalInformation> = ({ id }) => {
 
+    const circleOptions = useMemo(() => ({
+        strokeColor: "#3b82f6",
+        strokeOpacity: 0.8,
+        strokeWeight: 1,
+        fillColor: "#3b82f6",
+        fillOpacity: 0.35,
+    }), []);
+    
     const router = useRouter();
     //Context data
     const { userIdContext, setUserIdContext, emailContext, setEmailContext, usernameContext, setUsernameContext } = useGlobalContext();
@@ -91,6 +111,14 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
     const [modalAppointment, setModalAppointment] = useState<boolean>(false);
     const [textModalAppointment, setTextModalAppointment] = useState<string>('');
 
+    //Modal for the error of not signin in
+    const [signInError, setSignInError] = useState<boolean>(false);
+
+    const { isLoaded } = useLoadScript({
+        googleMapsApiKey: process.env.NEXT_PUBLIC_MAPS_API_KEY || '',
+        libraries,
+    });
+
 
     //Handle submit of forms
     async function handleSubmitQuestion() {
@@ -105,6 +133,11 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
     }
 
     async function handleSubmitReview() {
+
+        if (!userIdContext) {
+            setSignInError(true);
+            return;
+        }
 
         const review: CreateReviewDto = {
             score: reviewsCount || 0,
@@ -140,13 +173,19 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
     }
 
     const handleAppointmentCreation = async () => {
-        if (!selectedDate || !selectedLocation || !selectedTime || !selectedService) {
+
+        if (!userIdContext) {
+            setSignInError(true);
+            return;
+        }
+
+        if (!selectedDateJs || !selectedLocation || !selectedTime || !selectedService) {
             setModalAppointment(true)
             setTextModalAppointment('Por favor, complete todos los campos para agendar la cita.');
             return;
         }
         const appointmentData = {
-            date: JSON.stringify(selectedDate),
+            date: JSON.stringify(selectedDateJs),
             location: selectedLocation,
             hour: selectedTime,
             service: selectedService,
@@ -188,7 +227,7 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
 
             const responseRating = await authService.getTotalReview(id);
             setFormsRating(responseRating);
-            console.log("responseRating", responseRating)
+            //console.log("responseRating", responseRating)
 
             const responseServices = await authService.getServicesOfProfessional(id);
             setServices(responseServices);
@@ -237,16 +276,28 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                             </div>
                             <div className="professional-information">
                                 <h2 className='font-semibold text-lg md:text-2xl mt-3 mb-1'>{professional?.name} {professional?.last_name} </h2>
+                                <p className='font-light text-sm'>
 
-                                {specialities.map((speciality) =>
-                                    <p className='font-light text-sm' key={speciality.id}>{speciality.speciality_name}</p>
-                                )}
+                                    {specialities.map((speciality, index) =>
+                                        <React.Fragment key={speciality.id}>
+                                            {speciality.speciality_name}{index < specialities.length - 1 ? ', ' : ''}
+                                        </React.Fragment>
+                                    )}
+
+                                </p>
                                 <div className="font-light text-sm mb-2">
-                                    {
-                                        cities.map((city, index) => (
-                                            index < cities.length - 1 ? (`${city.city_name}, `) : (`${city.city_name}`)
-                                        ))
-                                    }
+                                    <p>
+                                        <LocationOnIcon className='text-sm mr-2' />
+
+                                        {
+                                            cities.map((city, index) => (
+                                                index < cities.length - 1 ? (`${city.city_name}, `) : (`${city.city_name}`)
+                                            ))
+                                        }
+                                    </p>
+                                </div>
+                                <div className="font-light text-sm mb-2">
+                                    <p><LocalPhoneIcon className='text-sm' /> +57 {professional?.phone_number}</p>
                                 </div>
                                 <div className="items-center mb-2 hidden sm:flex">
                                     <Rating
@@ -258,11 +309,11 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                                 </div>
                                 {isClient && (
                                     <div className="hidden md:flex">
-                                        <Link href={`/professional/${professional?.id}#agendar-cita`} className='bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center md:mr-3 border-blue-600 border w-full md:w-auto justify-center mb-2 md:mb-0'>
+                                        <Link href={`/professional/${professional?.id}#agendar-cita`} className='bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 px-4 py-2 rounded-md text-white text-sm flex items-center md:mr-3 border-blue-600 border w-full md:w-auto justify-center mb-2 md:mb-0 transition duration-300 ease-in-out transform hover:scale-105 shadow-lg'>
                                             <FaRegCalendarAlt className='text-white h-5 w-5 mr-2' /> Agendar cita
                                         </Link>
-                                        <Link href={`/professional/${professional?.id}#dejar-resena`} className=' border border-gray-400 px-3 py-2 rounded-md flex items-center p-3 text-gray-500 text-sm w-full md:w-auto justify-center' >
-                                            <MdOutlineMessage className='  text-gray-500 h-5 w-5 mr-2' /> Dejar reseña
+                                        <Link href={`/professional/${professional?.id}#dejar-resena`} className='bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800 px-4 py-2 rounded-md text-white text-sm flex items-center md:mr-3 border-gray-600 border w-full md:w-auto justify-center mb-2 md:mb-0 transition duration-300 ease-in-out transform hover:scale-105 shadow-lg'>
+                                            <MdOutlineMessage className='text-white h-5 w-5 mr-2' /> Dejar reseña
                                         </Link>
                                     </div>
                                 )}
@@ -278,11 +329,11 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                             <div className="ml-2 text-sm font-light">{`(${formsRating})`}</div>
                         </div>
                         <div className="flex-col justify-between md:hidden mt-4 space-y-3">
-                            <Link href={`/professional/${professional?.id}#agendar-cita`} className='bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center border-blue-600 border w-[95%] md:w-auto justify-center md:mb-0'>
+                            <Link href={`/professional/${professional?.id}#agendar-cita`} className='bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 px-4 py-2 rounded-md text-white text-sm flex items-center md:mr-3 border-blue-600 border w-full md:w-auto justify-center mb-2 md:mb-0 transition duration-300 ease-in-out transform hover:scale-105 shadow-lg'>
                                 <FaRegCalendarAlt className='text-white h-5 w-5 mr-2' /> Agendar cita
                             </Link>
-                            <Link href={`/professional/${professional?.id}#dejar-resena`} className=' border border-gray-400 px-3 py-2 rounded-md flex items-center p-3 text-gray-500 text-sm w-[95%] md:w-auto justify-center' >
-                                <MdOutlineMessage className='  text-gray-500 h-5 w-5 mr-2' /> Dejar reseña
+                            <Link href={`/professional/${professional?.id}#dejar-resena`} className='bg-gradient-to-r from-gray-500 to-gray-700 hover:from-gray-600 hover:to-gray-800 px-4 py-2 rounded-md text-white text-sm flex items-center md:mr-3 border-gray-600 border w-full md:w-auto justify-center mb-2 md:mb-0 transition duration-300 ease-in-out transform hover:scale-105 shadow-lg' >
+                                <MdOutlineMessage className='  text-white h-5 w-5 mr-2' /> Dejar reseña
                             </Link>
                         </div>
                         <p className='text-md mt-5 mb-3 font-light'>{professional?.description}</p>
@@ -292,15 +343,6 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                         {
                             services.length == 0 ? (
                                 <div className='flex flex-col items-center justify-center p-10'>
-                                    {/* <Image 
-                                    src={'/icons/backpack_icon.png'} 
-                                    alt={''} 
-                                    width={100} 
-                                    height={100}
-                                    objectFit='cover'
-                                    className='opacity-25 mb-3'
-                                    >
-                                    </Image> */}
                                     <p className='text-sm text-gray-400'>Este profesional no tiene servicios registrados :(</p>
                                 </div>
                             ) : (
@@ -312,7 +354,7 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                                                 <React.Fragment key={service.id}>
                                                     <li className='flex items-center text-gray-700 mt-2 mb-2'>
                                                         <div className="flex justify-between w-full">
-                                                            <div className='flex items-center'>
+                                                            <div className='flex items-center font-semibold'>
                                                                 <IoIosArrowForward className='text-xs mr-2 font-medium' /> {service.title}
                                                             </div>
                                                             <p className='font-light flex'><BiDollar className='h-6' /> {Math.round(service.price).toLocaleString('es-ES')}</p>
@@ -328,7 +370,54 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                             )
                         }
                     </div>
-                    <div className='main-professional-card bg-white mb-3 rounded-lg px-8 pt-5 pb-7 shadow-md w-full'>
+                    {professional?.places && professional.places.length > 0 && (
+                        <div className="main-professional-card bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
+                            <h3 className='font-semibold text-xl mb-5'>Ubicaciones</h3>
+                            <div className="w-full h-60">
+                                {isLoaded ? (
+                                    <GoogleMap
+                                        key={JSON.stringify(professional.places)}
+                                        clickableIcons={false}
+                                        mapContainerClassName='rounded-lg'
+                                        mapContainerStyle={mapStyles}
+                                        zoom={11}
+                                        center={
+                                            { lat: 3.421, lng: -76.521 }
+                                        }
+                                        options={{
+                                            disableDefaultUI: true,
+                                            streetViewControl: false,
+                                            styles: [
+                                                {
+                                                    featureType: 'poi',
+                                                    stylers: [{ visibility: 'off' }],
+                                                },
+                                                {
+                                                    featureType: 'transit',
+                                                    stylers: [{ visibility: 'off' }],
+                                                },
+                                            ],
+                                        }}
+                                    >
+                                        {professional.places.map((place, index) => (
+                                            <Circle
+                                                key={index}
+                                                center={{ lat: place.latitude, lng: place.longitude }}
+                                                radius={500} // Adjust the radius as needed
+                                                options={circleOptions}
+                                            />
+                                        ))}
+                                    </GoogleMap>
+                                ) : (
+                                    <p>Cargando...</p>
+                                )
+
+                                }
+                            </div>
+
+                        </div>
+                    )}
+                    {/* <div className='main-professional-card bg-white mb-3 rounded-lg px-8 pt-5 pb-7 shadow-md w-full'>
                         <div className="flex justify-between">
                             <h3 className='font-semibold text-xl mb-2'> Preguntas del profesional</h3>
                             {isClient && (
@@ -375,7 +464,7 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                                 </div>
                             </>
                         )}
-                    </div>
+                    </div> */}
                     <div id='dejar-resena' className="main-professional-card bg-white mb-3 rounded-lg px-8 py-5 shadow-md w-full">
                         <div className="flex justify-between">
                             <h3 className='font-semibold text-xl mb-2'>{reviews.length} Opiniones de este profesional</h3>
@@ -422,12 +511,12 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                                         className='mb-3'
                                         sx={{ width: "100%", '& .MuiInputBase-root': { fontSize: "0.875rem" }, '& .MuiInputLabel-root': { fontSize: "0.875rem" } }}
                                         id="outlined-textarea"
-                                        placeholder="Escribe tu pregunta"
+                                        placeholder="Escribe tu opinion"
                                         multiline
                                         value={formReviewComment}
                                         onChange={(e) => { setFormReviewComment(e.target.value) }}
                                     />
-                                    <button className=' w-full bg-blue-500 px-3 py-2 rounded-md text-white text-sm flex items-center justify-center mr-3 border-blue-600 border font-medium' onClick={handleSubmitReview}> <IoSend className='mr-2' /> Enviar pregunta</button>
+                                    <button className='w-full bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 px-4 py-2 rounded-md text-white text-sm flex items-center justify-center mr-3 border-blue-600 border font-medium transition duration-300 ease-in-out transform hover:scale-105' onClick={handleSubmitReview}> <IoSend className='mr-2' /> Enviar opinión</button>
                                 </div>
                             </>
                         )}
@@ -508,7 +597,7 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                                             Seleccionar Servicio
                                         </MenuItem>
                                         {services.map((service) => (
-                                            <MenuItem key={service.id} value={service.title}>{service.title}</MenuItem>
+                                            <MenuItem key={service.id} value={service.id}>{service.title}</MenuItem>
                                         ))}
                                     </Select>
                                 </FormControl>
@@ -536,6 +625,19 @@ const ProPage: React.FC<professionalInformation> = ({ id }) => {
                     className="z-10 h-10 w-full mt-8 bg-blue-500 rounded border-blue-600 border text-white font-medium text-lg"
                 >
                     Aceptar
+                </button>
+            </Modal >
+            {/* Modal for the error for not signin in */}
+            < Modal isOpen={signInError} onClose={() => { setSignInError(false) }} >
+                <p>Por favor, inicia sesión para realizar esta accion</p>
+                <p>:/</p>
+                <button
+                    onClick={() => {
+                        router.push('/login')
+                    }}
+                    className="z-10 h-10 w-full mt-8 bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-800 rounded border-blue-600 border text-white font-medium text-lg transition duration-300 ease-in-out transform hover:scale-105 shadow-lg"
+                >
+                    Iniciar Sesión
                 </button>
             </Modal >
         </>
