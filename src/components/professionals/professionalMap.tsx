@@ -123,7 +123,7 @@ const ProfessionalCard: React.FC<Professional> = ({
         {/* Precio */}
         {services.map((service, key ) => (
             <p className="text-sm mb-4" key={key}>
-                Asesoría psicológica y psicopedagógica desde $ {Math.round(service.price).toLocaleString('es-ES')}
+                {service.description} desde $ {Math.round(service.price).toLocaleString('es-ES')}
             </p>
         ))}
         
@@ -138,10 +138,11 @@ const ProfessionalCard: React.FC<Professional> = ({
           </span>
         </div>
   
-        {/* Button */}
+        {/* Button 
         <button className="w-full py-2 px-4 border border-cyan-500 text-cyan-500 rounded hover:bg-cyan-50 transition-colors">
           Avísame si se libera una hora
         </button>
+        */}
       </div>
     );
   };
