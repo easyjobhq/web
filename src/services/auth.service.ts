@@ -8,6 +8,7 @@ import { Service } from "@/interfaces/service";
 import { CreateServiceDto } from "@/interfaces/createEntities/CreateServiceDto";
 import { EditServiceDTO } from "@/interfaces/editEntities/EditServiceDto";
 import { Place } from "@/interfaces/place";
+import { CreatePlaceDTO } from "@/interfaces/createEntities/CreatePlaceDTO";
 
 export class AuthService {
   protected readonly instance: AxiosInstance;
@@ -484,7 +485,7 @@ export class AuthService {
     return res.status;
   }
 
-  addPlaceToProfessional = async (id_professional: string, place: Place) => {
+  addPlaceToProfessional = async (id_professional: string, place: CreatePlaceDTO) => {
     const res = await this.instance
       .post(`/places/professionals/${id_professional}`, place, {
         headers: getAuthorizationHeader(),
