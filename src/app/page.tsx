@@ -40,11 +40,11 @@ const DummyContent = () => {
           Nuestros profesionales están altamente capacitados para resolver cualquier problema que se les presente.
         </p>
         <Image
-          src="https://assets.aceternity.com/macbook.png"
+          src="https://images.pexels.com/photos/209235/pexels-photo-209235.jpeg"
           alt="Macbook mockup from Aceternity UI"
-          height="500"
-          width="500"
-          className="md:w-1/2 md:h-1/2 h-full w-full mx-auto object-contain"
+          height="1000"
+          width="1000"
+          className="md:w-full md:h-full h-full w-full mx-auto object-contain"
         />
       </div>
     </>
