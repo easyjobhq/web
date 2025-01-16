@@ -40,7 +40,7 @@ function Register() {
         if (!name || !lastName || !email  || !password  ) {
             alert("All fields are required");
         } else {
-            await register(name, lastName, email, phoneNumber, password, photo, "", "", "", "", "Client")
+            await register(name, lastName, email, phoneNumber, password, photo, "", "", "", "",0,0, "Client")
                 .then(() => router.push("/login"))
                 .catch((e: Error) => alert(e));
         }
