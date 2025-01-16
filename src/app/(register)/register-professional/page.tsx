@@ -29,6 +29,8 @@ function RegisterProfessional() {
         photo,
         cityId,
         specialityId,
+        latitud,
+        longitud,
         step,
         nextStep,
         prevStep,
@@ -40,7 +42,7 @@ function RegisterProfessional() {
         if (!name || !lastName || !email || !password || !cityId  || !specialityId) {
             alert("All fields are required");
         } else {
-            await register(name, lastName, email, phoneNumber, password, photo, "", "", cityId, specialityId,  "Prof")
+            await register(name, lastName, email, phoneNumber, password, photo, "", "", cityId, specialityId, latitud, longitud,  "Prof")
                 .then(() => router.push("/login"))
                 .catch((e: Error) => alert(e));
         }

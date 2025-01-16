@@ -24,6 +24,10 @@ interface RegisterProfessionalContextType {
     setSpecialityId: React.Dispatch<React.SetStateAction<string>>;
     specialityName: string,
     setSpecialityName: React.Dispatch<React.SetStateAction<string>>;
+    latitud: number,
+    setLatitud: React.Dispatch<React.SetStateAction<number>>;
+    longitud: number,
+    setLongitud: React.Dispatch<React.SetStateAction<number>>;
 }
 
 interface RegisterProfessionalProviderProps {
@@ -64,6 +68,8 @@ export const RegisterProfessionalProvider: React.FC<RegisterProfessionalProvider
     const [specialityId, setSpecialityId] = useState<string>('');
     const [cityName, setCityName] = useState<string>('');
     const [specialityName, setSpecialityName] = useState<string>('');
+    const [latitud, setLatitud] = useState<number>(0);
+    const [longitud, setLongitud] = useState<number>(0);
 
     return (
         <RegisterProfessionalContext.Provider
@@ -90,7 +96,11 @@ export const RegisterProfessionalProvider: React.FC<RegisterProfessionalProvider
                 cityName,
                 setCityName,
                 specialityName,
-                setSpecialityName
+                setSpecialityName,
+                latitud,
+                setLatitud,
+                longitud,
+                setLongitud
             }}
         >
             {children}

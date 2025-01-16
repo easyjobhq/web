@@ -15,6 +15,7 @@ import { authService } from '@/services';
 import Box from '@mui/material/Box';
 import DynamicIcon from '@/components/ui/icons/DynamicIcon';
 import Modal from '@/components/ui/Modal';
+import { set } from 'date-fns';
 
 function Step3RegisterProfessionalForm() {
 
@@ -27,7 +28,11 @@ function Step3RegisterProfessionalForm() {
         setCityName,
         specialityId,
         setSpecialityId,
-        setSpecialityName
+        setSpecialityName,
+        latitud,
+        setLatitud,
+        longitud,
+        setLongitud
     } = useRegisterProfessionalContext();
 
     const [cities, setCities] = React.useState<City[]>();
@@ -46,7 +51,9 @@ function Step3RegisterProfessionalForm() {
             (position) => {
               console.log(position);
               const { latitude, longitude } = position.coords;
-              setLocation({ latitude, longitude });
+              setLocation({ latitude, longitude }); 
+              setLatitud(latitude);
+              setLongitud(longitude);
               setIsError(false); // Resetear errores si la ubicación se obtiene correctamente
             },
             (err) => {
@@ -73,7 +80,8 @@ function Step3RegisterProfessionalForm() {
                 console.log(encodeURIComponent(address + 'Co').replace(/%20/g, "+"));
                 if(data.results && data.results.length > 0){
                     const location= data.results[0].geometry.location;
-                    console.log(location);
+                    setLatitud(location.lat);
+                    setLongitud(location.lng);
                     
                 }else{
                     console.error('No se encontró la dirección');
