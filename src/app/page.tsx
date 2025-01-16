@@ -21,7 +21,10 @@ import Skeleton from 'react-loading-skeleton'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { useRouter } from "next/navigation";
 import { FlipWords } from "../components/ui/flip-words";
-
+import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import ImageIcon from '@mui/icons-material/Image';
+import StarIcon from '@mui/icons-material/Star';
 
 
 const DummyContent = () => {
@@ -168,11 +171,91 @@ export default function Home() {
       </div>
       <div className='items-center flex flex-col'>
         <div className=" dark:text-white text-black text-3xl leading-snug tracking-wide font-bold">
-          <FlipWords className="mt-20 mb-20 md:mb-0" words={words} /> <br/>
+          <FlipWords className="mt-20 mb-20 md:mb-0" words={words} /> <br />
         </div>
         <Carousel items={cards} />
       </div>
-      <div className='w-full'> {/* Añadido w-full */}
+      <div className="m-auto max-w-7xl mb-20">
+        <h2 className="text-center font-bold text-4xl mb-10">Nuestros Beneficios</h2>
+        <div className=" flex justify-center">
+          <Image
+            src={"/easyjob_phone.png"}
+            alt={"EasyJob Movile View"}
+            width={800}
+            height={800}
+            className=" hidden lg:block  w-72 transform rotate-12 mr-24 mb-10 object-contain"
+          />
+          <div className="mx-5 max-w-3xl lg:w-full  m-auto">
+            <ul className="mt-10 grid gap-10 md:grid-cols-2 lg:mg-20 lg:gap-20">
+              <li className="flex w-full flex-1 flex-col items-start">
+                <div className="rounded-full p-4 lg:p-5 bg-blue-100">
+                  <VolunteerActivismIcon />
+                </div>
+
+                <h3 className="text-xl font-bold mt-5 capitalize">Perfiles Personalizados</h3>
+                <p className="font-light">Cada profesional puede crear un perfil único que incluye su experiencia, habilidades, y servicios ofrecidos. Esto permite a los clientes encontrar al profesional perfecto para sus necesidades específicas.</p>
+              </li>
+              <li className="flex w-full flex-1 flex-col items-start">
+                <div className="rounded-full p-4 lg:p-5 bg-blue-100">
+                  <StarIcon />
+                </div>
+
+                <h3 className="text-xl font-bold mt-5 capitalize">Opiniones y Calificaciones</h3>
+                <p className="font-light">Los clientes pueden dejar reseñas y calificaciones después de contratar un servicio. Esto ayuda a construir confianza y a destacar a los mejores profesionales en la plataforma.</p>
+              </li>
+              <li className="flex w-full flex-1 flex-col items-start">
+                <div className="rounded-full p-4 lg:p-5 bg-blue-100">
+                  <ImageIcon />
+                </div>
+
+                <h3 className="text-xl font-bold mt-5 capitalize">Búsqueda por Ubicación</h3>
+                <p className="font-light">Encuentra profesionales cerca de ti fácilmente con nuestra función de búsqueda geolocalizada. Podrás ver a los expertos disponibles en tu área y contactarlos rápidamente.</p>
+              </li>
+              <li className="flex w-full flex-1 flex-col items-start">
+                <div className="rounded-full p-4 lg:p-5 bg-blue-100">
+                  <VolunteerActivismIcon />
+                </div>
+
+                <h3 className="text-xl font-bold mt-5 capitalize"> Conexión Directa</h3>
+                <p className="font-light">Simplifica el proceso de contratación con nuestra plataforma. Conecta directamente con plomeros, carpinteros, mecánicos y otros profesionales para discutir tus necesidades y obtener el mejor servicio.</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+      <div className="w-full relative">
+        <Image
+          src={"/fixer-man.jpg"}
+          alt="Fixer man"
+          width={3840}
+          height={2160}
+          className="w-screen h-[70vh] object-cover "
+        />
+        <div className="w-full absolute inset-0 flex flex-wrap justify-around items-center ">
+          <Image
+            src={"/appointment_mockup.png"}
+            alt="Front image"
+            width={1000}
+            height={1000}
+            className="max-w-80 lg:max-w-md h-auto object-contain"
+          />
+          <div className="p-10 rounded-lg">
+            <h2 className="text-4xl font-bold text-blue-500">¡Haz una cita ahora!</h2>
+            <p className="text-lg font-light text-white">Reserva una cita con tu profesional favorito en solo unos clicks.</p>
+            <Button
+              variant="contained"
+              color="secondary"
+              href="/home?speciality=&city="
+              className='bg-blue-500 hover:bg-blue-300'
+              style={{ textTransform: 'none' }}
+            >
+              <p className="text-xs md:text-sm" >¡Reservar Ahora!</p>
+            </Button>
+          </div>
+        </div>
+      </div>
+      <div className='w-full'>
         <Footer />
       </div>
     </ThemeProvider>
