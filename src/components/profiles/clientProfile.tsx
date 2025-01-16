@@ -161,13 +161,13 @@ const ProfileCliPage: React.FC<ClientInformation> = ({ id }) => {
                                     Pendientes
                                 </div>
                                 <div
-                                    className={`px-5 py-1 rounded-full cursor-pointer ${selectedState === 'Aceptada' ? 'bg-blue-500 text-white' : 'border'}`}
+                                    className={`px-5 py-1 rounded-full cursor-pointer transition duration-300 ease-in-out transform ${selectedState === 'Aceptada' ? 'bg-blue-500 text-white' : 'border hover:bg-blue-500 hover:text-white'}`}
                                     onClick={() => setSelectedState('Aceptada')}
                                 >
                                     Aceptadas
                                 </div>
                                 <div
-                                    className={`px-5 py-1 rounded-full cursor-pointer ${selectedState === 'Terminada' ? 'bg-blue-500 text-white' : 'border'}`}
+                                    className={`px-5 py-1 rounded-full cursor-pointer transition duration-300 ease-in-out transform ${selectedState === 'Terminada' ? 'bg-blue-500 text-white' : 'border hover:bg-blue-500 hover:text-white'}`}
                                     onClick={() => setSelectedState('Terminada')}
                                 >
                                     Terminadas
