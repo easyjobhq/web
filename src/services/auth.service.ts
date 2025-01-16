@@ -45,7 +45,7 @@ export class AuthService {
   };
 
 
-  register = async (name: string, last_name: string, email: string, phone_number: string, password: string, photo: File | null, service_id: string, language_id: string, city_id: string, speciality_id: string, selectedOption: string) => {
+  register = async (name: string, last_name: string, email: string, phone_number: string, password: string, photo: File | null, service_id: string, language_id: string, city_id: string, speciality_id: string, latitud:number, longitud:number, selectedOption: string) => {
 
     if (selectedOption == 'Prof') {
 
@@ -68,6 +68,8 @@ export class AuthService {
       formData.append('language_id', language_id);
       formData.append('city_id', city_id);
       formData.append('speciality_id', speciality_id);
+      formData.append('latitud', latitud.toString());
+      formData.append('longitud', longitud.toString());
 
 
       // Send the POST request with FormData

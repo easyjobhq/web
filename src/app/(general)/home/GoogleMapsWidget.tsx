@@ -173,6 +173,7 @@ const GoogleMapsWidget: React.FC<GoogleMapsWidgetProps> = ({ places, professiona
             }}
             onMouseOver={() => setIsHovered(true)}
             onMouseOut={() => setIsHovered(false)}
+            onClick={handleExpand}
           >
             {myPlaces.map((place, index) => (
                         <Circle
