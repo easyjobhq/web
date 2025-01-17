@@ -1,3 +1,4 @@
+
 import React from 'react'
 import {
     Calendar,
@@ -17,7 +18,7 @@ import Modal from './Modal';
 import { FaMoneyBill } from "react-icons/fa";
 import { CiLocationOn } from "react-icons/ci";
 import { AppointmentDTOClient } from './AppointmentCard';
-
+import { authService } from '@/services';
 
 interface AppointmentCardProps {
     appointment: AppointmentDTOClient;
@@ -35,6 +36,29 @@ const AppointmentCardProfessional: React.FC<AppointmentCardProps> = ({ appointme
     const appointmentDate = new Date(appointment.date);
 
     const [open, setOpen] = React.useState(false);
+
+    const handleClickAccept = async() => {
+
+        await authService.updateAppoimentStatus(appointment.id, 'accepted');
+
+        setOpen(false);
+
+        window.location.reload();
+    }
+
+    const handleClickReject = async() => {
+        await authService.updateAppoimentStatus(appointment.id, 'rejected');
+
+        setOpen(false);
+    }
+
+    const handleClickFinish = async() => {
+        await authService.updateAppoimentStatus(appointment.id, 'completed');
+
+        setOpen(false);
+
+        window.location.reload();
+    }
 
 
     return (
@@ -117,7 +141,44 @@ const AppointmentCardProfessional: React.FC<AppointmentCardProps> = ({ appointme
 
                     <h3 className='font-semibold mb-3'>Detalles del servicio</h3>
                     <p className='flex items-center font-light mb-3'><FaMoneyBill className='mr-3' /> $ {appointment.service.price}</p>
-                    <p className='font-light text-left'>{appointment.service.description}</p>
+                    <div className='space-y-8'>
+                        <p className='font-light text-left'>{appointment.service.description}</p>
+                        
+
+                        <div className='w-full'>
+                            {appointment.appointmentStatus.status === 'pending' ? (
+                                <div className='flex items-center justify-center space-x-5'>
+                                    <button
+                                        className='flex-1 bg-gradient-to-r from-blue-300 to-blue-600 hover:from-blue-600 hover:to-blue-900 flex justify-center text-white border-blue-500 rounded-md p-2'
+                                        onClick={handleClickAccept}
+                                    > 
+                                        <p className='text-white font-bold'>Aceptar</p>
+                                        
+                                    </button>
+                                    
+                                    <button
+                                        className='flex-1 bg-gradient-to-r from-blue-300 to-blue-600 hover:from-blue-600 hover:to-blue-900 flex justify-center text-white border-blue-500 rounded-md p-2'
+                                        onClick={handleClickReject}
+                                    >
+                                        <p className='text-white font-bold'>Rechazar</p>
+                                    </button>
+
+                                </div>
+                                
+                            ): appointment.appointmentStatus.status === 'accepted' ? (
+                                <div className='flex items-center justify-center space-x-5'>
+                                    <button
+                                        className='flex-1 bg-gradient-to-r from-blue-300 to-blue-600 hover:from-blue-600 hover:to-blue-900 flex justify-center text-white border-blue-500 rounded-md p-2'
+                                        onClick={handleClickFinish}
+                                    >
+                                        <p className='text-white font-bold'>Finalizar</p>
+                                    </button>
+                                </div>
+                            ):(
+                                <></>
+                            )}
+                        </div>
+                    </div>
 
                 </div>
 
