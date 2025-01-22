@@ -50,7 +50,7 @@ const ProfileProfessional: React.FC<professionalInformation> = ({ id }) => {
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   //Select the state of the appointments
-  const [selectedState, setSelectedState] = useState<string>('Pendiente');
+  const [selectedState, setSelectedState] = useState<string>('pending');
 
   const onChangePhoto = async (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -106,6 +106,7 @@ const ProfileProfessional: React.FC<professionalInformation> = ({ id }) => {
 
       const appoinments = await authService.getAppoimentsToProfessional(id);
       setAppoiments(appoinments)
+      //console.log(appoinments)
     }
 
     fetchData();
@@ -246,20 +247,20 @@ const ProfileProfessional: React.FC<professionalInformation> = ({ id }) => {
             <div className="p-8">
               <div className="flex mb-3 space-x-4">
                 <div
-                  className={`px-5 py-1 rounded-full cursor-pointer ${selectedState === 'Pendiente' ? 'bg-blue-500 text-white' : 'border'}`}
-                  onClick={() => setSelectedState('Pendiente')}
+                  className={`px-5 py-1 rounded-full cursor-pointer ${selectedState === 'pending' ? 'bg-blue-500 text-white' : 'border'}`}
+                  onClick={() => setSelectedState('pending')}
                 >
                   Pendientes
                 </div>
                 <div
-                  className={`px-5 py-1 rounded-full cursor-pointer ${selectedState === 'Aceptada' ? 'bg-blue-500 text-white' : 'border'}`}
-                  onClick={() => setSelectedState('Aceptada')}
+                  className={`px-5 py-1 rounded-full cursor-pointer ${selectedState === 'accepted' ? 'bg-blue-500 text-white' : 'border'}`}
+                  onClick={() => setSelectedState('accepted')}
                 >
                   Aceptadas
                 </div>
                 <div
-                  className={`px-5 py-1 rounded-full cursor-pointer ${selectedState === 'Rechazada' ? 'bg-blue-500 text-white' : 'border'}`}
-                  onClick={() => setSelectedState('Rechazada')}
+                  className={`px-5 py-1 rounded-full cursor-pointer ${selectedState === 'completed' ? 'bg-blue-500 text-white' : 'border'}`}
+                  onClick={() => setSelectedState('completed')}
                 >
                   Terminadas
                 </div>
