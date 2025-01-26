@@ -38,7 +38,7 @@ const ProfileCliPage: React.FC<ClientInformation> = ({ id }) => {
     const [appointments, setAppointments] = useState<AppointmentDTOClient[]>([]);
 
     //Selector 
-    const [selectedState, setSelectedState] = useState<string>("Pendiente");
+    const [selectedState, setSelectedState] = useState<string>("pending");
 
 
     const handleFormChange = () => {
@@ -57,6 +57,7 @@ const ProfileCliPage: React.FC<ClientInformation> = ({ id }) => {
             setLastName(response.last_name);
             setEmail(response.email);
             setPhoneNumber(response.phone_number);
+            console.log(appointments)
         }
         fetchData();
     }, [])
@@ -155,22 +156,28 @@ const ProfileCliPage: React.FC<ClientInformation> = ({ id }) => {
                         <div className="p-8">
                             <div className="flex mb-3 space-x-4">
                                 <div
-                                    className={`px-5 py-1 rounded-full cursor-pointer transition duration-300 ease-in-out transform ${selectedState === 'Pendiente' ? 'bg-blue-500 text-white' : 'border hover:bg-blue-500 hover:text-white'}`}
-                                    onClick={() => setSelectedState('Pendiente')}
+                                    className={`px-5 py-1 rounded-full cursor-pointer transition duration-300 ease-in-out transform ${selectedState === 'pending' ? 'bg-blue-500 text-white' : 'border hover:bg-blue-500 hover:text-white'}`}
+                                    onClick={() => setSelectedState('pending')}
                                 >
                                     Pendientes
                                 </div>
                                 <div
-                                    className={`px-5 py-1 rounded-full cursor-pointer transition duration-300 ease-in-out transform ${selectedState === 'Aceptada' ? 'bg-blue-500 text-white' : 'border hover:bg-blue-500 hover:text-white'}`}
-                                    onClick={() => setSelectedState('Aceptada')}
+                                    className={`px-5 py-1 rounded-full cursor-pointer transition duration-300 ease-in-out transform ${selectedState === 'accepted' ? 'bg-blue-500 text-white' : 'border hover:bg-blue-500 hover:text-white'}`}
+                                    onClick={() => setSelectedState('accepted')}
                                 >
                                     Aceptadas
                                 </div>
                                 <div
-                                    className={`px-5 py-1 rounded-full cursor-pointer transition duration-300 ease-in-out transform ${selectedState === 'Terminada' ? 'bg-blue-500 text-white' : 'border hover:bg-blue-500 hover:text-white'}`}
-                                    onClick={() => setSelectedState('Terminada')}
+                                    className={`px-5 py-1 rounded-full cursor-pointer transition duration-300 ease-in-out transform ${selectedState === 'rejected' ? 'bg-blue-500 text-white' : 'border hover:bg-blue-500 hover:text-white'}`}
+                                    onClick={() => setSelectedState('rejected')}
                                 >
                                     Terminadas
+                                </div>
+                                <div
+                                    className={`px-5 py-1 rounded-full cursor-pointer ${selectedState === 'completed' ? 'bg-blue-500 text-white' : 'border'}`}
+                                    onClick={() => setSelectedState('completed')}
+                                >
+                                    Completadas
                                 </div>
                             </div>
                             <div className="h-[1px] bg-gray-300 mb-5"></div>
@@ -194,7 +201,7 @@ const ProfileCliPage: React.FC<ClientInformation> = ({ id }) => {
                                     </div>
                                 )}
                             </div>
-                            
+
                         </div>
                     </div>
                 </div>
