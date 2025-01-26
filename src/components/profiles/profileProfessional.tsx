@@ -259,10 +259,16 @@ const ProfileProfessional: React.FC<professionalInformation> = ({ id }) => {
                   Aceptadas
                 </div>
                 <div
+                  className={`px-5 py-1 rounded-full cursor-pointer ${selectedState === 'rejected' ? 'bg-blue-500 text-white' : 'border'}`}
+                  onClick={() => setSelectedState('rejected')}
+                >
+                  Terminadas
+                </div>
+                <div
                   className={`px-5 py-1 rounded-full cursor-pointer ${selectedState === 'completed' ? 'bg-blue-500 text-white' : 'border'}`}
                   onClick={() => setSelectedState('completed')}
                 >
-                  Terminadas
+                  Completadas
                 </div>
               </div>
               <div className="h-[1px] bg-gray-300 mb-5"></div>

@@ -113,8 +113,8 @@ const AppointmentCard: React.FC<AppointmentCardProps> = ({ appointment }) => {
                         <div className="flex items-center space-x-3 text-gray-700">
                             <CalendarCheck className="h-5 w-5 text-gray-600" />
                             <div className="flex items-center space-x-2">
-                                <span className={`inline-block w-3 h-3 rounded-full ${appointment.appointmentStatus.status === 'aceptada' ? 'bg-green-500' : appointment.appointmentStatus.status === 'pendiente' ? 'bg-yellow-500' : 'bg-red-500'}`}></span>
-                                <p className="font-light capitalize">{appointment.appointmentStatus.status}</p>
+                                <span className={`inline-block w-3 h-3 rounded-full ${appointment.appointmentStatus?.status === 'aceptada' ? 'bg-green-500' : appointment.appointmentStatus?.status === 'pendiente' ? 'bg-yellow-500' : 'bg-red-500'}`}></span>
+                                <p className="font-light capitalize">{appointment.appointmentStatus?.status}</p>
                             </div>
                         </div>
                     </div>
