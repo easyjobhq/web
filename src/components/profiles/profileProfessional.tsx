@@ -106,6 +106,7 @@ const ProfileProfessional: React.FC<professionalInformation> = ({ id }) => {
 
       const appoinments = await authService.getAppoimentsToProfessional(id);
       setAppoiments(appoinments)
+      //console.log(appoinments)
     }
 
     fetchData();

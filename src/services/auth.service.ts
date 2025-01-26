@@ -496,4 +496,13 @@ export class AuthService {
     return res.status;
   }
 
+  updateAppoimentStatus = async (appointment_id: string, status_name: string) => {
+    const res = await this.instance
+      .patch(`/appointment/status/${appointment_id}/${status_name}`, {
+        headers: getAuthorizationHeader(),
+      });
+
+    console.log("se fue para el back esta monda")
+  }
+
 }
